@@ -14,20 +14,20 @@
     Imputes missing data in a categorical variable using multinomial Log-linear Models. 
 }
 \usage{
-  mi.categorical( formula, data = NULL, n.iter = 100, MaxNWts = 1500, \dots )
+  mi.categorical( formula, data = NULL, n.iter = 100, MaxNWts = 1500, \dots)
   \S3method{residuals}{mi.categorical}(object, y, \dots)
   \S3method{plot}{mi.categorical}( x, y, main=deparse( substitute( y ) ), gray.scale = FALSE, \dots)
 }
 \arguments{
   \item{formula}{ a formula expression as for regression models, of the form
-          'response ~ predictors'. The response should be a factor or a
+          \code{response ~ predictors}. The response should be a factor or a
           matrix with K columns, which will be interpreted as counts
           for each of K classes. A log-linear model is fitted, with
           coefficients zero for the first class. An offset can be
           included: it should be a numeric matrix with K columns if the
           response is either a matrix with K columns or a factor with K
           > 2 classes, or a numeric vector for a response factor with 2
-          levels. See the documentation of 'formula()' for other
+          levels. See the documentation of \code{formula()} for other
           details.  }
   \item{data}{ A data frame containing the incomplete data and the matrix of the complete predictors. }
   \item{n.iter}{ Maximum number of iteration. }
@@ -41,7 +41,7 @@
 
 }
 \details{
-    'multinom' calls the library 'nnet'. See multinom for other details.   
+    \code{multinom} calls the library \pkg{nnet}. See \code{multinom} for other details.   
 }
 \value{
     \item{model   }{A summary of the multinomial fitted model.}
@@ -55,6 +55,7 @@
 }
 \author{
   Masanao Yajima \email{yajima@stat.columbia.edu},
+  Yu-Sung Su \email{ys463@stat.columbia.edu},
   M.Grazia Pittau \email{grazia@stat.columbia.edu},
   Andrew Gelman \email{gelman@stat.columbia.edu}
 }

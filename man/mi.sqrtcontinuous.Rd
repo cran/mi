@@ -13,7 +13,8 @@
     Imputes univariate missing data using linear regression on the square-root values.
 }
 \usage{
-mi.sqrtcontinuous(formula, data = NULL, start = NULL, n.iter = 100, draw.from.beta = FALSE, ...)
+mi.sqrtcontinuous(formula, data = NULL, start = NULL, n.iter = 100, 
+  draw.from.beta = FALSE, \dots)
 
 \S3method{residuals}{mi.sqrtcontinuous}(object, y, \dots)
 \S3method{plot}{mi.sqrtcontinuous}( x, y, main=deparse( substitute( y ) ), gray.scale = FALSE, \dots)
@@ -51,6 +52,7 @@ mi.sqrtcontinuous(formula, data = NULL, start = NULL, n.iter = 100, draw.from.be
 
 \author{
   Masanao Yajima \email{yajima@stat.columbia.edu},
+  Yu-Sung Su \email{ys463@stat.columbia.edu},
   M.Grazia Pittau \email{grazia@stat.columbia.edu},
   Andrew Gelman \email{gelman@stat.columbia.edu}
 }

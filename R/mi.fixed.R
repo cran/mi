@@ -25,24 +25,24 @@ mi.fixed <- function( formula, data = NULL, ... ) {
             else { 
               deparse( substitute( data ) )
             }
-  nameY <- deparse( substitute( Y ) );
-  mis   <- is.na( Y );
-  n.mis <- sum ( mis );
+  nameY <- deparse( substitute( Y ) )
+  mis   <- is.na( Y )
+  n.mis <- sum ( mis )
   y.level <-  if ( is.numeric( Y ) ) {
-                sort( unique ( Y ) );
+                sort( unique ( Y ) )
               } else {
-                levels( factor( Y ) );
+                levels( factor( Y ) )
               }
   # main program
-  fixd.imp    <- y.level;
-  determ.pred <- rep( y.level, length( Y ) );
-  names( determ.pred ) <- 1:length( determ.pred );
-  random.pred <- determ.pred[is.na(Y)];
+  fixd.imp    <- y.level
+  determ.pred <- rep( y.level, length( Y ) )
+  names( determ.pred ) <- 1:length( determ.pred )
+  random.pred <- determ.pred[is.na(Y)]
   # calculate residual
   #residual.val<- Y - determ.pred
   # return the result
   result <- list( model = list( call = NULL, coefficient = NULL, sigma = NULL ), 
-                  expected = NULL, random = NULL );
+                  expected = NULL, random = NULL )
   result$model$call    <- ""
   result$expected <- determ.pred
   result$random   <- random.pred

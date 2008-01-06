@@ -2,40 +2,41 @@
 #  function to select the variable type
 # ==============================================================================
 setMethod("typecast", signature( object = "ANY" ),     
-  function ( object ) {
-    if ( is.null ( object ) ) { 
-      "NULL" 
-    } else {
-      values <- unique( object )[ !is.na( unique( object ) ) ]
-      len    <- length ( values )
-      if ( len == 1 )      { 
-        # 1 category variable
-        "fixed";
-      } else if ( len == 2 ) { 
-        # 2 category variable
-        "dichotomous";
-      } else {
-        if ( is.numeric ( object ) == TRUE ) {
-          # if the variable is numeric
-          if ( len > 2 & len <= 5 ) { 
-            # 3~5 category variable
-            "ordered-categorical";
-          } else if ( len > 5 & all ( values > 0 ) ) { 
-            # more than 5 category and positive 
-            "squareroot-continuous"; # "logscale-continuous" 
-          } else if ( len > 5 & "0" %in% values & all ( values >= 0 ) ) {
-            # more than 5 category with 0 and all positive numbers
-            "mixed"; 
-          } else {
-            # everything else
-            "continuous"; 
-          }
-        } else { 
-          "unordered-categorical"; 
+  function (object){
+  if (is.null(object)){ 
+    "NULL" 
+  } 
+  else{
+    values <- unique (object)[!is.na(unique(object))]
+    len    <- length (values)
+    if (len == 1){      # 1 category variable
+      "fixed"
+    } 
+    else if (len == 2){ # 2 category variable
+      "dichotomous"
+    } 
+    else {
+      if (is.numeric(object)){       # if the variable is numeric
+        if (len > 2 & len <= 5){   # 3~5 category variable
+          "ordered-categorical"
+        } 
+        else if (len > 5 & all(values > 0)){ # more than 5 category and positive 
+          "squareroot-continuous" 
+            #"logscale-continuous" 
+        } 
+        else if (len > 5 & "0" %in% values & all(values >= 0)){# more than 5 category with 0 and all positive numbers
+          "mixed" 
+        } 
+        else { # everything else
+          "continuous" 
         }
+      } 
+      else { 
+        "unordered-categorical" 
       }
     }
   }
+}
 )
 
 setMethod("typecast", signature( object = "matrix" ), 
@@ -89,28 +90,28 @@ recode.vector <- function ( vec ) {
 #      len    <- length ( values )
 #      if ( len == 1 )      { 
 #        # 1 category variable
-#        "fixed";
+#        "fixed"
 #      } else if ( len == 2 ) { 
 #        # 2 category variable
-#        "dichotomous";
+#        "dichotomous"
 #      } else {
 #        if ( is.numeric ( object ) == TRUE ) {
 #          # if the variable is numeric
 #          if ( len > 2 & len <= 5 ) { 
 #            # 3~5 category variable
-#            "ordered-categorical";
+#            "ordered-categorical"
 #          } else if ( len > 5 & all ( values > 0 ) ) { 
 #            # more than 5 category and positive 
-#            "squareroot-continuous"; # "logscale-continuous" 
+#            "squareroot-continuous" # "logscale-continuous" 
 #          } else if ( len > 5 & "0" %in% values & all ( values >= 0 ) ) {
 #            # more than 5 category with 0 and all positive numbers
-#            "mixed"; 
+#            "mixed" 
 #          } else {
 #            # everything else
-#            "continuous"; 
+#            "continuous" 
 #          }
 #        } else { 
-#          "unordered-categorical"; 
+#          "unordered-categorical" 
 #        }
 #      }
 #    }

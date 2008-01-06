@@ -3,7 +3,7 @@
 # ==============================================================================
 setMethod( "show", signature( object = "mi" ),
   function ( object ) {
-    print( object );
+    print( object )
   }
 ) 
 

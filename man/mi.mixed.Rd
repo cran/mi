@@ -19,7 +19,8 @@
     and the second model is fit to all the data for which the variable is observed and positive.
 }
 \usage{
-  mi.mixed(formula, data = NULL, start = NULL, n.iter = 100, draw.from.beta = FALSE, \dots)
+  mi.mixed(formula, data = NULL, start = NULL, n.iter = 100, 
+    draw.from.beta = FALSE, \dots)
 
   \S3method{coef}{mi.mixed}(object, \dots)
   \S4method{sigma.hat}{mi.mixed}(object, \dots)
@@ -28,7 +29,7 @@
   \S4method{imputed}{mi.mixed}(object, y)
   \S3method{plot}{mi.mixed}(x, y, main=deparse( substitute( y ) ), gray.scale = FALSE, \dots)
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
   \item{formula}{ an object of class '"formula"' (or one that can be coerced to that class): a symbolic description of the model to be fitted.  See bayesglm 'formula' for details.}
   \item{data}{ A data frame containing the incomplete data and the matrix of the complete predictors. }

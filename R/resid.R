@@ -3,7 +3,7 @@
 # ==============================================================================
 
 
-residuals.mi.method <- function ( object, y, ... ) {
+residuals.mi.method <- function ( object, y, ...) {
     return( y - fitted( object ) )
 }
 
@@ -31,17 +31,10 @@ residuals.mi.dichotomous <-   function (object, y, ...) {
 # extract residual values for mi.logcontinuous class object
 # ==============================================================================
 
-residuals.mi.logcontinuous <-   function (object, y, ...) {
+residuals.mi.logcontinuous <- function ( object, y, ...) {
     return( log( y ) - log( fitted ( object ) ) )
   }
 
-
-
-#setMethod( "resid", signature( object = "mi.logcontinuous" ),     
-#  function ( object, y ) {
-#    return( log( y ) - log( fitted ( object ) ) )
-#  }
-#)
 # ==============================================================================
 # extract residual values for mi.sqrtcontinuous class object
 # ==============================================================================

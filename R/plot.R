@@ -13,14 +13,14 @@ plot.mi <- function ( x, m = 1, vrb = NULL, vrb.name = "Variable Score",
     if ( m(x) < m )  { 
       stop( message = paste( "Index of imputation 'm' must be within the range of 1 to", m(x) ) ) 
     } else{
-      mids <- imp(x,m);
-      Y    <- as.data.frame( x@data[ , names( mids ) ] );
-      names( Y ) <- names( mids );
-      par( mfrow = mfrow );
+      mids <- imp(x,m)
+      Y    <- as.data.frame( x@data[ , names( mids ) ] )
+      names( Y ) <- names( mids )
+      par( mfrow = mfrow )
       for( i in 1:dim( Y )[2] ) {
-        par( ask = TRUE );
+        par( ask = TRUE )
         if( !is.null( mids[[i]] ) ) {
-          plot( x = mids[[i]], y = Y[ ,names( mids )[i]], main = names( Y )[ i ] );
+          plot( x = mids[[i]], y = Y[ ,names( mids )[i]], main = names( Y )[ i ] )
         }
       }
     }
@@ -160,12 +160,12 @@ plot.mi.sqrtcontinuous <- function ( x, y,
 plot.mi.polr <- function ( x, y, 
   main=deparse( substitute( y ) ), gray.scale = FALSE, ... ) {
   #par(mfrow=c(1,4))
-  y       <- factor2num( y )
-  fit     <- factor2num( fitted( x ))
-  res     <- factor2num( residuals( x, y ))
-  sigma   <- factor2num( sigma.hat( x ) )
-  vrb.obs <- factor2num( y )
-  vrb.imp <- factor2num( imputed( x, y ) )
+  y       <- .factor2num( y )
+  fit     <- .factor2num( fitted( x ))
+  res     <- .factor2num( residuals( x, y ))
+  sigma   <- .factor2num( sigma.hat( x ) )
+  vrb.obs <- .factor2num( y )
+  vrb.imp <- .factor2num( imputed( x, y ) )
   mi.hist(  x, vrb.obs, xlab = main, main = main, gray.scale = gray.scale ) 
   binnedplot( fit[  !is.na( y ) ], res[  !is.na( y ) ], nclass = sqrt( length( fit[ !is.na( y ) ] ) ), main = main )
   mtext( "Binned Residual", 3, cex = 0.7, adj = NA ) 

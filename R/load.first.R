@@ -4,5 +4,5 @@
   builddate <- packageDescription("mi", lib = mylib)$Date
   cat(paste("\nmi (Version ", ver, ", built: ", builddate, ")\n", sep = ""))
   if(!any(search()=="package:arm"))
-    require(mi)
+    require(arm)
 }

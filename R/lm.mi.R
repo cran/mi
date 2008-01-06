@@ -3,31 +3,31 @@
 #==============================================================================
 lm.mi <- function ( formula,  mi.object, ... ) 
 {
-    call   <- match.call( );
-    m      <- m( mi.object );
-    result <- vector( "list", m );
-    names( result ) <- as.character( paste( "Imputation", seq( m ), sep = ""));
+    call   <- match.call( )
+    m      <- m( mi.object )
+    result <- vector( "list", m )
+    names( result ) <- as.character( paste( "Imputation", seq( m ), sep = ""))
     for ( i in 1:m ) {
-        mi.data <- mi.matrix( mi.object, i );
-        result[[i]] <- lm( formula, data = data.frame( mi.data ), ... );
+        mi.data <- mi.matrix( mi.object, i )
+        result[[i]] <- lm( formula, data = data.frame( mi.data ), ... )
     }
-    coef   <- vector( "list", m );
-    se     <- vector( "list", m );
+    coef   <- vector( "list", m )
+    se     <- vector( "list", m )
     for( j in 1:m ) {
-      coef[[j]]<-lapply( result, summary )[[j]]$coef[,1];
-      se[[j]]  <-lapply( result, summary )[[j]]$coef[,2];
+      coef[[j]]<-lapply( result, summary )[[j]]$coef[,1]
+      se[[j]]  <-lapply( result, summary )[[j]]$coef[,2]
     }
-    W         <- colSums( do.call( rbind, se ) ^ 2 ) / m;
-    Bhat      <- colSums( do.call( rbind, coef ) ) / m;
-    Bhat_rep  <- t(matrix( rep( Bhat, m ), length(Bhat), m ));
-    B         <- colSums( do.call( rbind, coef ) - Bhat_rep ) ^ 2 / ( m - 1 );
-    pooled <- list( coefficient = NULL, se = NULL );
-    pooled$coefficient    <- Bhat;
-    pooled$se <- sqrt( W + ( 1 + 1 / m ) * B );  
+    W         <- colSums( do.call( rbind, se ) ^ 2 ) / m
+    Bhat      <- colSums( do.call( rbind, coef ) ) / m
+    Bhat_rep  <- t(matrix( rep( Bhat, m ), length(Bhat), m ))
+    B         <- colSums( do.call( rbind, coef ) - Bhat_rep ) ^ 2 / ( m - 1 )
+    pooled <- list( coefficient = NULL, se = NULL )
+    pooled$coefficient    <- Bhat
+    pooled$se <- sqrt( W + ( 1 + 1 / m ) * B )  
     mi.lm.object <- list( call = call, lm.mi.pooled = pooled, 
-                          lm.mi.fit = result );
-    class( mi.lm.object ) <- c( "mi.lm", "list" );
-    return( mi.lm.object );
+                          lm.mi.fit = result )
+    class( mi.lm.object ) <- c( "mi.lm", "list" )
+    return( mi.lm.object )
 }
 
 

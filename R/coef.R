@@ -13,11 +13,19 @@ coef.mi.method <- function(object, ...){
 #  }
 #) 
 
+#coef.mi.logcontinuous <- function(object, ...){
+#  return( list( object$model$model.1$coefficient, 
+#                object$model$model.2$coefficient ) )
+#}
+#
+#
+#
 
 
 # ==============================================================================
 # extract coefficient values for mi.mixed class object
 # ==============================================================================
+
 
 
 coef.mi.mixed <- function(object, ...){

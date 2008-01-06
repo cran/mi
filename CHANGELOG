@@ -1,3 +1,14 @@
+2008-12-30 Yu-Sung Su     <ys463@columbia.edu>  
+   * add K parameter to mi procedures.  If K>0, will cool the mi with probabilty q such
+    that q = K/iteration.  This will create noise to the mi process by drawing
+    from marginals.
+
+2008-12-28 Yu-Sung Su     <ys463@columbia.edu>  
+   * add augment.data option to mi procedures.  If TRUE, will augment the data 
+    with 10% of the observaed data.  
+   * return data.tmp into the global if mi abrupted with errors. 
+
+
 2008-10-7 Yu-Sung Su     <ys463@columbia.edu>  
    * DESCRIPTION (Version, Date): 0.02-02
    * create display methods for glm.mi & lm.mi

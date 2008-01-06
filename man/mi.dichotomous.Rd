@@ -16,7 +16,8 @@
     Cauchy prior distribution for the coefficients.
 }
 \usage{
-mi.dichotomous(formula, data = NULL, start = NULL, n.iter = 100, draw.from.beta = FALSE, ...)
+mi.dichotomous(formula, data = NULL, start = NULL, n.iter = 100, 
+  draw.from.beta = FALSE, \dots)
 
 \S3method{residuals}{mi.dichotomous}(object, y, \dots)
 \S3method{plot}{mi.dichotomous}( x, y, main=deparse( substitute( y ) ), gray.scale = FALSE, \dots)
@@ -53,6 +54,7 @@ mi.dichotomous(formula, data = NULL, start = NULL, n.iter = 100, draw.from.beta 
 }
 \author{
   Masanao Yajima \email{yajima@stat.columbia.edu},
+  Yu-Sung Su \email{ys463@stat.columbia.edu},
   M.Grazia Pittau \email{grazia@stat.columbia.edu},
   Andrew Gelman \email{gelman@stat.columbia.edu}
 }

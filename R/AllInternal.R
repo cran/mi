@@ -1,8 +1,25 @@
 
-vrb.typ <- NULL
+vrb.typ <- NULL # to pass R CMD check
+data.tmp <<- NULL # to pass R CMD check
 
 
-factor2num <- function( a ) {
+# ========================================================================
+# Random draw from the obs. data
+# ========================================================================
+
+.randdraw <- function(data, n = 1){
+  foo <- function(x) sample(na.exclude(x), size = n, replace = FALSE)
+  added.rows <- apply(data, 2, FUN = foo)
+  return(added.rows)
+}
+
+
+# ========================================================================
+# Convert factor to numeric value
+# ========================================================================
+
+
+.factor2num <- function( a ) {
   if(is.factor( a ) ) {
     as.double( levels( a ) )[ as.double( a ) ]
   } else {
@@ -10,8 +27,11 @@ factor2num <- function( a ) {
   }
 }
 
+# ========================================================================
+# Convert character value
+# ========================================================================
 
-factor2char <- function( a ) {
+.factor2char <- function( a ) {
   levels( a )[ as.numeric( a ) ]
 }
 
@@ -22,23 +42,26 @@ factor2char <- function( a ) {
 # ========================================================================
 
 imp.order <- function(info){
-  return(sapply(info,function(inf){inf$imp.order}))
+  foo <- function(x) x$imp.order
+  return(sapply(info, FUN=foo))
 }
 
 # ========================================================================
 # Extracts the include or not vector (logical)
 # ========================================================================
 
-include<-function(info){
-  return(sapply(info,function(inf){inf$include}))
+include <- function(info){
+  foo <- function(x) x$include
+  return(sapply(info, FUN=foo))
 }
 
 # ========================================================================
 # Extracts the number of missing vector(integer)
 # ========================================================================
 
-nmis<-function(info){
-  return(sapply(info,function(inf){inf$nmis}))
+nmis <- function(info){
+  foo <- function(x) x$nmis
+  return(sapply(info, FUN=foo))
 }
 
 # ========================================================================
@@ -46,5 +69,6 @@ nmis<-function(info){
 # ========================================================================
 
 all.missing <-function(info){
-  return(sapply(info,function(inf){inf$all.missing}))
+  foo <- function(x) x$all.missing
+  return(sapply(info, FUN=foo))
 }

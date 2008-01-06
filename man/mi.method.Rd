@@ -39,16 +39,16 @@
 
 }
 \details{
-  mi.method is a virtual class for all the \code{mi.} classes.  
+  mi.method is a virtual class for all the \code{mi} classes.  
   Basically all the necessary functions are defined under \code{mi.method} class, thus
-  most of the \code{mi.} classes that do not have specific method defined for them inherits their methods from this class.
+  most of the \code{mi} classes that do not have specific method defined for them inherits their methods from this class.
   For some special class as \code{mi.mixed} these methods are extended to tailor to the needs.
 }
-\value{
+%\value{
 %    \item{model   }{A summary of the fitted model.}
 %    \item{expected}{The expected values estimated by the model.}
 %    \item{random  }{Vector of length n.mis of random predicted values predicted by using the normal distribution.} 
-}
+%}
 \references{
     Andrew Gelman and Jennifer Hill, 
     Data Analysis Using Regression and Multilevel/Hierarchical Models, 

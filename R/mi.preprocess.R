@@ -155,7 +155,7 @@ mi.recode <- function(data, info, undo=FALSE){
   for (i in 1:dim(data)[2]){
     if(is.character(data[,i])){
       if(undo){
-        rec<-paste("'",level(info)[[i]],"' =",names(level(info)[[i]]),sep="")
+        rec<- paste("'",level(info)[[i]],"' =",names(level(info)[[i]]),sep="")
       }
       else{
         rec<-paste("'",names(level(info)[[i]]),"' =",level(info)[[i]],sep="")

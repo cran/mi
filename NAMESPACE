@@ -112,6 +112,7 @@ export(
 )
 
 S3method(coef, mi.method)
+#S3method(coef, mi.logcontinuous)
 S3method(coef, mi.mixed)
 S3method(fitted, mi.method)
 S3method(fitted, mi.mixed)

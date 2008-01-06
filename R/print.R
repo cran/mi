@@ -3,25 +3,25 @@
 # ==============================================================================
 setMethod("print", signature( x = "mi" ),
   function ( x, ... ) {
-    print.mi( x, ...);
+    print.mi( x, ...)
   }
 )
 
 print.mi <- function ( x, ... ) {
     n <- nrow(x@data)
-    cat ( "\nMultiply imputed data set" );
-    cat ( "\n\nCall:\n " );
-    print( call.mi(x) );
-    cat ( "\nNumber of multiple imputations: ", m(x),"\n");
+    cat ( "\nMultiply imputed data set" )
+    cat ( "\n\nCall:\n " )
+    print( call.mi(x) )
+    cat ( "\nNumber of multiple imputations: ", m(x),"\n")
     tab <- mi.info.table( info.mi(x) )[,c("names","type","number.mis")]
     tab <- data.frame(tab, proportion=tab[,"number.mis"]/n )
-    cat ( "\nNumber and proportion of missing data per column:\n" );
-    print ( tab );
-    cat ( "\nTotal Cases:", n );
-    r    <- 1 * is.na ( x@data );
-    cat ( "\nMissing at least one item:", sum ( colSums(r)!= 0 ) );
-    cat ( "\nComplete cases:", sum ( rowSums(r) == 0 ), "\n" );
-    invisible( tab );
+    cat ( "\nNumber and proportion of missing data per column:\n" )
+    print ( tab )
+    cat ( "\nTotal Cases:", n )
+    r    <- 1 * is.na ( x@data )
+    cat ( "\nMissing at least one item:", sum ( colSums(r)!= 0 ) )
+    cat ( "\nComplete cases:", sum ( rowSums(r) == 0 ), "\n" )
+    invisible( tab )
   }
   
   
@@ -49,7 +49,7 @@ print.mi.lm <- function(x, ...){
 # ========================================================================
 setMethod("print", signature( x = "mi.info" ),
   function ( x, ... ) {
-    print.mi.info( x, ...);
+    print.mi.info( x, ...)
   }
 )
 
@@ -74,7 +74,7 @@ mi.info.table <- function ( info ) {
 # ==============================================================================
 setMethod("print", signature( x = "mi.method" ),
   function ( x, ... ) {
-    print.mi.method(x,...);
+    print.mi.method(x,...)
   }
 )
 
@@ -92,7 +92,7 @@ print.mi.method <- function ( x, ... ) {
 # ==============================================================================
 setMethod("print", signature( x = "mi.mixed" ),
   function ( x, ... ) {
-    print.mi.mixed(x,...);
+    print.mi.mixed(x,...)
   }
 )
 

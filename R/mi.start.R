@@ -7,6 +7,17 @@ setMethod( "mi.start", signature( object = "mi.method" ),
   }
 ) 
 
+
+#setMethod("mi.start", signature(object = "mi.logcontinuous"),  
+#  function ( object ) {   
+#    result <-  list(object$model$model.1$coefficient,
+#                      object$model$model.2$coefficient)
+#    return ( result )
+#  }
+#) 
+
+
+
 # ==============================================================================
 # extracting starting values for mi.mixed class object
 # ==============================================================================

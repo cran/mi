@@ -40,13 +40,9 @@
 mi( object, info, type = NULL, n.imp = 3, n.iter = 30, 
     max.minutes = 20, rand.imp.method = "bootstrap", 
     preprocess = FALSE, continue.on.convergence = FALSE,
-    seed = NA, check.coef.convergence = FALSE) 
-
-%\S4method{mi}{mi}(object, \dots)
-%\S3method{plot}{mi}(x, \dots )
-
+    seed = NA, check.coef.convergence = FALSE, 
+    augment.data = FALSE, K = 0) 
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{object}{A data frame containing the incomplete data. Missing data are coded as NA's or mi object.}
   \item{info}{ mi.info object. }
@@ -59,8 +55,12 @@ mi( object, info, type = NULL, n.imp = 3, n.iter = 30,
   \item{preprocess}{ Preprocess the data according to the info matrix. }
   \item{continue.on.convergence}{ If set to TRUE the mi will run until maximum iteration is reached or maximum minutes pass. }
   \item{check.coef.convergence}{default = FALSE}
-%  \item{x}{An object of a class '"mi"'.}
-%  \item{y}{currently not used.}
+  \item{augment.data}{Augment the data with 10\% of the random draws from the observed data, 
+                default= FALSE.}
+  \item{K}{The cooling parameter, default is 0. If K > 0, the imputation will randomly switch between
+        randomly drawing from the observation or drawing from the modeled based values.  And 
+        with each iteration, the probability of cooling (q) decreases by number of iterations, such that
+        q = K/S.}
   \item{\dots}{options for plot.mi.}
   
 }
@@ -75,6 +75,7 @@ mi( object, info, type = NULL, n.imp = 3, n.iter = 30,
   \item{imp}{A list of length(m) of imputations.}
   \item{converged}{Binary variable to indicate if mi has converged.}
   \item{bugs}{BUGS array of the mean and sd of each iteration.}
+  \item{data.tmp}{If mi quits with errors, \code{data.tmp} return to the global environment}
   
   The \code{imp} method creates a list of length(m) of imputations, whose names are: 
   \code{Imputation1}, \code{Imputation2}, \code{Imputation3}.
@@ -122,6 +123,7 @@ and looping through until approximate convergence.
 
 \author{
   Masanao Yajima \email{yajima@stat.columbia.edu},
+  Yu-Sung Su \email{yajima@stat.columbia.edu},
   M.Grazia Pittau \email{grazia@stat.columbia.edu},
   Andrew Gelman \email{gelman@stat.columbia.edu}
 }

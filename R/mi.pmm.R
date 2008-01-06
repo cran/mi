@@ -51,7 +51,7 @@ mi.pmm<-function(formula, data = NULL, start = NULL, n.iter = 100, ... )
 #            expected = yhat,
 #            random   = apply( as.array( yhat[mis] ), 1, 
 #                              mi.pmm.match, yhat=yhat[!mis], Y=Y[!mis] ),
-#            residual = bglm.imp$residuals );
+#            residual = bglm.imp$residuals )
   
   return( result )
 
