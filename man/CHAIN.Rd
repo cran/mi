@@ -26,7 +26,7 @@
     }
     \item{\code{c28.W1}}{
       family annual income. Values range from under
-      $5,000$ to $70,000$ or over at round 6th.
+      \$5,000 to \$70,000 or over at round 6th.
     }
     \item{\code{pcs.W1}}{
       a continuous scale of physical health with a theoretical range between 0 and 100 
@@ -61,9 +61,9 @@
   http://cchps.columbia.edu/research.cfm
 }
 \references{
-  Messeri P, Lee G, Abramson DA, Aidala A, Chiasson MA, Jones JD. (2003)
-  Antiretroviral therapy and declining AIDS mortality in New York City.
-  Medical Care 41:512-521.
+  Messeri P, Lee G, Abramson DA, Aidala A, Chiasson MA, Jones JD. (2003).
+  \dQuote{Antiretroviral therapy and declining AIDS mortality in New York City}.
+  \emph{Medical Care} 41:512--521.
 }
 \seealso{
   \code{\link{mi}}

@@ -6,7 +6,7 @@
 % Function
 \alias{mi.fixed}
 \alias{mi.copy}
-\alias{plot.mi.copy}
+%\alias{plot.mi.copy}
 \title{
     Elementary function: imputation of constant variable.
 }
@@ -16,17 +16,17 @@
 
 \usage{
  mi.fixed( formula, data = NULL, ... )
- \S3method{plot}{mi.copy}( x, y, main=deparse( substitute( y ) ), gray.scale = FALSE, \dots)
+% \S3method{plot}{mi.copy}( x, y, main=deparse( substitute( y ) ), gray.scale = FALSE, \dots)
 }
 
 \arguments{
   \item{formula}{an object of class '"formula"' (or one that can be coerced to that class): a symbolic description of the model to be fitted.  See bayesglm 'formula' for details.}
   \item{data}{ A data frame containing the incomplete data and the matrix of the complete predictors. }
   \item{\dots}{ Currently not used. }
-  \item{x}{ An object of class '"mi.copy"'.}
-  \item{y}{ Observed values.}
-  \item{main}{ main title of the plot. }
-  \item{gray.scale}{ When set to TRUE, makes the plot into gray scale with predefined color and line type. }
+%  \item{x}{ An object of class '"mi.copy"'.}
+%  \item{y}{ Observed values.}
+%  \item{main}{ main title of the plot. }
+%  \item{gray.scale}{ When set to TRUE, makes the plot into gray scale with predefined color and line type. }
 
 }
 
@@ -52,4 +52,7 @@
     \code{\link{mi.method}},
     \code{ \link{mi}}
 }
-\keyword{ models }
+\keyword{models}
+\keyword{aplot}
+\keyword{dplot}
+\keyword{hplot}

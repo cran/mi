@@ -1,33 +1,36 @@
-# These are imported by lme4 already
-#importFrom("stats",
-#      coef, 
-#      fitted
-#      resid,
-#      residuals
-#      coefficients
-#)
+importFrom("lme4",
+      coef,
+      fitted,
+      resid,
+      residuals,
+      plot
+)
 
-#importFrom("graphics",  
-#      plot
-#)
+
+importFrom("stats",
+      update,
+      coefficients
+)
+
+
 
 importFrom("arm",
       display,
+      se.coef,
       sigma.hat
 )
 
 exportClasses(
   mi,
+  mi.copy,
   mi.method,
   mi.fixed,
   mi.dichotomous,
   mi.polr,
   mi.categorical,
   mi.continuous,
+  mi.count,
   mi.info,
-  mi.logcontinuous,
-  mi.sqrtcontinuous,
-  mi.mixed,
   mi.pmm
 )
 
@@ -37,22 +40,24 @@ exportMethods(
   bugs.mi,
   info.mi,
   is.mi,
-#  coef,
+  coef,
+  coefficients,
   converged,
   display,
-#  fitted,
+  fitted,
   imputed,
   imp,
   m,
+  mi,
   mi.hist,
   mi.completed,
-  mi.matrix,
   mi.data.frame,
-  mi.start,
-#  resid,
+  plot,
+  resid,
+  residuals,
+  se.coef,
   sigma.hat,
   typecast,
-#  plot,
   print,
   show
 )
@@ -72,18 +77,19 @@ export(
   is.mi.info,
   lm.mi,
   m,
+  mi,
   marginal.scatterplot,
   mi,
   mi.categorical,
   mi.completed,
   mi.continuous, 
+  mi.count,
   mi.data.frame,
   mi.dichotomous,
   mi.fixed,
   mi.hist,
   mi.info,
   mi.info.fix,
-  mi.info.update,
   mi.info.update.correlated,
   mi.info.update.determ.pred,
   mi.info.update.imp.formula,
@@ -96,47 +102,25 @@ export(
   mi.info.update.transform,
   mi.info.update.type,
   mi.interactive,
-  mi.logcontinuous, 
-  mi.matrix,
-  mi.mixed,
+  mi.preprocess,
+  mi.postprocess,
   mi.polr,
   mi.scatterplot,
-  mi.sqrtcontinuous,
-  mi.start,
   mi.types,
   missing.pattern.plot,
   mp.plot,
+  prior.control,
   random.imp,
   typecast,
   type.models
 )
 
-S3method(coef, mi.method)
-#S3method(coef, mi.logcontinuous)
-S3method(coef, mi.mixed)
-S3method(fitted, mi.method)
-S3method(fitted, mi.mixed)
-S3method(residuals, mi.method)
-S3method(residuals, mi.mixed)
-S3method(residuals, mi.sqrtcontinuous)
-S3method(residuals, mi.dichotomous)
-S3method(residuals, mi.logcontinuous)
-S3method(residuals, mi.categorical)
-S3method(plot, mi)
-S3method(plot, mi.method)
-S3method(plot, mi.mixed)
-S3method(plot, mi.sqrtcontinuous)
-S3method(plot, mi.polr)
-S3method(plot, mi.categorical)
-S3method(plot, mi.copy)
-S3method(plot, mi.dichotomous)
-S3method(plot, mi.logcontinuous)
+S3method(update, mi.info)
 S3method(print, mi)
 S3method(print, mi.glm)
 S3method(print, mi.lm)
 S3method(print, mi.info)
 S3method(print, mi.method)
-S3method(print, mi.mixed)
 S3method("[<-", mi.info)
 S3method("$<-", mi.info)
 S3method("[", mi.info)

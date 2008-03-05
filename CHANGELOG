@@ -1,3 +1,56 @@
+2008-2-23 Yu-Sung Su     <ys463@columbia.edu>  
+   * R/coef: add coef for mi.lm and mi.glm
+   * R/se.coef: add se.coef for mi.lm and mi.glm
+
+
+2008-2-4 Yu-Sung Su     <ys463@columbia.edu>  
+   * man/prepocess: new doc
+   * R/mi.continuous: when start is null, no longer set n.iter=1
+   * R/mi.dichotomous: when start is null, no longer set n.iter=1
+   * R/mi.preprocess: new mi.preprocess and mi.postprocess
+   * R/typecast: new typecast, new type (postitive continuous)
+   * R/imputed: add mi.categorical for imputed
+
+
+
+2008-1-31 Yu-Sung Su     <ys463@columbia.edu>  
+   * R/glm.mi: auto.postprocess
+   * R/lm.mi: auto.postprocess
+
+
+2008-1-31 Yu-Sung Su     <ys463@columbia.edu>  
+   * DESCRIPTION (Version, Date): 0.03-0.1
+
+
+2008-1-26 Yu-Sung Su     <ys463@columbia.edu>  
+   * clean up redundant code
+   * no more squareroot-continuous, logscale-continuous, mi.mixed, mi.start, mi.matrix
+   * R/AllInternal: add internal function from mi.info
+   * R/mi.info: 
+      1. remove some internal functions to AllInternal
+      2. correct imp.formula and move to AllInternal
+  
+
+2008-1-21 Yu-Sung Su     <ys463@columbia.edu>  
+   * man/mi: description about add.priors.
+   * R/mi: merge augment.data and K into add.priors.
+
+2008-1-17 Yu-Sung Su     <ys463@columbia.edu>  
+   * man/mi.compeleted: add an example of mi.data.list
+   * R/AllInternal: add .preprocess.data, .postprocess.data, .create.missing
+   * R/AllGeneric: add mi.data.list
+   * R/mi.completed: add mi.data.list.mi
+
+2008-1-8 Yu-Sung Su     <ys463@columbia.edu>  
+   * R/mi.info.update: make mi.info.update into S3 method.
+
+2008-1-7 Yu-Sung Su     <ys463@columbia.edu>  
+   * DESCRIPTION (Version, Date): depend abind package
+   * array.append and array.append3 are obsolete.  Use abind instead.
+
+2008-1-5 Yu-Sung Su     <ys463@columbia.edu>  
+   * DESCRIPTION (Version, Date): 0.02-03
+
 2008-12-30 Yu-Sung Su     <ys463@columbia.edu>  
    * add K parameter to mi procedures.  If K>0, will cool the mi with probabilty q such
     that q = K/iteration.  This will create noise to the mi process by drawing

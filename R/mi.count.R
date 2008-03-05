@@ -1,8 +1,8 @@
 # ==============================================================================
-# imputation function for continuous variable
+# imputation function for count variable
 # ==============================================================================
 
-mi.continuous <- function ( formula, data = NULL, start = NULL, 
+mi.count <- function ( formula, data = NULL, start = NULL, 
                             n.iter = 100, draw.from.beta = FALSE, ...  ) {
   call <- match.call()
   mf   <- match.call(expand.dots = FALSE)
@@ -38,23 +38,22 @@ mi.continuous <- function ( formula, data = NULL, start = NULL,
     #n.iter <- 1
     start[is.na(start)] <- 0
   }
-  bglm.imp    <- bayesglm( formula = formula, data = data, family = gaussian, 
+  bglm.imp    <- bayesglm( formula = formula, data = data, family = quasipoisson, 
                             n.iter = n.iter, start = start, 
                             drop.unused.levels = FALSE, Warning=FALSE,... )
   determ.pred <- predict( bglm.imp, newdata = data, type = "response" )
   if(draw.from.beta){
     sim.bglm.imp    <- sim(bglm.imp,1)
-    random.pred     <- rnorm(n.mis, 
-                            tcrossprod(cbind(X[mis,1,drop=FALSE]*0+1,X[mis,,drop=FALSE]),sim.bglm.imp$beta), 
-                            sim.bglm.imp$sigma)
+    random.pred     <- rpois(n.mis, 
+                            tcrossprod(cbind(X[mis,1,drop=FALSE]*0+1,X[mis,,drop=FALSE]),sim.bglm.imp$beta))
   }
   else{
-    random.pred <- rnorm(n.mis, determ.pred[mis], sigma.hat(bglm.imp))
+    random.pred <- rpois(n.mis, determ.pred[mis])
   }
   names(random.pred) <- names(determ.pred[mis])
 
   # return
-  result <- new(c("mi.continuous", "mi.method"),
+  result <- new(c("mi.count", "mi.method"),
               model = vector("list", 0),
               expected = numeric(0), 
               random = numeric(0))
@@ -63,8 +62,8 @@ mi.continuous <- function ( formula, data = NULL, start = NULL,
   result@model$call$start  <- round(as.double(start), 2)
   result@model$call$n.iter <- n.iter
   result@model$coefficients <- coef(bglm.imp)
-  result@model$sigma       <- sigma.hat(bglm.imp)
-  result@model$dispersion  <- bglm.imp$dispersion
+  result@model$sigma       <- 1
+  result@model$overdispersed.parameter  <- bglm.imp$dispersion
   result@expected <- determ.pred
   result@random   <- random.pred
   return(result)

@@ -1,16 +1,18 @@
 #==============================================================================
 # Generalized Linear Modeling for multiply imputed dataset
 #==============================================================================
-glm.mi <- function ( formula, mi.object, family = gaussian, ... ) 
+glm.mi <- function (formula, mi.object, family = gaussian, ... ) 
 {
     call   <- match.call( )
-    m      <- m( mi.object ) 
+    m      <- m(mi.object)
     result <- vector( "list", m )
     names( result ) <- as.character(paste( "Imputation", seq( m ), sep = "" ))
+    mi.data <- mi.completed(mi.object)
+    mi.data <- mi.postprocess(mi.data)
+  
     for ( i in 1:m ) {
-        mi.data     <- mi.completed( mi.object, i )
-        result[[i]] <- glm( formula, family = family, 
-                              data = data.frame( mi.data ), ... )
+      result[[i]] <- glm( formula, family = family, 
+                          data = mi.data[[i]], ... )
     }
     coef   <- vector( "list", m )
     se     <- vector( "list", m )
@@ -23,12 +25,13 @@ glm.mi <- function ( formula, mi.object, family = gaussian, ... )
     Bhat_rep  <- t( matrix( rep( Bhat, m ), length( Bhat ), m ) )
     B         <- colSums( do.call( rbind, coef ) - Bhat_rep ) ^ 2 / ( m - 1 )
     
-    pooled <- list( coefficient = NULL, se = NULL )
-    pooled$coefficient <- Bhat
+    pooled <- list( coefficients = NULL, se = NULL )
+    pooled$coefficients <- Bhat
     pooled$se <- sqrt( W + ( 1 + 1 / m ) * B )
-
-    mi.glm.object <- list( call = call, glm.mi.pooled = pooled,
-                                  glm.mi.fit = result )
-    class( mi.glm.object ) <- c( "mi.glm", "list" )
+    
+    mi.glm.object <- new("mi.glm",
+                          call = call, 
+                          glm.mi.pooled = pooled,
+                          glm.mi.fit = result )
     return( mi.glm.object )
 }

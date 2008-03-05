@@ -1,4 +1,49 @@
 
+
+# ========================================================================
+# create missingness
+# ========================================================================
+
+.create.missing <- function(data, pct.mis=10){
+  n <- nrow(data)
+  J <- ncol(data)
+  if(length(pct.mis)==1){
+    n.mis <- rep((n*(pct.mis/100)), J)
+  }
+  else{
+    if(length(pct.mis) < J) stop("The length of missing does not equal to the column of the data")
+    n.mis <- n*(pct.mis/100)
+  }
+  for(i in 1:ncol(data)){
+    if(n.mis[i]==0){
+      data[,i] <- data[,i]
+    }
+    else{
+      data[sample(1:n, n.mis[i], replace=FALSE),i] <- NA
+    }
+  }
+  return(as.data.frame(data))
+}
+  
+
+
+
+.check.log.var <- function(x){
+  check1 <- min(x, na.rm=TRUE) < 0
+  if(check1) stop("log cannot take on negative values")
+  check2 <- min(x, na.rm=TRUE) == 0 
+  if(check2){
+    k <- round((min(x[x>0], na.rm=TRUE) + 0)/2,2)
+    return(k)
+  }
+  else return(0)
+}
+
+
+
+
+
+
 vrb.typ <- NULL # to pass R CMD check
 data.tmp <<- NULL # to pass R CMD check
 
@@ -8,8 +53,14 @@ data.tmp <<- NULL # to pass R CMD check
 # ========================================================================
 
 .randdraw <- function(data, n = 1){
-  foo <- function(x) sample(na.exclude(x), size = n, replace = FALSE)
-  added.rows <- apply(data, 2, FUN = foo)
+  added.rows <- rep(0, n)
+  varnames <- names(data)
+  for(i in 1:ncol(data)){
+    tmp <- sample(na.exclude(data[,i]), n, replace=TRUE)
+    added.rows <- cbind.data.frame(added.rows, tmp)
+  }
+  added.rows <- added.rows[,-1]
+  names(added.rows) <- varnames
   return(added.rows)
 }
 
@@ -22,7 +73,8 @@ data.tmp <<- NULL # to pass R CMD check
 .factor2num <- function( a ) {
   if(is.factor( a ) ) {
     as.double( levels( a ) )[ as.double( a ) ]
-  } else {
+  } 
+  else {
     a
   }
 }
@@ -36,39 +88,103 @@ data.tmp <<- NULL # to pass R CMD check
 }
 
 
+# ========================================================================
+# Extracts the type (character) as vector
+# ========================================================================
+
+type <-function(info){
+  foo <- function(x){
+    x$type
+  }
+  type <- sapply(info, FUN = foo)
+  return(type)
+}
+
+# ========================================================================
+# Extracts the level (vector) as list
+# ========================================================================
+
+level <- function(info){
+  foo <- function(x){
+    x$level
+  }
+  level <- sapply(info, FUN = foo)
+  return(level)
+}
+
+# ========================================================================
+# Extract imputation formula (character) as list
+# ========================================================================
+
+.imp.formula <-function(info){
+  foo <- function(x){
+    x$imp.formula
+  }
+  form <- sapply(info, FUN = foo)
+  return(form)
+}
 
 # ========================================================================
 # Extracts the imputation order vector(integer)
 # ========================================================================
 
-imp.order <- function(info){
-  foo <- function(x) x$imp.order
-  return(sapply(info, FUN=foo))
+.imp.order <- function(info){
+  foo <- function(x){
+    x$imp.order
+  }
+  imp.order <- sapply(info, FUN = foo)
+  return(imp.order)
 }
 
 # ========================================================================
 # Extracts the include or not vector (logical)
 # ========================================================================
 
-include <- function(info){
-  foo <- function(x) x$include
-  return(sapply(info, FUN=foo))
+.include <- function(info){
+  foo <- function(x){
+    x$include
+  }
+  include <- sapply(info, FUN = foo)
+  return(include)
 }
 
 # ========================================================================
 # Extracts the number of missing vector(integer)
 # ========================================================================
 
-nmis <- function(info){
-  foo <- function(x) x$nmis
-  return(sapply(info, FUN=foo))
+.nmis <- function(info){
+  foo <- function(x){
+    x$nmis
+  }
+  nmis <- sapply(info, FUN=foo)
+  return(nmis)
 }
 
 # ========================================================================
 # Extracts the all missing or not (logical) as vector
 # ========================================================================
 
-all.missing <-function(info){
-  foo <- function(x) x$all.missing
-  return(sapply(info, FUN=foo))
+.all.missing <- function(info){
+  foo <- function(x){
+    x$all.missing
+  }
+  all.missing <- sapply(info, FUN=foo)
+  return(all.missing)
+}
+
+# ========================================================================
+# dichotomize a variable
+# ========================================================================
+
+
+.dichot <- function(Y){
+    y.levels <- if (is.double(Y)){
+                  sort(unique(Y)) 
+                }
+                else{
+                  levels(factor(Y))
+                }
+    Y <- replace(Y, Y==y.levels[1], 0)
+    Y <- replace(Y, Y==y.levels[2], 1)
+    return(Y)
 }

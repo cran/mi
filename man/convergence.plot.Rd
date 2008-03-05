@@ -32,7 +32,7 @@ conv.plot ( mi.object, ... )
 }
 \examples{
   data(CHAIN)
-  imp.CHAIN <- mi(CHAIN,n.iter=6)
+  imp.CHAIN <- mi(CHAIN, n.iter=6, post.run=FALSE)
   convergence.plot(imp.CHAIN,mfrow=c(2,4))
 }
 

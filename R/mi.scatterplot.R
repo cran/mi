@@ -68,10 +68,10 @@ mi.scatterplot <- function ( Yobs, Yimp, X = NULL, xlab = NULL, ylab = NULL,
 
 marginal.scatterplot<-function ( data, object, use.imputed.X = FALSE, ...  ){
   info  <- info.mi( object )
-  nmis  <- nmis( info )
+  nmis  <- .nmis(info)
   dName <- dimnames( data )[[2]]
-  all.missing <- all.missing( info )
-  name.list   <- names( nmis )[nmis>0 & !all.missing]
+  all.missing <- .all.missing(info)
+  name.list   <- names(nmis)[nmis >0 & !all.missing]
   J       <-  length( name.list )  
   impData <- mi.data.frame( object )
   par( ask = TRUE )

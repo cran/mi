@@ -15,12 +15,13 @@ mi.mean <- function ( Y, check = TRUE, ...  ) {
     names( determ.pred ) <- 1:length( determ.pred )
     random.pred <- determ.pred[is.na(Y)]
     # return the result
-    result <- list( model = list( call = NULL, coefficient = NULL, sigma = NULL ), expected = NULL, random = NULL )
-    result$model$call    <- paste(nameY,"=", mean.imp )
-    result$expected <- determ.pred
-    result$random   <- random.pred
-    #result$residual <- residual.val
-    class ( result ) <- c( "mi.mean", "mi.method","list" )
+    result <- new(c("mi.mean", "mi.method"),
+      model = vector("list", 0),
+      expected = numeric(0),
+      random = numeric(0))
+    result@model$call    <- paste(nameY,"=", mean.imp )
+    result@expected <- determ.pred
+    result@random   <- random.pred
     return( result )
     on.exit( rm( mean.imp ) )
 }

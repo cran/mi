@@ -1,68 +1,85 @@
 # ==============================================================================
 # Creates information matrix
 # ==============================================================================
-mi.info <- function( data, threshold  = 0.99999 )
+mi.info <- function( data, threshhold  = 0.99999 )
 {
-  if( is.matrix( data ) ) { 
-    data <- data.frame( data ) 
+  if(is.matrix(data)) { 
+    data <- data.frame(data) 
   }
-  info <- vector("list", dim( data )[2] )
-  names( info ) <- dimnames( data )[[2]]
-  data.original.name <- deparse( substitute( data ) )
-  correlated <- mi.check.correlation( data, threshold )
-  unlist( lapply( correlated, function( lst ) { lst[-1]} ) )
+  info <- vector("list", dim(data)[2])
+  names(info) <- dimnames(data)[[2]]
+  data.original.name <- deparse(substitute(data))
+  correlated <- mi.check.correlation(data, threshhold)
+#  foo <- function(lst){
+#    lst[-1]
+#  }
+#  unlist(lapply(correlated, FUN=foo))
   ord <- 1
   for( i in 1:dim( data )[2] ) {
-    info[[i]] <- vector( "list", 15 )
-    names( info[[i]] ) <- c( "name","imp.order", "nmis", "type", "var.class",
-                            "level", "include", "is.ID", "all.missing",
+    info[[i]] <- vector( "list", 12 )
+    names( info[[i]] ) <- c( "name","imp.order", "nmis", "type", #"var.class",
+                            #"level", 
+                            "include", "is.ID", "all.missing",
                             "correlated", "determ.pred", "imp.formula", 
-                            "transform","params", "other" )
+                            #"transform",
+                            "params", "other" )
     info[[i]]$name <- dimnames(data)[[2]][i]
     # nmis
-    info[[i]]$nmis <- sum( is.na( data[ ,i] ) )
+    info[[i]]$nmis <- sum(is.na(data[,i]))
+    
     # type
-    info[[i]]$type <- typecast( data[,i] )
-    info[[i]]$var.class <- class( data[,i] )
-    # level
-    if( info[[i]]$var.class == "character" ) {
-      lev <- unique( as.character( data[,i] ) )[!is.na( unique( as.character( data[,i] ) ) )]
-      lev <- lev[order( lev )]
-      if( length( lev ) == 2 ) {
-        info[[i]]$level <- c( 0, 1 )
-      } else{
-        info[[i]]$level <- 1:length( lev )
-      }
-      names( info[[i]]$level ) <- lev
-    } else if( info[[i]]$var.class == "factor" ) {
-      lev <-levels( data[ ,i] )[ !is.na( levels( data[ ,i] ) )]
-      lev <- lev[!( lev %in% c( "NA", "RF", "DK" ) )]
-      #ulev<-unique(as.character(data[,i]))[!is.na(unique(as.character(data[,i])))]     
-      if( length( lev ) == 2 ) {
-        info[[i]]$level <- c( 0, 1 )
-      } else {
-        info[[i]]$level <- 1:length( lev )
-      }
-      names( info[[i]]$level ) <- lev
-    }
+    info[[i]]$type <- typecast(data[,i])
+ 
+#    info[[i]]$var.class <- class(data[,i])
+#    # level
+#    if( info[[i]]$var.class[1] == "character" ) {
+#      lev <- unique(as.character(data[,i]))[!is.na(unique(as.character(data[,i])))]
+#      lev <- lev[order(lev)]
+#      if(length(lev) == 2 ) {
+#        info[[i]]$level <- c(0, 1)
+#      } 
+#      else{
+#        info[[i]]$level <- 1:length(lev)
+#      }
+#      names(info[[i]]$level) <- lev
+#      } 
+#    else if( info[[i]]$var.class[1] == "factor" ) {
+#      lev <-levels( data[ ,i] )[ !is.na( levels( data[ ,i] ) )]
+#      lev <- lev[!( lev %in% c( "NA", "RF", "DK" ) )]
+#      if( length( lev ) == 2 ) {
+#          info[[i]]$level <- c( 0, 1 )
+#      } 
+#      else {
+#        info[[i]]$level <- 1:length( lev )
+#      }
+#      names( info[[i]]$level ) <- lev
+#    }
 
     info[[i]]$is.ID <- if( length(unique( data[ !is.na(data[,i]),i] )) == length( data[,i] ) 
                         && is.integer( data[,i] ) && all(data[,i]==data[order( data[,i] ),i]) ){ 
                           TRUE
-                        } else { 
+                        } 
+                        else { 
                           FALSE
                         }   
-    info[[i]]$include <- if( info[[i]]$is.ID ){ FALSE } else { TRUE }
+    info[[i]]$include <- if( info[[i]]$is.ID ){ 
+                          FALSE 
+                          } 
+                          else { 
+                            TRUE 
+                          }
     # all missing then exclude
-    info[[i]]$all.missing <- if( sum( is.na( data[ ,i] ) ) == dim( data )[1] ){
+    info[[i]]$all.missing <- if(sum(is.na(data[ ,i])) == dim(data)[1]){
                                TRUE
-                             } else { 
+                             } 
+                             else { 
                                FALSE
                              }    
     if(info[[i]]$include){
-      info[[i]]$include <- if( info[[i]]$all.missing ) { 
+      info[[i]]$include <- if(info[[i]]$all.missing) { 
                              FALSE
-                           } else { 
+                           } 
+                           else { 
                              TRUE
                            }
     }
@@ -70,7 +87,8 @@ mi.info <- function( data, threshold  = 0.99999 )
     if(info[[i]]$include && info[[i]]$nmis>0){
       info[[i]]$imp.order <- ord
       ord <- ord + 1
-    } else{
+    } 
+    else{
       info[[i]]$imp.order <- NA
     }
     # correlated 
@@ -83,15 +101,15 @@ mi.info <- function( data, threshold  = 0.99999 )
   }
  
   # all missing
-  allmis <- sapply( info, function( inf ){ inf$all.missing } )
-  if( any( allmis ) ) {
+  allmis <- .all.missing(info)
+  if(any(allmis)){
     cat("\avariable(s)", paste( names(info)[allmis],collapse=", ",sep=""),
          "has(have) no observed value, and will be omitted.\n\n" )
   }
   # correlated then exclude  
-  data.correlated <- mi.correlated.list( data )
-  if( length( data.correlated ) > 0 ) {
-    for( c.idx in 1:length( data.correlated ) ) {
+  data.correlated <- mi.correlated.list(data)
+  if(length(data.correlated) > 0) {
+    for(c.idx in 1:length(data.correlated)) {
       c.nm <- data.correlated[[c.idx]][-1]
       for( nm.idx in 1:length(c.nm)){
         info[[c.nm[nm.idx]]]$include     <- FALSE
@@ -100,7 +118,8 @@ mi.info <- function( data, threshold  = 0.99999 )
       }
     }
   }
-  ord.temp <- imp.order(info)
+ 
+  ord.temp <- .imp.order(info)
   re.ord   <- ord.temp[ !is.na( ord.temp ) ]
   ord.temp[!is.na( ord.temp )] <- rank( re.ord, ties.method = "first" )
   for( ord.index in 1:length( ord.temp ) ) {
@@ -126,13 +145,28 @@ mi.info <- function( data, threshold  = 0.99999 )
   return( info )
 }
 
-mi.info.formula.default <-function( data, info ){
-  for( i in 1:dim(data)[2]){
+mi.info.formula.default <-function(data, info){
+  varnames <- dimnames(data)[[2]]
+  for(i in 1:length(varnames)){
+    type <- info[[i]]$type
+    if(type=="ordered-categorical"){
+      varnames[i] <- paste("ordered(",varnames[i],")",sep="")
+    }
+    else if(type=="unordered-categorical"){
+      varnames[i] <- paste("factor(",varnames[i],")",sep="")
+    }
+    else{
+      varnames[i] <- varnames[i]
+    }
+  }
+  for(i in 1:dim(data)[2]){
     # default formula
-    inc <- sapply(info, function(inf){inf$include} )
-    inc[i]<-FALSE
-    dimnames(data)[[2]][i]
-    info[[i]]$imp.formula <- type.default.formula(dimnames(data)[[2]][i],dimnames(data[,inc,drop=FALSE])[[2]],info[[i]]$type)
+    inc <- .include(info)
+    inc[i] <- FALSE
+    response <- varnames[i]
+    predvarn <- varnames[inc]
+    form <- paste(response,"~",paste(predvarn,collapse=" + "))
+    info[[i]]$imp.formula <- form
   }
   return(info)
 }
@@ -150,54 +184,20 @@ mi.info.params.default <-function( info ){
 # ========================================================================
 # Default formula for the type
 # ========================================================================
-type.default.formula <- function( response.name, predictor.name, type ) {
-  if (type=="mixed"){
-    form <- list(paste( paste( "1*(", response.name, "!=0) ~",sep=""),paste(predictor.name,collapse=" + ")),
-                 paste( response.name,"~",paste(predictor.name,collapse=" + ")))
-  } 
-  else if (type=="squareroot-continuous"){
-    form <- paste( paste( "sqrt(", response.name, ") ~",sep=""),paste(predictor.name,collapse=" + "))
-  } 
-  else if (type == "logscale-continuous") {
-    form <- paste(paste("log(", response.name, ") ~", sep = ""), 
-            paste(predictor.name, collapse = " + "))
-    }
-  else if (type=="ordered-categorical"){
-    form <- paste( paste( "factor(", response.name, ") ~",sep=""),paste(predictor.name,collapse=" + "))
-  } 
-  else if (type=="fixed"){
-    form <- paste( response.name, " ~",response.name)
-  } 
-  else{
-    form <- paste( response.name,"~",paste(predictor.name,collapse=" + "))
-  }
-  return(form) 
+type.default.formula <- function(response.name, predictor.name, type) {
+#  if (type=="ordered-categorical"){
+#    form <- paste( paste( "ordered(", response.name, ") ~",sep=""),paste(predictor.name,collapse=" + "))
+#  } 
+#  else if (type=="fixed"){
+#    form <- paste( response.name, " ~",response.name)
+#  } 
+#  else{
+  form <- paste( response.name,"~",paste(predictor.name,collapse=" + "))
+  #}
+  return(form)
 }
 
 
-# ========================================================================
-# Extracts the type (character) as vector
-# ========================================================================
-
-type <-function(info){
-  return(sapply(info,function(inf){inf$type}))
-}
-
-# ========================================================================
-# Extracts the level (vector) as list
-# ========================================================================
-
-level <-function(info){
-  return(sapply(info,function(inf){inf$level}))
-}
-
-# ========================================================================
-# Extract imputation formula (character) as list
-# ========================================================================
-
-imp.formula <-function(info){
-  return(sapply(info,function(inf){inf$level}))
-}
 
 # ========================================================================
 # Fix information matrix
@@ -221,7 +221,7 @@ mi.info.fix <- function( info ) {
                     title=.make.title("change variable to include?" ))
       # change
       if(res.ord == 1){
-        inc.change <- data.frame( include=include( info ) )
+        inc.change <- data.frame( include = .include( info ) )
         inc.change <- fix( inc.change )
         # when something is wrong
         if( any( is.na( inc.change[,1] ) ) ) {
@@ -238,7 +238,7 @@ mi.info.fix <- function( info ) {
           }
         }
         # reorganize the order
-        ord.temp <- imp.order(info)
+        ord.temp <- .imp.order(info)
         re.ord <- ord.temp[!is.na(ord.temp)]
         ord.temp[!is.na(ord.temp)]<-rank(re.ord, ties.method ="first")
         for(ord.index in 1:length(ord.temp)){
@@ -255,13 +255,13 @@ mi.info.fix <- function( info ) {
     #--------------------
     # imputation order
     #--------------------
-    ord.flg<-TRUE
+    ord.flg <- TRUE
     while(ord.flg){
       res.ord<-menu(c("Yes","No","look at current setting")
                     , title=.make.title("change imputation order?" ))
       #change order
       if(res.ord == 1){
-        ord.change.temp <- as.data.frame(imp.order(info))
+        ord.change.temp <- as.data.frame(.imp.order(info))
         ord.change <- data.frame(imp.ord=ord.change.temp[!is.na(ord.change.temp)])
         dimnames(ord.change)[[1]]<-dimnames(ord.change.temp)[[1]][!is.na(ord.change.temp)]
         ord.change <- fix(ord.change)
@@ -274,10 +274,12 @@ mi.info.fix <- function( info ) {
         for(ord.index in 1:length(ord.change.temp[,1])){
           info[[ord.index]]$imp.order <- ord.change.temp[ord.index,]
         }
-      } else if(res.ord == 2){
+      } 
+      else if(res.ord == 2){
         #no change
-        ord.flg<-FALSE
-      } else if(res.ord == 3){
+        ord.flg <- FALSE
+      } 
+      else if(res.ord == 3){
         #view setting
         print(info)
       }
@@ -421,7 +423,8 @@ mi.fix.params <- function( info, name ) {
 # ========================================================================
 
 mi.check.correlation <- function ( data, threshhold = 0.99999 ){
-  cor.data <- cor( data, use = "pairwise.complete.obs" )
+  options(warn = -1)
+  cor.data <- cor(data, use = "pairwise.complete.obs")
   diag( cor.data ) <- 1
   index  <- abs( cor.data - diag( dim( cor.data )[1] ) ) >= threshhold 
   result <- vector( "list", dim( index )[1] )
@@ -438,7 +441,9 @@ mi.check.correlation <- function ( data, threshhold = 0.99999 ){
 #  unique.cor<-unique(result)
 #  unique.cor<- unique.cor[!sapply(unique.cor,is.null)] 
 #  return(unique.cor)
-return(result)
+  on.exit()
+  options(warn = 0)
+  return(result)
 }
 
 # ========================================================================
@@ -446,6 +451,7 @@ return(result)
 # ========================================================================
 
 mi.correlated.list <- function ( data, threshhold = 0.99999 ){
+  options(warn = -1)
   cor.data<-cor( data, use="pairwise.complete.obs" )
   diag(cor.data)<-1
   index<-abs( cor.data - diag(dim(cor.data)[1])) >= threshhold 
@@ -463,8 +469,8 @@ mi.correlated.list <- function ( data, threshhold = 0.99999 ){
   unique.cor<-unique(result)
   unique.cor<- unique.cor[!sapply(unique.cor,is.null)] 
   unique.cor<- unique.cor[!sapply(sapply(unique.cor,is.na),any)]
+  options(warn = 0)
   return(unique.cor)
-return(result)
 }
 
 # ========================================================================
@@ -543,7 +549,7 @@ mi.interactive <- function ( data ){
 # ========================================================================
 # recodeing variable to numeric value
 # ========================================================================
-mi.info.recode <-function( data, info ){
+mi.info.recode <- function( data, info ){
   for(i in 1:dim(data)[2]){
     if(!is.null(info[[i]]$level)){
       # treatment since recode can't handle "=" as variable name
@@ -551,7 +557,7 @@ mi.info.recode <-function( data, info ){
         names(info[[i]]$level) <- gsub("=","@@@@@",names(info[[i]]$level))
         data[[i]]<-gsub("=","@@@@@",data[[i]])
       }
-      data[[i]]<-recode(data[[i]],paste("'",names(info[[i]]$level),"'=",info[[i]]$level,sep="",collapse=" "))
+      data[[i]]<-recode(data[[i]],paste("'",names(info[[i]]$level),"'=",info[[i]]$level,sep="",collapse="; "))
     }
   }
   return(data)
@@ -574,7 +580,7 @@ mi.info.uncode <-function( data, info ){
       else if(info[[i]]$var.class=="character"){
         data[[i]]<-as.character(data[[i]])
       }
-      data[[i]]<-recode(data[[i]],paste(info[[i]]$level,"=","'",names(info[[i]]$level),"'",sep="",collapse=" "))
+      data[[i]]<-recode(data[[i]],paste(info[[i]]$level,"=","'",names(info[[i]]$level),"'",sep="",collapse="; "))
       if(recode.equal){
         data[[i]]<-gsub("@@","=",data[[i]])
       }
@@ -622,62 +628,104 @@ center <- function( x ) {
 }
 
 
-mi.info.update <-function( info, target, list ) {
-  if( !is.mi.info( info ) ) {
-    stop ( message = "this function is available only for mi.info objects" )
-  } else {
-    nam <- names( list )
-    if ( is.null( nam ) ) {
-      if ( length( list ) != length ( info ) ){
-        stop ( message = "type for all the variable must be specified " )
-      } else {
-        nam <- 1:length( list )
-      }
+#=================================================================
+#     update mi.info functions
+#=================================================================
+
+update.mi.info <- function(object, target, list, ...){
+  nam <- names(list)
+  if (is.null(nam)) {
+    if (length(list) != length(object)){
+      stop ( message = "type for all the variable must be specified " )
     } 
-    for ( i in 1:length( list ) ) {
-      info[[nam[i]]][[target]] <- list[[nam[i]]]
+    else {
+      nam <- 1:length(list)
+    }
+  } 
+  for ( i in 1:length( list ) ) {
+    object[[nam[i]]][[target]] <- list[[nam[i]]]
+    if(target=="type"){
+      varnames <- names(object)
+      object$include[nam[i]] <- FALSE
+      inc <- object$include
+      varnames <- varnames[inc,drop=TRUE]
+      object[[nam[i]]]["imp.formula"] <- type.default.formula(
+                                          nam[i], 
+                                          varnames, 
+                                          object$type[nam[i]])
+      object$include[nam[i]] <- TRUE
     }
   }
-  return( info )
-}
-                            
-mi.info.update.type <- function ( info, list ) {
-  return( mi.info.update ( info, "type", list ) )
-}
-mi.info.update.level <- function ( info, list ) {
-  return( mi.info.update ( info, "level", list ) )
-}
-mi.info.update.include <- function ( info, list ) {
-  return( mi.info.update ( info, "include", list ) )
-}
-mi.info.update.is.ID <- function ( info, list ) {
-  return( mi.info.update ( info, "is.ID", list ) )
-}
-mi.info.update.correlated <- function ( info, list ) {
-  return( mi.info.update ( info, "correlated", list ) )
-}
-mi.info.update.transform <- function ( info, list ) {
-  return( mi.info.update ( info, "transform", list ) )
-}
-mi.info.update.imp.order <- function ( info, list ) {
-  return( mi.info.update ( info, "imp.order", list ) )
-}
-mi.info.update.determ.pred <- function ( info, list ) {
-  return( mi.info.update ( info, "determ.pred", list ) )
-}
-mi.info.update.params <- function ( info, list ) {
-  return( mi.info.update ( info, "params", list ) )
-}
-mi.info.update.imp.formula <- function ( info, list ) {
-  return( mi.info.update ( info, "imp.formula", list ) )
-}
-mi.info.update.other <- function ( info, list ) {
-  return( mi.info.update ( info, "other", list ) )
+  return(info=object)
 }
 
-is.mi.info <- function( object ) {
-  return( inherits( object, "mi.info" ) ) 
+                            
+mi.info.update.type <- function (object, list ) {
+  class(object) <- "mi.info"
+  info <- update(object, target="type", list )
+  return(info)
 }
+
+mi.info.update.level <- function (object, list ) {
+  info <- update(object, target="level", list )
+  return(info)
+}
+
+mi.info.update.include <- function (object, list ) {
+  info <- update(object, target="include", list )
+  return(info)
+}
+
+mi.info.update.is.ID <- function (object, list ) {
+  info <- update(object, target="is.ID", list ) 
+  return(info)  
+}
+
+mi.info.update.correlated <- function (object, list ) {
+  info <- update(object, target="correlated", list ) 
+  return(info)
+}
+
+mi.info.update.transform <- function (object, list ) {
+  info <- update (object, target="transform", list )
+  return(info)
+}
+
+mi.info.update.imp.order <- function ( object, list ) {
+  info <- update (object, target="imp.order", list )
+  return(info)
+}
+
+mi.info.update.determ.pred <- function ( object, list ) {
+  info <- update (object, target="determ.pred", list ) 
+  return(info)
+}
+
+mi.info.update.params <- function ( object, list ) {
+  info <- update (object, target="params", list ) 
+  return(info)
+}
+
+mi.info.update.imp.formula <- function ( object, list ) {
+  info <- update (object, target="imp.formula", list )
+  return(info)
+}
+
+mi.info.update.other <- function ( object, list ) {
+  info <- update (object, target="other", list )
+  return(info)
+}
+
+
+
+#=============================================================
+# mi.info.utils
+#=============================================================
+
+is.mi.info <- function( object ) {
+  return(inherits(object, "mi.info")) 
+}
+
 
 
 "$.mi.info" <- function (x, ..., drop = TRUE) {
@@ -685,66 +733,104 @@ is.mi.info <- function( object ) {
       if (drop) 
           return(drop(x))
       else return(x)
-  }else{
-    result <- NULL
-    result<-sapply(x,function(xs){xs[[...]]})
-    return(result)
   }
-}
-"[.mi.info" <- function (x, ..., drop = TRUE) {
-  if (missing(x)) {
-      if (drop) 
-          return(drop(x))
-      else return(x)
-  }else{
-    result <- NULL
-    result<-sapply(x,function(xs){xs[[...]]})
+  else{
+    foo <- function(x){
+      x[[...]]
+    }
+    result <- sapply(x, FUN = foo)
     return(result)
   }
 }
 
+"[.mi.info" <- function (x, ..., drop = TRUE) {
+  if (missing(x)) {
+    if (drop){
+      return(drop(x))
+    }
+    else{
+      return(x)
+    }
+  }
+  else{
+    foo <- function(x){
+      x[[...]]
+    }    
+    result <- sapply(x, FUN = foo)
+    return(result)
+  }
+}
+
+
 "[<-.mi.info" <- function (x, ..., value = NULL) {
   if (missing(x)) {
-      if (drop) 
-          return(drop(x))
-      else return(x)
-  }else{
-    result <- NULL
+    if (drop){ 
+      return(drop(x))
+    }
+    else{
+      return(x)
+    }
+  }
+  else{
     for(i in 1:length(x)){
-      x[[i]][[...]]<-value[[i]]
+      x[[i]][[...]] <- value[[i]]
     }
     return(x)
   }
 }
+
+
 "$<-.mi.info" <- function (x, ..., value = NULL) {
   if (missing(x)) {
       if (drop) 
           return(drop(x))
       else return(x)
-  }else{
-    result <- NULL
+  }
+  else{
     for(i in 1:length(x)){
-      x[[i]][[...]]<-value[[i]]
+      x[[i]][[...]] <- value[[i]]
     }
     return(x)
   }
 }
 
-rankMat <- function(A, tol = NULL, singValA = svd(A, 0,0)$d)
-{
-    ## Purpose: rank of a matrix ``as Matlab''
-    ## ----------------------------------------------------------------------
-    ## Arguments: A: a numerical matrix, maybe non-square
-    ##          tol: numerical tolerance (compared to singular values)
-    ##     singValA: vector of non-increasing singular values of A
-    ##               (pass as argument if already known)
-    ## ----------------------------------------------------------------------
-    ## Author: Martin Maechler, Date:  7 Apr 2007, 16:16
-    d <- dim(A)
-    stopifnot(length(d) == 2, length(singValA) == min(d),
-              diff(singValA) < 0)       # must be sorted decreasingly
-    if(is.null(tol))
-        tol <- max(d) * .Machine$double.eps * abs(singValA[1])
-    else stopifnot(is.numeric(tol), tol >= 0)
-    return( sum(singValA >= tol) )
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#rankMat <- function(A, tol = NULL, singValA = svd(A, 0,0)$d)
+#{
+#    ## Purpose: rank of a matrix ``as Matlab''
+#    ## ----------------------------------------------------------------------
+#    ## Arguments: A: a numerical matrix, maybe non-square
+#    ##          tol: numerical tolerance (compared to singular values)
+#    ##     singValA: vector of non-increasing singular values of A
+#    ##               (pass as argument if already known)
+#    ## ----------------------------------------------------------------------
+#    ## Author: Martin Maechler, Date:  7 Apr 2007, 16:16
+#    d <- dim(A)
+#    stopifnot(length(d) == 2, length(singValA) == min(d),
+#              diff(singValA) < 0)       # must be sorted decreasingly
+#    if(is.null(tol))
+#        tol <- max(d) * .Machine$double.eps * abs(singValA[1])
+#    else stopifnot(is.numeric(tol), tol >= 0)
+#    return( sum(singValA >= tol) )
+#}

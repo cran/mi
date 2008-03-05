@@ -14,8 +14,6 @@ mi.types()
 
 \arguments{
   \item{type}{Nine types: \code{continuous}, 
-        \code{logscale-continuous},
-        \code{squareroot-continuous}, 
         \code{ordered-categorical}, 
         \code{unordered-categorical}, 
         \code{dichotomous},

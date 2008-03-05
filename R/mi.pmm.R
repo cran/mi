@@ -16,51 +16,46 @@ mi.pmm<-function(formula, data = NULL, start = NULL, n.iter = 100, ... )
   if (length(dim(Y)) == 1) {
     nm <- rownames(Y)
     dim(Y) <- NULL
-    if (!is.null(nm)) 
+    if (!is.null(nm)){
       names(Y) <- nm
+    }
   }
   X <- mf[,-1,drop=FALSE]
-  namesD <- if( is.null( data ) ) { NULL } else { deparse( substitute( data ) ) }
+  namesD <- if(is.null(data)) {
+              NULL 
+            } 
+            else{ 
+              deparse(substitute(data)) 
+            }
   mis    <- is.na( Y )
   n.mis  <- sum( mis )
-  if(is.null(data)){ data<- mf }
-  if(!is.null(start)){n.iter<-1}
+  if(is.null(data)){ 
+    data <- mf 
+  }
+  if(!is.null(start)){
+    n.iter <- 1
+  }
   bglm.imp  <- bayesglm( formula , start = start, n.iter = n.iter )
-  #sim.bglm.imp    <- sim( bglm.imp,1 )
-  #yhat            <- X[mis,] %*% sim.bglm.imp$beta
   yhat <- predict( bglm.imp , newdata = data.frame( Y, X ) ) 
-  result <- list( model = list( call = NULL, coefficient = NULL, sigma = NULL ), 
-                    expected = NULL, random = NULL, residual = NULL )
-  result$model$call <- bglm.imp$call
-  result$model$coefficient <- bglm.imp$coefficients
-  result$model$sigma <- sigma.hat( bglm.imp )
-  result$expected <- yhat
-  result$random   <- apply( as.array( yhat[mis] ), 1, 
+  result <- new(c("mi.pmm", "mi.method"),
+              model = vector("list", 0),
+              expected = numeric(0), 
+              random = numeric(0))
+  result@model$call <- bglm.imp$call
+  result@model$coefficients <- bglm.imp$coefficients
+  result@model$sigma <- sigma.hat( bglm.imp )
+  result@expected <- yhat
+  result@random   <- apply( as.array( yhat[mis] ), 1, 
                               mi.pmm.match, yhat=yhat[!mis], Y=Y[!mis] ) 
-  result$residual <- bglm.imp$residuals
-  class ( result )<- c( "mi.pmm", "mi.method","list" )
-  
-#  result <-new("mi.pmm",
-#            model    = list( call = bglm.imp$call,
-#                             call$formula = as.formula( formula ),
-#                             call$start   = round(as.double( start ), 2 ),
-#                             call$n.iter  = n.iter,
-#                             coefficient  = bglm.imp$coefficients,
-#                             sigma        = sigma.hat( bglm.imp ),
-#                             dispersion   = bglm.imp$dispersion)
-#            expected = yhat,
-#            random   = apply( as.array( yhat[mis] ), 1, 
-#                              mi.pmm.match, yhat=yhat[!mis], Y=Y[!mis] ),
-#            residual = bglm.imp$residuals )
-  
-  return( result )
-
+  result@residuals <- bglm.imp$residuals
+  return(result)
 }
 
-mi.pmm.match<-function(z, yhat=yhat, Y=Y)
-{
-    d <- abs( yhat - z )
-    m <- Y[ d == min( d )]
-    if ( length( m ) > 1 ) m <- sample( m, 1 )
-    return( m )
+mi.pmm.match<-function(z, yhat=yhat, Y=Y){
+  d <- abs( yhat - z )
+  m <- Y[ d == min( d )]
+  if ( length( m ) > 1 ){
+    m <- sample( m, 1 )
+  }
+  return( m )
 }

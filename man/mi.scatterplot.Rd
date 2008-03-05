@@ -51,9 +51,18 @@ marginal.scatterplot ( data, object, use.imputed.X = FALSE, ...  )
   A scatterplot with the observed and the imputed values plotted against a chosen variable. 
 }
 \references{ 
-  Andrew Gelman and Jennifer Hill, 
-  Data Analysis Using Regression and Multilevel/Hierarchical Models, 
-  Cambridge University Press, 2006. }
+    Kobi Abayomi, Andrew Gelman and Marc Levy. (2008).
+    \dQuote{Diagnostics for multivariate imputations}.
+    \emph{Applied Statistics} 57, Part 3: 273--291.
+
+    Andrew Gelman and Maria Grazia Pittau.
+    \dQuote{A flexible program for missing-data imputation and model checking.}
+    \emph{Technical report}. Columbia University, New York.
+   
+    Andrew Gelman and Jennifer Hill. (2007).
+    \emph{Data Analysis Using Regression and Multilevel/Hierarchical Models}.
+    Cambridge University Press.
+}
 
 \author{
   Masanao Yajima \email{yajima@stat.columbia.edu},

@@ -1,15 +1,16 @@
 #==============================================================================
 # Linear Regression for multiply imputed dataset
 #==============================================================================
-lm.mi <- function ( formula,  mi.object, ... ) 
+lm.mi <- function (formula, mi.object, ... ) 
 {
     call   <- match.call( )
     m      <- m( mi.object )
     result <- vector( "list", m )
     names( result ) <- as.character( paste( "Imputation", seq( m ), sep = ""))
+    mi.data <- mi.completed(mi.object)
+    mi.data <- mi.postprocess(mi.data)
     for ( i in 1:m ) {
-        mi.data <- mi.matrix( mi.object, i )
-        result[[i]] <- lm( formula, data = data.frame( mi.data ), ... )
+      result[[i]] <- lm( formula, data = mi.data[[i]], ... )
     }
     coef   <- vector( "list", m )
     se     <- vector( "list", m )
@@ -21,12 +22,13 @@ lm.mi <- function ( formula,  mi.object, ... )
     Bhat      <- colSums( do.call( rbind, coef ) ) / m
     Bhat_rep  <- t(matrix( rep( Bhat, m ), length(Bhat), m ))
     B         <- colSums( do.call( rbind, coef ) - Bhat_rep ) ^ 2 / ( m - 1 )
-    pooled <- list( coefficient = NULL, se = NULL )
-    pooled$coefficient    <- Bhat
+    pooled <- list( coefficients = NULL, se = NULL )
+    pooled$coefficients    <- Bhat
     pooled$se <- sqrt( W + ( 1 + 1 / m ) * B )  
-    mi.lm.object <- list( call = call, lm.mi.pooled = pooled, 
-                          lm.mi.fit = result )
-    class( mi.lm.object ) <- c( "mi.lm", "list" )
+    mi.lm.object <- new("mi.lm",  
+                        call = call, 
+                        lm.mi.pooled = pooled, 
+                        lm.mi.fit = result )
     return( mi.lm.object )
 }
 

@@ -25,8 +25,7 @@ print.mi <- function ( x, ... ) {
   }
   
   
-  
-  
+    
 print.mi.glm <- function(x, ...){
   display(x, ...)
 }
@@ -80,31 +79,9 @@ setMethod("print", signature( x = "mi.method" ),
 
 print.mi.method <- function ( x, ... ) {
     cat("model:\n ")
-    print(x$model$call)
+    print(x@model$call)
     cat("\ncoefficients:\n")
-    print(x$model$coefficient)
+    print(x@model$coefficient)
     cat("\nimputed values:\n")
-    print(x$random)
+    print(x@random)
 }
-
-# ==============================================================================
-# S4 print function for mi.mixed object
-# ==============================================================================
-setMethod("print", signature( x = "mi.mixed" ),
-  function ( x, ... ) {
-    print.mi.mixed(x,...)
-  }
-)
-
-print.mi.mixed <- function ( x, ... ) {
-    cat("model 1:\n ")
-    print(x$model$model.1$call)
-    cat("\ncoefficients 1:\n")
-    print(x$model$model.1$coefficient)
-    cat("\nmodel 2:\n ")
-    print(x$model$model.2$call)
-    cat("\ncoefficients 2:\n")
-    print(x$model$model.2$coefficient)
-    cat("\nimputed values:\n")
-    print(x$random)
-  }

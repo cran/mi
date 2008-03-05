@@ -1,15 +1,14 @@
-\name{mi.dichotomous}
+\name{mi.count}
 \docType{class}
 % Classes
-\alias{mi.dichotomous-class}
+\alias{mi.count-class}
 % Function
-\alias{mi.dichotomous}
-\alias{plot,mi.dichotomous,ANY-method}
+\alias{mi.count}
 % methods
-\alias{resid,mi.dichotomous-method}
-\alias{residuals,mi.dichotomous-method}
+\alias{resid,mi.count-method}
+\alias{residuals,mi.count-method}
 \title{
-    Elementary function: Bayesian logistic regression to impute a dichotomous variable.
+    Elementary function: Bayesian overdispersed poisson regression to impute a count variable.
 }
 \description{
     Imputes univariate missing data using bayesglm, an 
@@ -17,25 +16,26 @@
     Cauchy prior distribution for the coefficients.
 }
 \usage{
-mi.dichotomous(formula, data = NULL, start = NULL, n.iter = 100, 
+mi.count(formula, data = NULL, start = NULL, n.iter = 100, 
   draw.from.beta = FALSE, \dots)
-\S4method{resid}{mi.dichotomous}(object, y)
-\S4method{residuals}{mi.dichotomous}(object, y)
-\S4method{plot}{mi.dichotomous,ANY}( x, y, main=deparse( substitute( y ) ), gray.scale = FALSE, \dots)
+\S4method{resid}{mi.count}(object, y)
+\S4method{residuals}{mi.count}(object, y)
+%\S4method{plot}{mi.count,ANY}( x, y, main=deparse( substitute( y ) ), gray.scale = FALSE, \dots)
 }
 
 \arguments{
-  \item{formula}{  an object of class '"formula"' (or one that can be coerced to that class): a symbolic description of the model to be fitted.  See bayesglm 'formula' for details. }
+  \item{formula}{  an object of class \code{formula} (or one that can be coerced to that class): 
+    a symbolic description of the model to be fitted.  See bayesglm \code{formula} for details. }
   \item{data}{ A data frame containing the incomplete data and the matrix of the complete predictors. }
   \item{start}{ Starting value for bayesglm. }
   \item{n.iter}{ Maximum number of iteration for bayesglm. The default is 100.}
   \item{draw.from.beta}{ Draws from posterior distribution of the betas to add randomness. }
   \item{\dots}{ Currently not used. }
-  \item{object}{\code{mi.dichotomous} object.}
-  \item{x}{ \code{mi.dichotomous} object.}
+  \item{object}{\code{mi.countr} object.}
+%  \item{x}{ \code{mi.countr} object.}
   \item{y}{ Observed values.}
-  \item{main}{ main title of the plot. }
-  \item{gray.scale}{ When set to TRUE, makes the plot into gray scale with predefined color and line type. }
+%  \item{main}{ main title of the plot. }
+%  \item{gray.scale}{ When set to TRUE, makes the plot into gray scale with predefined color and line type. }
 
 }
 \details{
@@ -64,13 +64,13 @@ mi.dichotomous(formula, data = NULL, start = NULL, n.iter = 100,
 
 \examples{
   # true data
-  x<-rnorm(100,0,1) # N(0,1)
-  y<-rbinom(100,1,invlogit(1+2*x)) # y ~ Bin(1,invlogit(1 + 2*x)
+  x <- rnorm(100,0,1) 
+  y <- rpois(100,40)  
   # create artificial missingness on y
-  y[seq(1,100,10)]<-NA
+  y [seq(1,100,10)] <- NA
   dat.xy <- data.frame(x,y)
   # imputation
-  mi.dichotomous(y~x, data = dat.xy)
+  mi.count(y ~ x, data = dat.xy)
 }
 \seealso{
     \code{\link{mi.info}}, 

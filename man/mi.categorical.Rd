@@ -4,8 +4,9 @@
 \alias{mi.categorical-class}
 % Function
 \alias{mi.categorical}
-\alias{residuals.mi.categorical}
-\alias{plot.mi.categorical}
+\alias{resid,mi.categorical-method}
+\alias{residuals,mi.categorical-method}
+\alias{plot,mi.categorical,ANY-method}
 
 \title{ 
     Elementary function: multinomial log-linear models to impute a categorical variable.
@@ -15,8 +16,8 @@
 }
 \usage{
   mi.categorical( formula, data = NULL, n.iter = 100, MaxNWts = 1500, \dots)
-  \S3method{residuals}{mi.categorical}(object, y, \dots)
-  \S3method{plot}{mi.categorical}( x, y, main=deparse( substitute( y ) ), gray.scale = FALSE, \dots)
+  \S4method{residuals}{mi.categorical}(object, y)
+  \S4method{plot}{mi.categorical,ANY}( x, y, main=deparse( substitute( y ) ), gray.scale = FALSE, \dots)
 }
 \arguments{
   \item{formula}{ a formula expression as for regression models, of the form
@@ -74,4 +75,7 @@
   dat.xy <- data.frame(x,y)
   mi.categorical(formula =y~x,data=dat.xy)
 }
-\keyword{ models }
+\keyword{models}
+\keyword{aplot}
+\keyword{dplot}
+\keyword{hplot}

@@ -15,13 +15,13 @@
   After the information is extracted user has the option of changing the default.
 }
 \usage{
-  mi.info(data, threshold  = 0.99999)
+  mi.info(data, threshhold  = 0.99999)
   \S4method{print}{mi.info}(x, \dots)
   \S4method{show}{mi.info}(object)
 }
 \arguments{
   \item{data}{ dataframe or matrix of dataset with missing data coded as NAs. }
-  \item{threshold}{ Threshold value for correlation to be considered a problem.}
+  \item{threshhold}{ Threshhold value for correlation to be considered a problem.}
   \item{x}{ An object of a class '"mi.info"'.}
   \item{object}{ An object of a class '"mi.info"'.}
   \item{\dots}{ Currently not used.}
@@ -69,8 +69,7 @@
 }
 \examples{
   data(CHAIN)
-  info.CHAIN<-mi.info(CHAIN)
-  info.CHAIN
+  info.CHAIN <- mi.info(CHAIN)
   
   info.CHAIN$imp.order # imputation order
   

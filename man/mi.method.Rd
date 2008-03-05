@@ -6,11 +6,15 @@
 % Function
 \alias{imputed}
 \alias{print,mi.method-method}
-\alias{plot.mi.method}
-\alias{fitted.mi.method}
-\alias{coef.mi.method}
+\alias{plot,mi.method,ANY-method}
+\alias{fitted,mi.method-method}
+\alias{coef,mi.method-method}
+\alias{coefficients,mi.method-method}
 \alias{imputed,mi.method-method}
-\alias{residuals.mi.method}
+\alias{imputed,mi.categorical-method}
+\alias{imputed,mi.polr-method}
+\alias{residuals,mi.method-method}
+\alias{resid,mi.method-method}
 \alias{sigma.hat,mi.method-method}
 
 \title{
@@ -21,14 +25,18 @@
 }
 \usage{
   \S4method{imputed}{mi.method}(object,y)
-  \S3method{coef}{mi.method}(object, \dots)
-  \S4method{sigma.hat}{mi.method}(object, \dots)
-  \S3method{fitted}{mi.method}(object, \dots)
-  \S3method{residuals}{mi.method}(object, y, \dots)
+  \S4method{imputed}{mi.categorical}(object,y)
+  \S4method{imputed}{mi.polr}(object,y)
+  \S4method{coef}{mi.method}(object)
+  \S4method{coefficients}{mi.method}(object)
+  \S4method{sigma.hat}{mi.method}(object)
+  \S4method{fitted}{mi.method}(object)
+  \S4method{resid}{mi.method}(object, y)
+  \S4method{residuals}{mi.method}(object, y)
   \S4method{print}{mi.method}(x, \dots)
-  \S3method{plot}{mi.method}(x, y, main=deparse( substitute( y ) ), gray.scale = FALSE, \dots)
+  \S4method{plot}{mi.method,ANY}(x, y, main=deparse( substitute( y ) ), gray.scale = FALSE, \dots)
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
   \item{object}{\code{mi.method} object.}
   \item{\dots}{ Currently not used. }
@@ -44,11 +52,8 @@
   most of the \code{mi} classes that do not have specific method defined for them inherits their methods from this class.
   For some special class as \code{mi.mixed} these methods are extended to tailor to the needs.
 }
-%\value{
-%    \item{model   }{A summary of the fitted model.}
-%    \item{expected}{The expected values estimated by the model.}
-%    \item{random  }{Vector of length n.mis of random predicted values predicted by using the normal distribution.} 
-%}
+
+
 \references{
     Andrew Gelman and Jennifer Hill, 
     Data Analysis Using Regression and Multilevel/Hierarchical Models, 
@@ -65,4 +70,7 @@
     \code{\link{mi}}
 }
 
-\keyword{ models }
+\keyword{models}
+\keyword{aplot}
+\keyword{dplot}
+\keyword{hplot}

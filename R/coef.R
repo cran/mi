@@ -1,42 +1,42 @@
 # ==============================================================================
-# extract coefficient values for mi.method class object
+# extract coefficient values
 # ==============================================================================
 
-coef.mi.method <- function(object, ...){
-  object$model$coefficient
+setMethod("coef", signature(object = "mi.method"), 
+  function(object){
+  object@model$coefficients
 }
-  
-#
-#setMethod( "coef", signature( object = "mi.method" ),     
-#  function ( object, ... ) {
-#    return( object$model$coefficient )
-#  }
-#) 
-
-#coef.mi.logcontinuous <- function(object, ...){
-#  return( list( object$model$model.1$coefficient, 
-#                object$model$model.2$coefficient ) )
-#}
-#
-#
-#
+)
 
 
-# ==============================================================================
-# extract coefficient values for mi.mixed class object
-# ==============================================================================
-
-
-
-coef.mi.mixed <- function(object, ...){
-  return( list( object$model$model.1$coefficient, 
-                object$model$model.2$coefficient ) )
+setMethod("coefficients", signature(object = "mi.method"), 
+  function(object){
+  object@model$coefficients
 }
+)
 
 
-#setMethod("coef", signature(object = "mi.mixed"),     
-#  function ( object ) {
-#    return( list( object$model$model.1$coefficient, 
-#                    object$model$model.2$coefficient ) )
-#  }
-#)
+setMethod("coef", signature(object = "mi.lm"), 
+  function(object){
+  object@lm.mi.pooled$coefficients
+}
+)
+
+setMethod("coefficients", signature(object = "mi.lm"), 
+  function(object){
+  object@lm.mi.pooled$coefficients
+}
+)
+
+
+setMethod("coef", signature(object = "mi.glm"), 
+  function(object){
+  object@glm.mi.pooled$coefficients
+}
+)
+
+setMethod("coefficients", signature(object = "mi.glm"), 
+  function(object){
+  object@glm.mi.pooled$coefficients
+}
+)

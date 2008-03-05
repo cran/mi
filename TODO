@@ -1,0 +1,15 @@
+2009-3-5 Yu-Sung Su     <ys463@columbia.edu>  
+  * add more examples that use all the type
+  * plot the orginal data, not the preprocessed one
+  * fix missing.pattern.plot, not pretty
+  
+  
+2009-3-3 Yu-Sung Su     <ys463@columbia.edu>  
+  * fix mi.polr                        ## Su: DONE
+
+2009-2-16 Yu-Sung Su     <ys463@columbia.edu>  
+  * fix display.lm.mi, display.glm.mi  ## Su: DONE
+
+2009-1-26 Yu-Sung Su     <ys463@columbia.edu>  
+  *R/mi.check: auto mi recoding, not yet functional
+  *R/plot: plot.categorical need to have right labels

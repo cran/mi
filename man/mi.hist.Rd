@@ -5,17 +5,13 @@
 \alias{mi.hist,mi.method,ANY-method}
 \alias{mi.hist,mi.categorical,ANY-method}
 \alias{mi.hist,mi.dichotomous,ANY-method}
-\alias{mi.hist,mi.mixed,ANY-method}
 \alias{mi.hist,mi.polr,ANY-method}
-\alias{mi.hist,mi.sqrtcontinuous,ANY-method}
 \alias{mi.hist,mi.pmm,ANY-method}
 \alias{mi.hist,ANY-method}
 \alias{mi.hist,mi.method-method}
 \alias{mi.hist,mi.categorical-method}
 \alias{mi.hist,mi.dichotomous-method}
-\alias{mi.hist,mi.mixed-method}
 \alias{mi.hist,mi.polr-method}
-\alias{mi.hist,mi.sqrtcontinuous-method}
 \alias{mi.hist,mi.pmm-method}
 
 
@@ -32,9 +28,7 @@
 \S4method{mi.hist}{mi.method,ANY}( object, Yobs, ... )
 \S4method{mi.hist}{mi.categorical,ANY}( object, Yobs, ... )
 \S4method{mi.hist}{mi.dichotomous,ANY}( object, Yobs, ... )
-\S4method{mi.hist}{mi.mixed,ANY}( object, Yobs, ... )
 \S4method{mi.hist}{mi.polr,ANY}( object, Yobs, ... )
-\S4method{mi.hist}{mi.sqrtcontinuous,ANY}( object, Yobs, ... )
 \S4method{mi.hist}{mi.pmm,ANY}( object, Yobs, ... )
 }
 \arguments{
@@ -47,12 +41,21 @@
     and the histogram (in red) of the imputed values. 
 }
 \references{ 
-    Andrew Gelman and Jennifer Hill, 
-    Data Analysis Using Regression and Multilevel/Hierarchical Models, 
-    Cambridge University Press, 2007. 
+    Kobi Abayomi, Andrew Gelman and Marc Levy. (2008).
+    \dQuote{Diagnostics for multivariate imputations}.
+    \emph{Applied Statistics} 57, Part 3: 273--291.
+
+    Andrew Gelman and Maria Grazia Pittau.
+    \dQuote{A flexible program for missing-data imputation and model checking.}
+    \emph{Technical report}. Columbia University, New York.
+   
+    Andrew Gelman and Jennifer Hill. (2007).
+    \emph{Data Analysis Using Regression and Multilevel/Hierarchical Models}.
+    Cambridge University Press.
 }
 \author{
   Masanao Yajima \email{yajima@stat.columbia.edu},
+  Yu-Sung Su \email{yusung@stat.columbia.edu},
   M.Grazia Pittau \email{grazia@stat.columbia.edu},
   Andrew Gelman \email{gelman@stat.columbia.edu}
 }

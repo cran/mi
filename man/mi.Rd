@@ -1,9 +1,11 @@
 \name{mi}
-\docType{class}
+\docType{genericFunction}
 % Classes
 \alias{mi-class}
 % functions
 \alias{mi}
+\alias{mi,data.frame-method}
+\alias{mi,mi-method}
 \alias{is.mi}
 \alias{bugs.mi}
 \alias{call.mi}
@@ -23,13 +25,13 @@
 \alias{m,mi-method}
 \alias{print,mi-method}
 \alias{imp,mi-method}
-
   
 % methods
 \alias{mi,mi-method}
 \alias{show,mi-method}
-%\alias{plot.mi}
+
 \title{ Multiple Iterative Regression Imputation }
+
 \description{
  Produce a multiple imputed matrix applying the elementary functions iteratively 
  to the variables with missingness in the data randomly imputing each variable
@@ -37,71 +39,64 @@
 }
 
 \usage{
-mi( object, info, type = NULL, n.imp = 3, n.iter = 30, 
+\S4method{mi}{data.frame}( object, info,  n.imp = 3, n.iter = 30, 
     max.minutes = 20, rand.imp.method = "bootstrap", 
-    preprocess = FALSE, continue.on.convergence = FALSE,
+    preprocess = TRUE, continue.on.convergence = FALSE,
     seed = NA, check.coef.convergence = FALSE, 
-    augment.data = FALSE, K = 0) 
-}
-\arguments{
-  \item{object}{A data frame containing the incomplete data. Missing data are coded as NA's or mi object.}
-  \item{info}{ mi.info object. }
-  \item{type}{Vector of types.  When you specify a type, types for all the columns must be specified.}
-  \item{n.imp}{ Number of multiple imputations. The default is m = 3.}
-  \item{n.iter}{ Number of iterations to get convergence. The default is 5. }
-  \item{max.minutes}{ Maximum minutes to stop iterating.  The default is 20. }  
-  \item{seed}{ Random seed.}
-  \item{rand.imp.method}{ Method for random imputation }
-  \item{preprocess}{ Preprocess the data according to the info matrix. }
-  \item{continue.on.convergence}{ If set to TRUE the mi will run until maximum iteration is reached or maximum minutes pass. }
-  \item{check.coef.convergence}{default = FALSE}
-  \item{augment.data}{Augment the data with 10\% of the random draws from the observed data, 
-                default= FALSE.}
-  \item{K}{The cooling parameter, default is 0. If K > 0, the imputation will randomly switch between
-        randomly drawing from the observation or drawing from the modeled based values.  And 
-        with each iteration, the probability of cooling (q) decreases by number of iterations, such that
-        q = K/S.}
-  \item{\dots}{options for plot.mi.}
-  
+    add.priors = prior.control(), post.run = TRUE)
+    
+\S4method{mi}{mi}( object, info, n.imp = 3, n.iter = 30, 
+    max.minutes = 20, rand.imp.method = "bootstrap", 
+    preprocess = TRUE, continue.on.convergence = FALSE,
+    seed = NA, check.coef.convergence = FALSE)
+
 }
 
-\value{ A list of object of class mi, which stands for multiple imputation.
-  Each object is itself a list of 8 elements.
-  \item{data}{The original data frame.}
-  \item{imp.dat}{A data frame with the columns to be imputed.}
-  \item{obs.dat}{A data frame with the completed columns.}
+\arguments{
+  \item{object}{A data frame containing the incomplete data. Missing data are coded as NA or mi object.}
+  \item{info}{\code{\link{mi.info}} object.}
+  \item{n.imp}{Number of multiple imputations. The default is \code{m = 3}.}
+  \item{n.iter}{Number of iterations to get convergence. The default is 5.}
+  \item{max.minutes}{Maximum minutes to stop iterating.  The default is 20.}  
+  \item{seed}{Random seed}
+  \item{rand.imp.method}{Method for random imputation, see \code{\link{random.imp}}}
+  \item{preprocess}{Preprocess the data according to the variable types, 
+    see \code{\link{mi.preprocess}}}
+  \item{continue.on.convergence}{If set to \code{TRUE} the \code{mi} will run 
+    until maximum iteration is reached or maximum minutes pass.}
+  \item{check.coef.convergence}{default = \code{FALSE}}
+  \item{add.priors}{a list of parameters for controlling the process of adding priors for
+      \code{\link{mi}}. See the documentation for \code{\link{prior.control}} for details.}  
+  \item{post.run}{default is \code{TRUE} which will run 20 more iterations after the \code{mi} is finished
+    if and only if some priors have been added into the \code{mi} process. This is to mitigate the 
+    influence the importance of the priors to the whole procedure.}
+}
+
+\value{ 
+A list of object of class \code{mi}, which stands for \dQuote{multiple imputation}.
+
+  Each object is itself a list of 10 elements.
+  \item{call}{Theimputation model}
+  \item{data}{The original data frame}
   \item{m}{ The number of imputations.}
-  \item{nmis}{An array containing the number of missing observations per columns.}
+  \item{mi.info}{Information matrix of the \code{mi}}
   \item{imp}{A list of length(m) of imputations.}
-  \item{converged}{Binary variable to indicate if mi has converged.}
+  \item{converged}{Binary variable to indicate if the \code{mi} has converged.}
+  \item{coef.conv}{Binary variable to indicate if the coefs of \code{mi} model have converged, return
+    \code{NULL} if \code{check.coef.convergence = FALSE}}
   \item{bugs}{BUGS array of the mean and sd of each iteration.}
-  \item{data.tmp}{If mi quits with errors, \code{data.tmp} return to the global environment}
+  \item{preprocess}{Binary variable to indicate if \code{preprocess=TRUE} in the \code{mi} process}
+  \item{mi.info.preprocessed}{Information matrix that actually used in the \code{mi} if \code{preprocess=TRUE}}
   
-  The \code{imp} method creates a list of length(m) of imputations, whose names are: 
-  \code{Imputation1}, \code{Imputation2}, \code{Imputation3}.
-  Each \code{imp[[m]]} is itself a list containg:
+  Each \code{imp[[m]]} is itself a list containg k variable lists of 3 objects:
   
-  - \code{imp[[m]]$Imp.Models}: the specified models used for imputing NA's in each columns of dat;
-  
-  - \code{imp[[m]]$Random.predicted}: a list of vectors of length n.mis (number of NA's), specifying the random predicted values for imputing
-  missing data. For the "mixed" variables the vectors of random values are three: the random values
-  predicted by using the binomial distribution (corresponding to the the first step of the imputation procedure);
-  the random values predicted by using the normal distribution (corresponding to the second step of the imputation procedure)
-  and finally the vector of random values (obtained multiplying the previous two vectors) whose values are positive
-  whether missing values are positive, otherwise are equal to zero. For the categorical variables
-  the random values are predicted by using the Multinomial ditribution;
-  
-  - \code{imp[[m]]$Random.predicted}: a list of vectors of length n-n.mis (number of complete observed data), specifying the
-  estimated values of the models. For the "mixed" variables the vectors of estimated values are two,
-  according to the two steps imputation procedure;
-  
-  - \code{imp[[m]]$Residual.values}: a list of vectors of residuals will be used for checking the models.
-  For the "mixed" variables the vectors of residuals are two,
-  according to the two steps imputation procedure;
-  
-  - \code{imp[[m]]$Imputed.matrix}: a data frame with the missing data imputed.
-  
-  }
+  \item{\code{imp[[m]][[k]]@model}}{the specified models used for imputing missing values}
+  \item{\code{imp[[m]][[k]]@expected}}{a list of vectors of length n-n.mis (number of complete observed data), specifying the
+    estimated values of the models}
+  \item{\code{imp[[m]][[k]]@random}}{a list of vectors of length n.mis (number of NAs), specifying the random predicted 
+    values for imputing missing data}
+}
+
 \details{
 Generate multiple imputations for incomplete data using iterative regression imputation. 
 If the variables with missingness are a matrix Y with columns Y(1), . . . , Y(K) and the fully observed
@@ -114,11 +109,17 @@ and looping through until approximate convergence.
 }
 
 \references{
-    Andrew Gelman and M. Grazia Pittau,  
-    A flexible program for missing-data imputation and model checking, 
-    Technical report, Columbia University, New York; Andrew Gelman and Jennifer Hill, 
-    Data Analysis Using Regression and Multilevel/Hierarchical Models, 
-    Cambridge University Press, 2007.
+    Kobi Abayomi, Andrew Gelman and Marc Levy. (2008).
+    \dQuote{Diagnostics for multivariate imputations}.
+    \emph{Applied Statistics} 57, Part 3: 273--291.
+
+    Andrew Gelman and Maria Grazia Pittau.
+    \dQuote{A flexible program for missing-data imputation and model checking.}
+    \emph{Technical report}. Columbia University, New York.
+   
+    Andrew Gelman and Jennifer Hill. (2007).
+    \emph{Data Analysis Using Regression and Multilevel/Hierarchical Models}.
+    Cambridge University Press.
 }
 
 \author{
@@ -129,25 +130,59 @@ and looping through until approximate convergence.
 }
 
 \seealso{ 
-    \code{\link{mi.matrix}} 
+    \code{\link{mi.completed}}, \code{\link{mi.data.frame}},
+    \code{\link{mi.continuous}}, \code{\link{mi.dichotomous}},
+    \code{\link{mi.count}}, \code{\link{mi.categorical}},
+    \code{\link{mi.polr}},  \code{\link{typecast}}, 
+    \code{\link{mi.info}}, \code{\link{mi.preprocess}}  
 }
+
 \examples{
-data(CHAIN)
-imp.CHAIN <- mi( CHAIN, n.imp = 3, n.iter = 6 )
+# simulate fake data
+set.seed(100)
+n <- 100
+u1 <- rbinom(n, 1, .5)
+v1 <- log(rnorm(n, 5, 1))
+x1 <- u1*exp(v1)
+u2 <- rbinom(n, 1, .5)
+v2 <- log(rnorm(n, 5, 1))
+x2 <- u2*exp(v2)
+x3 <- rbinom(n, 1, prob=0.45)
+x4 <- ordered(rep(seq(1, 5),100)[sample(1:n, n)])
+x5 <- rep(letters[1:10],10)[sample(1:n, n)]
+x6 <- trunc(runif(n, 1, 10))
+x7 <- rnorm(n)
+x8 <- factor(rep(seq(1,6),10)[sample(1:n, n)])
+x9 <- rpois(n, 50)
+x10 <- runif(n, 0.1, .99)
+y <- x1 + x2 + rnorm(n)
+fakedata <- cbind.data.frame(y, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10)
 
-is.mi( imp.CHAIN )    ## Is this a mi object?
-data.mi ( imp.CHAIN ) ## You can get the original data
+# randomly create missing values
+dat <- mi:::.create.missing(fakedata, pct.mis=10)
 
-mi.mt <- mi.matrix( imp.CHAIN, m = 1 ) ## The imputed matrix for the first imputation
-mi.df <- mi.data.frame( imp.CHAIN, m = 1 ) ## The imputed data frame for the second imputation
+# get information matrix of the data
+inf <- mi.info(dat)
 
-##############################
-# Convergence checking
-##############################
-converged( imp.CHAIN )   ## You should get FALSE because its only 5 iterations
-bugs.mi( imp.CHAIN )     ## BUGS object to look at the R hat statistics
+# update the variable type of a specific variable to mi.info
+inf <- update(inf, "type", list(x9="count"))
 
-# NOT RUN
-#imp.CHAIN <- mi( imp.CHAIN, n.iter=5 ) ## You can pick up from where you left off
+# run the imputation
+## this is for test only
+IMP <- mi(dat, info=inf, n.iter=6, add.priors=prior.control(K=1))
+
+# pick up where you left off
+# IMP <- mi(IMP)       ## NOT RUN
+
+## this is the suggested (defautl) way of running mi, NOT RUN
+# IMP <- mi(dat, info=inf, add.priors=prior.control(K=1))
+
+# convergence checking
+converged(IMP)  ## You should get FALSE here because only n.iter is small 
+bugs.mi(IMP)    ## BUGS object to look at the R hat statistics
+
+# visually check the imputation
+plot(IMP)
 }
-\keyword{ models }
+\keyword{manip}
+\keyword{models}

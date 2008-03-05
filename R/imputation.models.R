@@ -5,39 +5,39 @@
 #  return( as.vector( sapply( type.list, match.arg, type ) ) )
 #}
 
-mi.types <- function ( ) {
-  type = c( "fixed"
-            ,"continuous"
-            ,"squareroot-continuous"
-            ,"logscale-continuous"
-            ,"ordered-categorical"
-            ,"unordered-categorical"
-            ,"dichotomous"
-            ,"predictive-mean-match"
-            ,"mixed" )
+mi.types <- function(){
+  type = c( "fixed",
+            "continuous",
+            "count",
+            "ordered-categorical",
+            "unordered-categorical",
+            "dichotomous",
+            "mixed",
+            "proportion",
+            "predictive-mean-match",
+            "positive-continuous")
   return( type )
 }
 
 mi.types.add <- function ( type.name ) {
   len <- length(body(mi.types)[[2]][[3]]) + 1
-  body(mi.types)[[2]][[3]][[len]] <<- type.name
+  body(mi.types)[[2]][[3]][[len]] <- type.name
 }
 
 ## To select the model 
-type.models <- function ( type ) {
-    type <- match.arg ( type, mi.types( ) )
+type.models <- function (type) {
+    type <- match.arg (type, mi.types( ) )
     imputation.method <- list (
-        "continuous"            = "mi.continuous"
-        ,"logscale-continuous"  = "mi.logcontinuous"
-        ,"squareroot-continuous"= "mi.sqrtcontinuous"
-        #,"squareroot-continuous"="mi.continuous( imp.formula options)
-        ,"ordered-categorical"  = "mi.polr"
-        ,"unordered-categorical"= "mi.categorical"
-        ,"dichotomous"          = "mi.dichotomous"
-        #,"mixed"                ="mi.continuous"
-        ,"mixed"                = "mi.mixed"
-        ,"predictive-mean-match"= "mi.pmm"
-        ,"fixed"                = "mi.fixed" 
+        "continuous"            = "mi.continuous",
+        "count"                 = "mi.count",
+        "ordered-categorical"   = "mi.polr",
+        "unordered-categorical" = "mi.categorical",
+        "dichotomous"           = "mi.dichotomous",
+        "positive-continuous"   = "mi.continuous",
+        "proportion"            = "mi.continuous",
+        "predictive-mean-match" = "mi.pmm",
+        "fixed"                 = "mi.fixed", 
+        "mixed"                 = "mi.continuous"
     )
-    return( imputation.method [ type ] ) # Will be NULL if the method is undefined
+    return(imputation.method[type]) # Will be NULL if the method is undefined
 }

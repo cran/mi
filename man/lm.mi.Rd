@@ -7,14 +7,19 @@
 % Methods
 \alias{print.mi.lm}
 \alias{display,mi.lm-method}
+\alias{coef,mi.lm-method}
+\alias{coefficients,mi.lm-method}
+\alias{se.coef,mi.lm-method}
 
 \title{ Linear Regression Function for Multiply Imputed Dataset }
 \description{
-  Linear Regression Function that pulls togather the estimates from multiply imputed dataset.
+  Linear Regression Function that pulls together the estimates from multiply imputed dataset.
 }
 \usage{
 lm.mi(formula, mi.object, ...)
 \S3method{print}{mi.lm}(x, \dots)
+\S4method{coef}{mi.lm}(object)
+\S4method{se.coef}{mi.lm}(object)
 \S4method{display}{mi.lm}(object, digits=2)
 }
 \arguments{
@@ -52,8 +57,8 @@ lm.mi(formula, mi.object, ...)
   y<-rnorm(100,(1+2*x),1.2) # y ~ 1 + 2*x + N(0,1.2)
  
   # create artificial missingness
-  x[seq(1,100,10)]<-NA
-  y[seq(2,98,10)]<-NA
+  x[seq(1,100,10)] <- NA
+  y[seq(2,98,10)] <- NA
   dat.xy <- data.frame(x,y)
  
   # imputation 
@@ -62,6 +67,8 @@ lm.mi(formula, mi.object, ...)
   # fitting linear regression 
   fit <- lm.mi(y ~ x, dat.mi)
   display(fit)
+  coef(fit)
+  se.coef(fit)
 }
 \seealso{
   \code{\link{mi}}, 

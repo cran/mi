@@ -15,8 +15,9 @@ mi.fixed <- function( formula, data = NULL, ... ) {
   if (length(dim(Y)) == 1) {
     nm <- rownames(Y)
     dim(Y) <- NULL
-    if (!is.null(nm)) 
+    if (!is.null(nm)){
       names(Y) <- nm
+    }
   }
   X <- mf[,-1,drop=FALSE]
   namesD <- if( is.null( data ) ) { 
@@ -30,7 +31,8 @@ mi.fixed <- function( formula, data = NULL, ... ) {
   n.mis <- sum ( mis )
   y.level <-  if ( is.numeric( Y ) ) {
                 sort( unique ( Y ) )
-              } else {
+              } 
+              else {
                 levels( factor( Y ) )
               }
   # main program
@@ -38,36 +40,34 @@ mi.fixed <- function( formula, data = NULL, ... ) {
   determ.pred <- rep( y.level, length( Y ) )
   names( determ.pred ) <- 1:length( determ.pred )
   random.pred <- determ.pred[is.na(Y)]
-  # calculate residual
-  #residual.val<- Y - determ.pred
-  # return the result
-  result <- list( model = list( call = NULL, coefficient = NULL, sigma = NULL ), 
-                  expected = NULL, random = NULL )
-  result$model$call    <- ""
-  result$expected <- determ.pred
-  result$random   <- random.pred
-  #result$residual <- residual.val
-  class ( result ) <- c( "mi.fixed", "mi.method","list" )
+  result <- new(c("mi.fixed", "mi.method"),
+              model = vector("list", 0),
+              expected = numeric(0), 
+              random = numeric(0))
+  result@model$call    <- ""
+  result@expected <- determ.pred
+  result@random   <- random.pred
   return( result )
-  on.exit( rm( fixd.imp) )
+  on.exit(rm(fixd.imp))
 }
 
-mi.copy <- function( Y, X, ... ) {
-  nameY <- deparse( substitute( Y ) )
-  nameX <- deparse( substitute( X ) )
-  mis   <- is.na( Y )
-  n.mis <- sum ( mis )
+mi.copy <- function(Y, X, ... ) {
+  nameY <- deparse(substitute(Y))
+  nameX <- deparse(substitute(X))
+  mis   <- is.na(Y)
+  n.mis <- sum(mis)
   # main program
   fixd.imp    <- nameX
   determ.pred <- unlist(X)
   names( determ.pred ) <- 1:length( determ.pred )
   random.pred <- determ.pred[mis]
   # return the result
-  result <- list( model = list( call = NULL, coefficient = NULL, sigma = NULL ), expected = NULL, random = NULL )
-  result$expected <- determ.pred
-  result$random   <- random.pred
-  #result$residual <- residual.val
-  class ( result ) <- c( "mi.copy", "mi.method","list" )
+  result <- new(c("mi.fixed", "mi.method"),
+              model = vector("list", 0),
+              expected = numeric(0), 
+              random = numeric(0))
+  result@expected <- determ.pred
+  result@random   <- random.pred
   return( result )
-  on.exit( rm( fixd.imp) )
+  on.exit(rm(fixd.imp))
 }

@@ -64,38 +64,6 @@ setMethod( "mi.hist", signature( object= "ANY", Yobs = "ANY"  ),
         
         axis( 1, tick = TRUE, col.axis = 'black' )
     }
-    else if( type == "logscale-continuous" ) {
-        #obs.nomis <- log( obs.nomis )
-        h.obs <- hist( obs.nomis, plot = FALSE, breaks = b )
-        h.mis <- hist( mis,  plot = FALSE, breaks = b )
-        h.imp <- hist( Yimp, plot = FALSE, breaks = b )
-        plot( range( h.imp$breaks ), c( 0, max( h.imp$counts ) * 1.05 ), yaxs = "i", xlab = xlab,
-             xlim = range( Yimp ),ylab = ylab, type = "n", bty = "l", main = main )
-        if( max( c( h.obs$counts, h.mis$counts, h.imp$counts)) > 100) {mlt<-0.2}
-        histlineplot ( h.mis, shift = -mlt*binwidth, 
-                  col = mis.col, lty = mis.lty, lwd = mis.lwd )
-        histlineplot ( h.obs, shift = mlt*binwidth, 
-                  col = obs.col, lty = obs.lty, lwd = obs.lwd ) 
-        histlineplot ( h.imp, col = imp.col , lty = imp.lty, lwd = imp.lwd ) 
-        axis( 1, tick = TRUE, col.axis = 'black' )
-        
-    }
-    else if( type == "squareroot-continuous" ) {
-        #obs.nomis <- log( obs.nomis )
-        h.obs <- hist( obs.nomis, plot = FALSE, breaks = b )
-        h.mis <- hist( mis,  plot = FALSE, breaks = b )
-        h.imp <- hist( Yimp, plot = FALSE, breaks = b )
-        plot( range( h.imp$breaks ), c( 0, max( h.imp$counts ) * 1.05 ), yaxs = "i", xlab = xlab,
-             xlim = range( Yimp ),ylab = ylab, type = "n", bty = "l", main = main )
-        if( max( c( h.obs$counts, h.mis$counts, h.imp$counts)) > 100) {mlt<-0.2}
-        histlineplot ( h.mis, shift = -mlt*binwidth, 
-                  col = mis.col, lty = mis.lty, lwd = mis.lwd )
-        histlineplot ( h.obs, shift = mlt*binwidth, 
-                  col = obs.col, lty = obs.lty, lwd = obs.lwd ) 
-        histlineplot ( h.imp, col = imp.col , lty = imp.lty, lwd = imp.lwd ) 
-        axis( 1, tick = TRUE, col.axis = 'black' )
-        
-    }
     else if( type == "continuous" ) {
         h.obs <- hist( obs.nomis, plot = FALSE, breaks = b )
         h.mis <- hist( mis,  plot = FALSE, breaks = b )
@@ -273,95 +241,6 @@ setMethod("mi.hist", signature( object = "mi.dichotomous",Yobs = "ANY"),
   axis(1, lab, tick = TRUE, col.axis = 'black')
 }
 )
-setMethod("mi.hist", signature(object = "mi.mixed",Yobs = "ANY"),  
-function ( object, Yobs, b = NULL, binwidth = NULL, gray.scale = FALSE,
-            main = paste("Histogram of ", deparse( substitute( Yobs ) )),  
-            xlab = deparse( substitute( Yobs ) ), ylab = "Frequency", 
-            obs.col = "blue", imp.col = "black", mis.col = "red",
-            obs.lty = 1, imp.lty = 1, mis.lty = 1,
-            obs.lwd = 1, imp.lwd = 1, mis.lwd = 1, mlt = 0.1, ... )
-{
-  Yimp <-imputed( object, Yobs )
-  mis  <- Yimp[ is.na( Yobs ) ] ##the vector of the imputed values
-  if( !is.null( is.na( Yobs ) ) ) { obs.nomis <- Yobs[ !is.na( Yobs ) ] }
-  if( is.null( binwidth ) ) { binwidth = ( max( Yimp ) - min( Yimp ) ) / sqrt( length( Yimp ) )}
-  if( is.null( b )) { b <- seq( min( Yimp ), max( Yimp ), length.out = sqrt( length( Yimp ) ) )}
-  if( gray.scale == TRUE ) { 
-    obs.col = gray( 0.6 ) 
-    imp.col = gray( 0.8 ) 
-    mis.col = gray( 0 )
-    obs.lty = 3
-    imp.lty = 1
-    mis.lty = 1
-  }
-  ipd   <- Yimp[ is.na( Yobs ) ]
-  obs   <- Yobs[ !is.na( Yobs ) ]
-  pz.ipd<- round( sum( ipd==0 ) / length( ipd ) * 100, 0 )
-  z.ipd <- c( paste( "zeros=", pz.ipd, "%" ) )
-  pz.obs<- round( sum( obs==0 ) / length( Yobs ) * 100, 0 ) #round(as.vector(table(Yobs[Yobs==0]))/length(Yobs.nomis)*100,0)
-  z.obs <- c( paste( "zeros=", pz.obs, "%" ) )
-  pz.imp<- round( sum( Yimp==0 )/ length( Yimp ) * 100, 0 ) #round(as.vector(table(imp[imp==0]))/length(imp)*100,0)
-  z.imp <-c( paste( "zeros=", pz.imp, "%" ) )
-  obs.nomis <- obs.nomis[ obs.nomis > 0 ]
-  mis  <- mis[ mis > 0 ]
-  Yimp <- Yimp[ Yimp > 0 ]
-  h.obs <- hist( obs.nomis, plot = FALSE, breaks = b )
-  h.mis <- hist( mis, plot = FALSE, breaks = b )
-  h.imp <- hist( Yimp, plot = FALSE, breaks = b )
-  plot( range( h.imp$breaks ), c( 0, max( h.imp$counts ) * 1.05 ), yaxs = "i", xlab = xlab,
-       xlim = range( Yimp ), ylab = ylab, type = "n", bty = "l", main = main )
-  xb <- max(h.imp$breaks)-max(h.imp$breaks) * 0.2
-  yb1 <- max( h.imp$counts ) - max( h.imp$counts ) * 0.1
-  yb2 <- max( h.imp$counts ) - max( h.imp$counts ) * 0.3
-  yb3 <- max( h.imp$counts ) - max( h.imp$counts ) * 0.5
-  text( xb, yb1, z.imp, col=imp.col,cex = .8 ) 
-  text( xb, yb2, z.obs, col=obs.col,cex = .8 )
-  text( xb, yb3, z.ipd, col=mis.col,cex = .8 )  
-  if( max( c( h.obs$counts, h.mis$counts, h.imp$counts)) > 100) {mlt<-0.2}
-  histlineplot ( h.mis, shift = -mlt*binwidth, 
-                  col = mis.col, lty = mis.lty, lwd = mis.lwd )
-  histlineplot ( h.obs, shift = mlt*binwidth, 
-                  col = obs.col, lty = obs.lty, lwd = obs.lwd ) 
-  histlineplot ( h.imp, col = imp.col , lty = imp.lty, lwd = imp.lwd ) 
-  axis( 1, tick = TRUE, col.axis = 'black' )
-}
-)
-
-setMethod("mi.hist", signature(object = "mi.sqrtcontinuous",Yobs = "ANY"),  
-function ( object, Yobs, b = NULL, binwidth = NULL, gray.scale = FALSE,
-            main = paste("Histogram of ", deparse( substitute( Yobs ) )),  
-            xlab = deparse( substitute( Yobs ) ), ylab = "Frequency", 
-            obs.col = "blue", imp.col = "black", mis.col = "red",
-            obs.lty = 1, imp.lty = 1, mis.lty = 1,
-            obs.lwd = 1, imp.lwd = 1, mis.lwd = 1, mlt = 0.1, ... )
-{
-  Yimp <-imputed( object, Yobs )
-  mis  <- Yimp[ is.na( Yobs ) ] ##the vector of the imputed values
-  if( !is.null( is.na( Yobs ) ) ) { obs.nomis <- Yobs[ !is.na( Yobs ) ] }
-  if( is.null( binwidth ) ) { binwidth = ( max( Yimp ) - min( Yimp ) ) / sqrt( length( Yimp ) ) }
-  if( is.null( b ) ) { b <- seq( min( Yimp ), max( Yimp ), length.out = sqrt( length( Yimp ) ) ) }
-  if( gray.scale == TRUE ) { 
-    obs.col = gray( 0.6 ) 
-    imp.col = gray( 0.8 ) 
-    mis.col = gray( 0 )
-    obs.lty = 3
-    imp.lty = 1
-    mis.lty = 1
-  }
-  h.obs <- hist( obs.nomis, plot = FALSE, breaks = b )
-  h.mis <- hist( mis,  plot = FALSE, breaks = b )
-  h.imp <- hist( Yimp, plot = FALSE, breaks = b )
-  plot( range( h.imp$breaks ), c( 0, max( h.imp$counts ) * 1.05 ), yaxs = "i", xlab = xlab,
-       xlim = range( Yimp ),ylab = ylab, type = "n", bty = "l", main = main )
-  if( max( c( h.obs$counts, h.mis$counts, h.imp$counts)) > 100) {mlt<-0.2}
-  histlineplot ( h.mis, shift = -mlt*binwidth, 
-                  col = mis.col, lty = mis.lty, lwd = mis.lwd )
-  histlineplot ( h.obs, shift = mlt*binwidth, 
-                  col = obs.col, lty = obs.lty, lwd = obs.lwd ) 
-  histlineplot ( h.imp, col = imp.col , lty = imp.lty, lwd = imp.lwd ) 
-  axis( 1, tick = TRUE, col.axis = 'black' )
-}
-)
 setMethod("mi.hist", signature( object = "mi.polr",Yobs = "ANY"),  
  function ( object, Yobs,  b = NULL, binwidth = NULL, gray.scale = FALSE, 
             main = paste("Histogram of ", deparse( substitute( Yobs ) )),  
@@ -370,8 +249,8 @@ setMethod("mi.hist", signature( object = "mi.polr",Yobs = "ANY"),
             obs.lty = 1, imp.lty = 1, mis.lty = 1,
             obs.lwd = 1, imp.lwd = 1, mis.lwd = 1, mlt = 0.1, ... )
 {
-  Yobs <-as.numeric(Yobs)
-  Yimp <-imputed(object,Yobs)
+  Yimp <- as.numeric(imputed(object, Yobs))
+  Yobs <- as.numeric(Yobs)
   mis  <- Yimp[ is.na( Yobs ) ] ##the vector of the imputed values
   if( !is.null( is.na( Yobs ) ) ) { obs.nomis <- Yobs[ !is.na( Yobs ) ] }
   if(is.factor(Yobs)){
@@ -449,7 +328,8 @@ setMethod("mi.hist", signature(object = "mi.categorical",Yobs="ANY"),
               obs.lty = 1, imp.lty = 1, mis.lty = 1,
               obs.lwd = 1, imp.lwd = 1, mis.lwd = 1, mlt = 0.1, ... )
  {
-  Yimp <-imputed(object,Yobs)
+  Yimp <- as.numeric(imputed(object,Yobs))
+  Yobs <- as.numeric(Yobs)
   mis  <- Yimp[ is.na( Yobs ) ] ##the vector of the imputed values
   if( !is.null( is.na( Yobs ) ) ) { obs.nomis <- Yobs[ !is.na( Yobs ) ] }
   if( is.null( binwidth ) ) { binwidth = ( max( Yimp ) - min( Yimp ) ) / sqrt( length( Yimp ) )}

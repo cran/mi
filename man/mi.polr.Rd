@@ -4,7 +4,9 @@
 \alias{mi.polr-class}
 % Function
 \alias{mi.polr}
-\alias{plot.mi.polr}
+\alias{resid,mi.polr-method}
+\alias{residuals,mi.polr-method}
+\alias{plot,mi.polr,ANY-method}
 \title{
     Elementary function: multinomial log-linear models to impute a ordered categorical variable.
 }
@@ -14,7 +16,8 @@
 \usage{
   mi.polr(formula, data = NULL, drop.unused.levels = TRUE, start = NULL, 
     n.iter = 100, \dots)
-  \S3method{plot}{mi.polr}( x, y, main=deparse( substitute( y ) ), gray.scale = FALSE, \dots )
+  \S4method{residuals}{mi.polr}(object, y)
+  \S4method{plot}{mi.polr,ANY}( x, y, main=deparse( substitute( y ) ), gray.scale = FALSE, \dots )
 }
 
 \arguments{
@@ -30,6 +33,7 @@
   \item{start}{ Starting value for bayespolr. }
   \item{n.iter}{ Maximum number of iteration for bayespolr. The default is 100.}
   \item{\dots}{ Currently not used. }
+  \item{object}{ \code{mi.polr} object.}
   \item{x}{\code{mi.polr} object.}
   \item{y}{ Observed values.}
   \item{main}{ main title of the plot. }

@@ -33,11 +33,17 @@ missing.pattern.plot ( data, y.order = FALSE, x.order = FALSE,
   Plot to visualize pattern of missingness in the data.  
 }
 \references{
-    Andrew Gelman and M. Grazia Pittau,  
-    A flexible program for missing-data imputation and model checking, 
-    Technical report, Columbia University, New York; Andrew Gelman and Jennifer Hill, 
-    Data Analysis Using Regression and Multilevel/Hierarchical Models, 
-    Cambridge University Press, 2007.
+    Kobi Abayomi, Andrew Gelman and Marc Levy. (2008).
+    \dQuote{Diagnostics for multivariate imputations}.
+    \emph{Applied Statistics} 57, Part 3: 273--291.
+
+    Andrew Gelman and Maria Grazia Pittau.
+    \dQuote{A flexible program for missing-data imputation and model checking.}
+    \emph{Technical report}. Columbia University, New York.
+   
+    Andrew Gelman and Jennifer Hill. (2007).
+    \emph{Data Analysis Using Regression and Multilevel/Hierarchical Models}.
+    Cambridge University Press.
 }
 \seealso{
   \code{\link{mi}}, 
