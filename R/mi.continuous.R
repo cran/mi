@@ -42,16 +42,21 @@ mi.continuous <- function ( formula, data = NULL, start = NULL,
                             n.iter = n.iter, start = start, 
                             drop.unused.levels = FALSE, Warning=FALSE,... )
   determ.pred <- predict( bglm.imp, newdata = data, type = "response" )
-  if(draw.from.beta){
-    sim.bglm.imp    <- sim(bglm.imp,1)
-    random.pred     <- rnorm(n.mis, 
-                            tcrossprod(cbind(X[mis,1,drop=FALSE]*0+1,X[mis,,drop=FALSE]),sim.bglm.imp$beta), 
-                            sim.bglm.imp$sigma)
+  if(n.mis>0){
+    if(draw.from.beta){
+      sim.bglm.imp    <- sim(bglm.imp,1)
+      random.pred     <- rnorm(n.mis, 
+                              tcrossprod(cbind(X[mis,1,drop=FALSE]*0+1,X[mis,,drop=FALSE]),sim.bglm.imp$beta), 
+                              sim.bglm.imp$sigma)
+    }
+    else{
+      random.pred <- rnorm(n.mis, determ.pred[mis], sigma.hat(bglm.imp))
+    }
+    names(random.pred) <- names(determ.pred[mis])
   }
   else{
-    random.pred <- rnorm(n.mis, determ.pred[mis], sigma.hat(bglm.imp))
+    random.pred <- numeric(0)
   }
-  names(random.pred) <- names(determ.pred[mis])
 
   # return
   result <- new(c("mi.continuous", "mi.method"),

@@ -1,15 +1,16 @@
 # ==============================================================================
 # missing pattern plot
 # ==============================================================================
-missing.pattern.plot <- function ( data, y.order = FALSE, x.order = FALSE, 
+mp.plot <- missing.pattern.plot <- function ( data, y.order = FALSE, x.order = FALSE, 
                                     xlab = "Index", ylab = "Variable", 
                                     main = NULL, gray.scale = FALSE,
-                                    obs.col = "blue", mis.col = "red", ... ) {
+                                    obs.col = "blue", mis.col = "red", ... ) 
+{
 
-  if ( is.null( main ) ) {
+  if (is.null(main)) {
     main <- deparse( substitute( data ) )
   }
-  index <- seq( nrow( data ) )
+  index <- seq(nrow(data))
   x.at =  1:nrow( data )
   x.lab = index
   if( y.order ) { 
@@ -24,25 +25,23 @@ missing.pattern.plot <- function ( data, y.order = FALSE, x.order = FALSE,
     x.lab= FALSE
   }
   col <- if( gray.scale ){ 
-           gray( c( 0, 1 ) ) 
-         } else { 
-           c( obs.col,mis.col ) 
+           gray(c(0, 1)) 
+         } 
+         else { 
+           c(obs.col, mis.col) 
          }
-  par( mar = c( 4.5, 11, 3, 1 ) )
-  par( mgp = c( 1, .3, 0 ) )
-  par( cex.lab = 0.7 )
-  image( x = 1:nrow( data ), y = 1:ncol( data ), z = as.matrix( is.na( data ) ), 
-          ylab = "", xlab = xlab, main = main, col = col ,yaxt = "n",tck=-0.05, xaxt="n", ... )
+#  par( mar = c( 4.5, 11, 3, 1 ) )
+#  par( mgp = c( 1, .3, 0 ) )
+#  par( cex.lab = 0.7 )
+  image(x = 1:nrow(data), y = 1:ncol(data), z = as.matrix(is.na(data)), 
+        ylab = "", xlab = xlab, main = main, col = col ,yaxt = "n",
+        tck = -0.05, xaxt="n", ...)
   box( "plot" )
   axis( side = 2, at = 1:ncol( data ), labels = names( data ), las = 1, 
          tick = FALSE, yaxs = "r", tcl = 0.3, xaxs ="i", yaxs = "i" )
-  mtext( ylab, side = 2 , line = 10, cex=0.7)
+  mtext( ylab, side = 3 , line = 10, cex=0.7)
   if( x.order ) { 
     axis( side = 1, at =x.at, labels = x.lab, tick = FALSE, 
           xaxs = "i", las = 1 )   
   } 
-}
-
-mp.plot <- function( data, ... ) {
-  return( missing.pattern.plot( data = data, ... ) )
 }

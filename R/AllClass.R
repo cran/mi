@@ -71,7 +71,7 @@ setClass("mi.continuous",
         representation(
             model    = "list", 
             expected = "numeric", 
-            random   = "numeric"),
+            random   = "ANY"),
             contains = "mi.method"
 )
 
@@ -79,7 +79,7 @@ setClass("mi.count",
         representation(
             model    = "list", 
             expected = "numeric", 
-            random   = "numeric"),
+            random   = "ANY"),
             contains = "mi.method"
 )
 

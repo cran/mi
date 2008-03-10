@@ -1,6 +1,6 @@
 Package: mi
-Version: 0.04-2
-Date: 2008-3-5
+Version: 0.04-3
+Date: 2008-3-10
 Title: Missing Data Imputation and Model Checking
 Author:
   Andrew Gelman <gelman@stat.columbia.edu>,
@@ -13,4 +13,4 @@ Depends: methods, MASS, nnet, car, arm, lme4, R2WinBUGS, abind
 Description: Missing-data imputation and model checking
 URL: http://www.stat.columbia.edu/~gelman/
 License: GPL (>=2)
-Packaged: Thu Mar  5 15:53:39 2009; SUYS
+Packaged: Tue Mar 10 16:50:21 2009; SUYS

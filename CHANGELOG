@@ -1,3 +1,13 @@
+2008-3-10 Yu-Sung Su     <ys463@columbia.edu>  
+   * DESCRIPTION (Version, Date): 0.04-3
+   * fix random jump, get coef and start from model fit
+
+2008-3-5 Yu-Sung Su     <ys463@columbia.edu>  
+   * DESCRIPTION (Version, Date): 0.04-2
+   * add mi.count
+   * add tpye "proportion"
+
+
 2008-2-23 Yu-Sung Su     <ys463@columbia.edu>  
    * R/coef: add coef for mi.lm and mi.glm
    * R/se.coef: add se.coef for mi.lm and mi.glm

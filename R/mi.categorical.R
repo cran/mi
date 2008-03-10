@@ -48,10 +48,15 @@ mi.categorical <- function( formula, data = NULL, n.iter = 100,
   #determ.pred <- as.vector( deter.prob %*% y.cat )
   determ.pred <- predict(lm.cat.imp, newdata=data, type="class")
 #  names( determ.pred ) <- 1:length( determ.pred )
-  random.pred <- Rmultnm( n.mis, deter.prob[mis,], 1:y.ncat)
-  random.pred <-  recode(random.pred, paste(1:y.ncat,"='",y.cat,"'",sep="",collapse=";") )        
+  if(n.mis>0){
+    random.pred <-  Rmultnm( n.mis, deter.prob[mis,], 1:y.ncat)
+    random.pred <-  recode(random.pred, paste(1:y.ncat,"='",y.cat,"'",sep="",collapse=";") )        
+    names( random.pred ) <- names( determ.pred[mis] )
+  }
   #  random.pred <- y.cat[random.pred]
-  names( random.pred ) <- names( determ.pred[mis] )
+  else{
+    random.pred <- NULL
+  }
   #resids <- as.numeric(Y)[!is.na(Y)] - as.numeric(determ.pred)[!is.na(Y)] 
   # return the result
   result <- new(c("mi.categorical", "mi.method"),

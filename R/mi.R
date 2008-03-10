@@ -106,8 +106,7 @@ setMethod("mi", signature(object = "data.frame"),
         #=================================================================
         prob.add.prior <- add.priors$K/s
         prob.add.prior <- ifelse(prob.add.prior > 1, 1, prob.add.prior)
-        q <- rbinom(1, 1, prob=prob.add.prior) 
-          
+        q <- rbinom(1, 1, prob=prob.add.prior)           
         if(q){
           cat(paste(CurrentVar, "*", sep=""), " ")
         }
@@ -123,7 +122,10 @@ setMethod("mi", signature(object = "data.frame"),
         dat <- data.frame(data[,CurVarFlg, drop=FALSE], mi.data[[i]][,!CurVarFlg])
         names(dat) <- c(CurrentVar, names(data[,!CurVarFlg, drop=FALSE] ))
         model.type <- as.character(type.models( info[[CurrentVar]]$type))
-
+        
+        if(q){
+          dat <- random.imp(dat, method = rand.imp.method)
+        }
         if(add.priors$augment.data){
           pct.aug <- add.priors$pct.aug
           n.aug <- trunc(nrow(data)*(pct.aug/100))
@@ -136,13 +138,7 @@ setMethod("mi", signature(object = "data.frame"),
         on.exit(options(show.error.messages = TRUE),add = TRUE)
         options(show.error.messages = FALSE)
         # Error Handling
-        if(q){
-          n.mis <- sum(is.na(dat[[CurrentVar]]))
-          mi.object[[i]][[CurrentVar]] <- new("mi.method", random = numeric(0))
-          mi.object[[i]][[CurrentVar]]@random <- sample(na.exclude(dat[[CurrentVar]]), n.mis, replace=TRUE)
-        }
-        else{
-          mi.object[[i]][[CurrentVar]] <- with(data = dat, 
+        mi.object[[i]][[CurrentVar]] <- with(data = dat, 
                                           do.call(model.type,
                                             args = c(list(formula = info[[CurrentVar]]$imp.formula, 
                                             data = dat,
@@ -153,17 +149,17 @@ setMethod("mi", signature(object = "data.frame"),
                                                     NULL
                                                   }),
                                           info[[CurrentVar]]$params)))
-        }
         # Error Handling
         on.exit()
         options(show.error.messages = TRUE)
         # Error Handling        
+        if(q){
+          mi.object[[i]][[CurrentVar]]@random <- dat[is.na(data[,CurrentVar, drop=FALSE]),CurrentVar]
+        }
         mi.data[[i]][[CurrentVar]][is.na(data[[CurrentVar]])] <- mi.object[[i]][[CurrentVar]]@random
         data.tmp <<- mi.data
-        if(!q){
-          coef.val[[CurrentVar]][[i]] <- rbind(coef.val[[CurrentVar]][[i]],coef(mi.object[[i]][[CurrentVar]]))
-          start.val[[i]][[jj]] <- coef(mi.object[[i]][[CurrentVar]])
-        }
+        coef.val[[CurrentVar]][[i]] <- rbind(coef.val[[CurrentVar]][[i]],coef(mi.object[[i]][[CurrentVar]]))
+        start.val[[i]][[jj]] <- coef(mi.object[[i]][[CurrentVar]])
       } ## variable loop 
       cat("\n" )
       
@@ -194,14 +190,14 @@ setMethod("mi", signature(object = "data.frame"),
     Time.Elapsed <- proc.time() - ProcStart
     if (s > 5 || ((((Time.Elapsed)/60)[3] > 0.5) && s > 2)){
       con.check <- as.bugs.array(AveVar[1:s, , ])
-      if(max(con.check$summary[,8]) < 1.049) { 
+      if(max(con.check$summary[,8]) < 1.1) { 
         converged.flg <- TRUE
         if(!continue.on.convergence){ 
           break
         }
       }
       if(((Time.Elapsed)/60)[3] > max.minutes){ 
-        time.out.flg <- TRUE 
+        time.out.flg <- TRUE
         break
       }
     }
@@ -261,7 +257,7 @@ setMethod("mi", signature(object = "data.frame"),
     info2 <- NULL
   }
   
-  mi <- new("mi", 
+  m <- new("mi", 
             call      = call,
             data      = org.data,
             m         = n.imp,
@@ -275,13 +271,13 @@ setMethod("mi", signature(object = "data.frame"),
   with(globalenv(), rm(data.tmp))
   if(post.run){
     if(add.priors$K>0){
-      mi <- mi(mi, continue.on.convergence=TRUE, n.iter=20)
+      m <- mi(m, continue.on.convergence=TRUE, n.iter=20)
     }
     if(add.priors$augment.data){
-      mi <- mi(mi, continue.on.convergence=TRUE, n.iter=20)
+      m <- mi(m, continue.on.convergence=TRUE, n.iter=20)
     }
   }
-  return(mi)
+  return(m)
 }
 )
 
@@ -506,9 +502,8 @@ setMethod("mi", signature(object = "mi"),
   else{
     info2 <- NULL
   }
-
   
-   mi <- new("mi", 
+   m <- new("mi", 
             call      = call,
             data      = org.data,
             m         = n.imp,
@@ -520,7 +515,7 @@ setMethod("mi", signature(object = "mi"),
             preprocess = preprocess,
             mi.info.preprocessed = info2)
   with(globalenv(), rm(data.tmp))
-  return(mi)
+  return(m)
 }
 )
 
