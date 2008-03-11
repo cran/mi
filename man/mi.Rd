@@ -40,13 +40,13 @@
 
 \usage{
 \S4method{mi}{data.frame}( object, info,  n.imp = 3, n.iter = 30, 
-    max.minutes = 20, rand.imp.method = "bootstrap", 
+    R.hat = 1.1, max.minutes = 20, rand.imp.method = "bootstrap", 
     preprocess = TRUE, continue.on.convergence = FALSE,
     seed = NA, check.coef.convergence = FALSE, 
     add.priors = prior.control(), post.run = TRUE)
     
 \S4method{mi}{mi}( object, info, n.imp = 3, n.iter = 30, 
-    max.minutes = 20, rand.imp.method = "bootstrap", 
+    R.hat = 1.1, max.minutes = 20, rand.imp.method = "bootstrap", 
     preprocess = TRUE, continue.on.convergence = FALSE,
     seed = NA, check.coef.convergence = FALSE)
 
@@ -57,6 +57,7 @@
   \item{info}{\code{\link{mi.info}} object.}
   \item{n.imp}{Number of multiple imputations. The default is \code{m = 3}.}
   \item{n.iter}{Number of iterations to get convergence. The default is 5.}
+  \item{R.hat}{R.hat statistic for convergence check, default is 1.1.}
   \item{max.minutes}{Maximum minutes to stop iterating.  The default is 20.}  
   \item{seed}{Random seed}
   \item{rand.imp.method}{Method for random imputation, see \code{\link{random.imp}}}
@@ -155,7 +156,7 @@ x7 <- rnorm(n)
 x8 <- factor(rep(seq(1,6),10)[sample(1:n, n)])
 x9 <- rpois(n, 50)
 x10 <- runif(n, 0.1, .99)
-y <- x1 + x2 + rnorm(n)
+y <- x1 + x2 + x9 + rnorm(n)
 fakedata <- cbind.data.frame(y, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10)
 
 # randomly create missing values

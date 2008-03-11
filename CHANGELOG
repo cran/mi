@@ -1,3 +1,8 @@
+2008-3-11 Yu-Sung Su     <ys463@columbia.edu>  
+   * DESCRIPTION (Version, Date): 0.04-4
+   * pass Rhat option to mi()
+
+
 2008-3-10 Yu-Sung Su     <ys463@columbia.edu>  
    * DESCRIPTION (Version, Date): 0.04-3
    * fix random jump, get coef and start from model fit

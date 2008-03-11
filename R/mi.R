@@ -12,7 +12,7 @@ prior.control <- function(augment.data = FALSE, pct.aug=10, K = 1){
 
 
 setMethod("mi", signature(object = "data.frame"), 
-        function (object, info, n.imp = 3, n.iter = 30, 
+        function (object, info, n.imp = 3, n.iter = 30, R.hat = 1.1,
                   max.minutes = 20, rand.imp.method = "bootstrap", 
                   preprocess = TRUE, continue.on.convergence = FALSE,
                   seed = NA, check.coef.convergence = FALSE, 
@@ -190,7 +190,7 @@ setMethod("mi", signature(object = "data.frame"),
     Time.Elapsed <- proc.time() - ProcStart
     if (s > 5 || ((((Time.Elapsed)/60)[3] > 0.5) && s > 2)){
       con.check <- as.bugs.array(AveVar[1:s, , ])
-      if(max(con.check$summary[,8]) < 1.1) { 
+      if(all(con.check$summary[,8]) < R.hat) { 
         converged.flg <- TRUE
         if(!continue.on.convergence){ 
           break
@@ -271,10 +271,10 @@ setMethod("mi", signature(object = "data.frame"),
   with(globalenv(), rm(data.tmp))
   if(post.run){
     if(add.priors$K>0){
-      m <- mi(m, continue.on.convergence=TRUE, n.iter=20)
+      m <- mi(m, continue.on.convergence=TRUE, n.iter=20, R.hat=R.hat)
     }
     if(add.priors$augment.data){
-      m <- mi(m, continue.on.convergence=TRUE, n.iter=20)
+      m <- mi(m, continue.on.convergence=TRUE, n.iter=20, R.hat=R.hat)
     }
   }
   return(m)
@@ -282,7 +282,7 @@ setMethod("mi", signature(object = "data.frame"),
 )
 
 setMethod("mi", signature(object = "mi"), 
-        function (object, info, n.imp = 3, n.iter = 30, 
+        function (object, info, n.imp = 3, n.iter = 30, R.hat = 1.1,
                   max.minutes = 20, rand.imp.method = "bootstrap", 
                   preprocess = TRUE, continue.on.convergence = FALSE,
                   seed = NA, check.coef.convergence = FALSE) 
@@ -436,7 +436,7 @@ setMethod("mi", signature(object = "mi"),
     Time.Elapsed <- proc.time() - ProcStart
     if (s > 5 || ((((Time.Elapsed)/60)[3] > 0.5) && s > 2)){
       con.check <- as.bugs.array(AveVar[1:s, , ])
-      if(max(con.check$summary[,8]) < 1.049) { 
+      if(all(con.check$summary[,8]) < R.hat) { 
         converged.flg <- TRUE
         if(!continue.on.convergence){ 
           break
@@ -465,7 +465,7 @@ setMethod("mi", signature(object = "mi"),
       else{ 
         "Unknown termination ("
       }
-      ,date(), ")\n")
+      , date(), ")\n")
       
   # Automatic Preprocess
 #  if( preprocess ) {
