@@ -1,3 +1,7 @@
+2008-3-20 Yu-Sung Su     <ys463@columbia.edu>  
+   * DESCRIPTION (Version, Date): 0.04-5
+   * R/mi: fix all(con.check) error
+
 2008-3-11 Yu-Sung Su     <ys463@columbia.edu>  
    * DESCRIPTION (Version, Date): 0.04-4
    * pass Rhat option to mi()
@@ -25,7 +29,6 @@
    * R/mi.preprocess: new mi.preprocess and mi.postprocess
    * R/typecast: new typecast, new type (postitive continuous)
    * R/imputed: add mi.categorical for imputed
-
 
 
 2008-1-31 Yu-Sung Su     <ys463@columbia.edu>  

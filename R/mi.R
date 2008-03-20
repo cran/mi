@@ -190,7 +190,7 @@ setMethod("mi", signature(object = "data.frame"),
     Time.Elapsed <- proc.time() - ProcStart
     if (s > 5 || ((((Time.Elapsed)/60)[3] > 0.5) && s > 2)){
       con.check <- as.bugs.array(AveVar[1:s, , ])
-      if(all(con.check$summary[,8]) < R.hat) { 
+      if(all(con.check$summary[,8] < R.hat)) { 
         converged.flg <- TRUE
         if(!continue.on.convergence){ 
           break
@@ -436,7 +436,7 @@ setMethod("mi", signature(object = "mi"),
     Time.Elapsed <- proc.time() - ProcStart
     if (s > 5 || ((((Time.Elapsed)/60)[3] > 0.5) && s > 2)){
       con.check <- as.bugs.array(AveVar[1:s, , ])
-      if(all(con.check$summary[,8]) < R.hat) { 
+      if(all(con.check$summary[,8] < R.hat)) { 
         converged.flg <- TRUE
         if(!continue.on.convergence){ 
           break
