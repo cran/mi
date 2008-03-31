@@ -27,8 +27,8 @@ lm.mi <- function (formula, mi.object, ... )
     pooled$se <- sqrt( W + ( 1 + 1 / m ) * B )  
     mi.lm.object <- new("mi.lm",  
                         call = call, 
-                        lm.mi.pooled = pooled, 
-                        lm.mi.fit = result )
+                        mi.pooled = pooled, 
+                        mi.fit = result )
     return( mi.lm.object )
 }
 
@@ -59,7 +59,7 @@ lm.mi <- function (formula, mi.object, ... )
 #    B <-colSums(do.call(rbind,coef) - Bhat_rep )^2/(m-1)
 #    pooled$se <- sqrt(W+(1+1/m)*B)
 #    pooled$coefficient <- Bhat
-#    mi.glm.object <- list(call = call, lm.mi.pooled = pooled, glm.mi.fit = result )
+#    mi.glm.object <- list(call = call, mi.pooled = pooled, mi.fit = result )
 #    class( mi.glm.object ) <- c("mi.glm","list")
 #    return( mi.glm.object )
 #}

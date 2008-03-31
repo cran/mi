@@ -126,7 +126,7 @@ setMethod( "mi.hist", signature( object= "ANY", Yobs = "ANY"  ),
         histlineplot ( h.imp, col = imp.col , lty = imp.lty, lwd = imp.lwd ) 
         axis( 1, lab, tick = TRUE, col.axis = 'black' )
     }     
-    else if( type == "predictive-mean-match" ) {
+    else if( type == "predictive-mean-matching" ) {
         #b <- seq( 0, ceiling( max( Yimp ) ), 0.2 )
         h.obs <- hist( obs.nomis, plot = FALSE, breaks = b )
         h.mis <- hist( mis, plot = FALSE, breaks = b )

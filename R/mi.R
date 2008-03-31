@@ -233,10 +233,11 @@ setMethod("mi", signature(object = "data.frame"),
          && info[[cor.idx]]$nmis > 0 
           && info[[cor.idx]]$include == FALSE ) {
       for ( ii in 1:n.imp ){
+        rho <- coef(lm(org.data[[names(info)[cor.idx]]] ~ org.data[[info[[cor.idx]]$determ.pred]]))[2]
         mi.object[[ii]][[names(info)[[cor.idx]]]] <- do.call( mi.copy, 
                                                               args=list(
                                                                 Y=org.data[[names(info)[cor.idx]]],
-                                                                X=mi.data[[ii]][info[[cor.idx]]$determ.pred]))
+                                                                X=(mi.data[[ii]][info[[cor.idx]]$determ.pred])*rho))
       }
     }
   }

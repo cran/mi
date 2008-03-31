@@ -35,8 +35,8 @@ lm.mi(formula, mi.object, ...)
 }
 \value{
   \item{call}{the matched call.}
-  \item{lm.mi.pooled}{pulled estimates from the multiple dataset.}
-  \item{lm.mi.fit}{estimates from each dataset. See \code{lm} for details.}
+  \item{mi.pooled}{pulled estimates from the multiple dataset.}
+  \item{mi.fit}{estimates from each dataset. See \code{lm} for details.}
 
 }
 \references{

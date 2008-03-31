@@ -63,7 +63,7 @@ mi.info <- function( data, threshhold  = 0.99999 )
                           FALSE
                         }   
     info[[i]]$include <- if( info[[i]]$is.ID ){ 
-                          FALSE 
+                            FALSE 
                           } 
                           else { 
                             TRUE 
@@ -608,7 +608,7 @@ mi.default.check<- function( n.iter=30, m=3, max.minutes =20, continue.on.conver
     m <- scan( what = double( ), nmax = 1 )
   }
   # time 
-  cat("mi will run for 20 minutes by default")
+  cat("mi will run for 20 minutes by default \n")
   resp.time<-menu(c("yes", "no" ),title="would you like to change it?")
   if(resp.time==1){
     cat("enter number of minutes for mi to run\n")

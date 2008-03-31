@@ -64,7 +64,9 @@ mi.preprocess <- function(data, type=NULL, varnames = NULL){
       var.name <- var.name[-idx]
       data <- data[,-idx]
       data <- cbind(data, TMP)
-      colnames(data)[1:length(var.name)] <- var.name
+      if(length(var.name)>0){
+        colnames(data)[1:length(var.name)] <- var.name
+      }
       data <- as.data.frame(data)
     }
     else{
@@ -115,7 +117,9 @@ mi.preprocess <- function(data, type=NULL, varnames = NULL){
       var.name <- var.name[-idx]
       data <- data[,-idx]
       data <- cbind(data, TMP)
-      colnames(data)[1:length(var.name)] <- var.name
+      if(length(var.name)>0){
+        colnames(data)[1:length(var.name)] <- var.name
+      }
       data <- as.data.frame(data)
     }
     else{

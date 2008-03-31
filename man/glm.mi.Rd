@@ -4,6 +4,7 @@
 \alias{mi.glm-class}
 % Functions
 \alias{glm.mi}
+\alias{bayesglm.mi}
 % Methods
 \alias{print.mi.glm}
 \alias{display,mi.glm-method}
@@ -12,7 +13,7 @@
 \alias{se.coef,mi.glm-method}
 
 
-\title{ Generalized Linear Modeling Function for Multiply Imputed Dataset }
+\title{Generalized Linear Modeling Function for Multiply Imputed Dataset }
 
 \description{
   Generalized Linear Modeling Function that pulls together the estimates from multiple imputed dataset.
@@ -20,6 +21,7 @@
 
 \usage{
 glm.mi(formula, mi.object, family = gaussian, ...)
+bayesglm.mi(formula, mi.object, family = gaussian, ...)
 \S3method{print}{mi.glm}(x, \dots)
 \S4method{coef}{mi.glm}(object)
 \S4method{se.coef}{mi.glm}(object)
@@ -33,15 +35,15 @@ glm.mi(formula, mi.object, family = gaussian, ...)
   \item{x}{\code{mi.glm} object.}
   \item{object}{\code{mi.glm} object.}
   \item{digits}{number of significant digits to display, default=2.}
-  \item{\dots}{ Any option to pass on to glm function. }
+  \item{\dots}{ Any option to pass on to \code{glm} or \code{bayesglm} function. }
 }
 \details{
-  See \code{\link[stats]{glm}}.
+  See \code{\link[stats]{glm}}, \code{\link[arm]{bayesglm}}.
 }
 \value{
   \item{call}{the matched call.}
-  \item{glm.mi.pooled}{pulled estimates from the multiple dataset.}
-  \item{glm.mi.fit}{estimates from each dataset. See \code{glm} for details.}
+  \item{mi.pooled}{pulled estimates from the multiple dataset.}
+  \item{mi.fit}{estimates from each dataset. See \code{glm} for details.}
 
 }
 \references{
@@ -74,6 +76,12 @@ glm.mi(formula, mi.object, family = gaussian, ...)
   display(fit)
   coef(fit)
   se.coef(fit)
+  
+  fit2 <- bayesglm.mi(y ~ x, dat.mi, family = gaussian)
+  display(fit2)
+  coef(fit2)
+  se.coef(fit2)
+
 }
 \seealso{
   \code{\link{mi}}, 

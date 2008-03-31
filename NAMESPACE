@@ -63,6 +63,7 @@ exportMethods(
 )
 
 export(
+  bayesglm.mi,
   bugs.mi,
   call.mi,
   conv.plot,
@@ -70,12 +71,15 @@ export(
   convergence.plot,
   data.mi,
   glm.mi,
+  glmer.mi,
   imp,
   imputed,
   info.mi,
   is.mi,
   is.mi.info,
   lm.mi,
+  lmer.mi,
+  glmer.mi,
   m,
   mi,
   marginal.scatterplot,
@@ -83,6 +87,7 @@ export(
   mi.categorical,
   mi.completed,
   mi.continuous, 
+  mi.copy,
   mi.count,
   mi.data.frame,
   mi.dichotomous,
@@ -119,6 +124,7 @@ S3method(update, mi.info)
 S3method(print, mi)
 S3method(print, mi.glm)
 S3method(print, mi.lm)
+S3method(print, mi.mer)
 S3method(print, mi.info)
 S3method(print, mi.method)
 S3method("[<-", mi.info)

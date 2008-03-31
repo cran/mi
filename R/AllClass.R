@@ -26,10 +26,20 @@ setClass("mi",
 setClass("mi.glm",
             representation(
                 call           = "call",
-                glm.mi.pooled  = "list" ,
-                glm.mi.fit     = "list"),
+                mi.pooled  = "list" ,
+                mi.fit     = "list"),
             contains  = "list"
 )
+
+setClass("mi.mer",
+            representation(
+                call         = "call",
+                mi.pooled = "list" ,
+                mi.fit    = "list"),
+            contains  = "list"
+)
+
+
 
 
 #setClass("mi.initialize",
@@ -52,8 +62,8 @@ setClass("mi.glm",
 setClass("mi.lm",
             representation(
                 call          = "call",
-                lm.mi.pooled  = "list" ,
-                lm.mi.fit     = "list"),
+                mi.pooled  = "list" ,
+                mi.fit     = "list"),
                 contains      = "list"
 )
 

@@ -16,13 +16,16 @@
 
 \usage{
  mi.fixed( formula, data = NULL, ... )
+ mi.copy(Y, X, ...)
 % \S3method{plot}{mi.copy}( x, y, main=deparse( substitute( y ) ), gray.scale = FALSE, \dots)
 }
 
 \arguments{
   \item{formula}{an object of class '"formula"' (or one that can be coerced to that class): a symbolic description of the model to be fitted.  See bayesglm 'formula' for details.}
   \item{data}{ A data frame containing the incomplete data and the matrix of the complete predictors. }
-  \item{\dots}{ Currently not used. }
+  \item{Y}{A variable that is correlated with X}.
+  \item{X}{A variable that is correlated with Y}.
+  \item{\dots}{ Currently not used}
 %  \item{x}{ An object of class '"mi.copy"'.}
 %  \item{y}{ Observed values.}
 %  \item{main}{ main title of the plot. }
@@ -51,6 +54,17 @@
     \code{ \link{mi.info}}, 
     \code{\link{mi.method}},
     \code{ \link{mi}}
+}
+\examples{
+# fake data
+n <- 100
+x1 <- rbinom(n, 1, .45)
+x2 <- 2*x1
+x1[c(1, 3, 5, 20, 26)] <- NA
+
+# impute data
+mi.copy(x1, x2)
+
 }
 \keyword{models}
 \keyword{aplot}

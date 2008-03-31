@@ -14,17 +14,20 @@ mi.types()
 
 \arguments{
   \item{type}{Nine types: \code{continuous}, 
+        \code{count},
         \code{ordered-categorical}, 
         \code{unordered-categorical}, 
         \code{dichotomous},
+        \code{positive-continuous},
+        \code{proportion},
+        \code{predictive-mean-matching},
         \code{mixed},
-        \code{redictive-mean-match},
         \code{fixed}}
 }
 
 \author{
-  Masanao Yajima \email{yajima@stat.columbia.edu},
   Yu-Sung Su \email{ys463@columbia.edu},
+  Masanao Yajima \email{yajima@stat.columbia.edu},
   Andrew Gelman \email{gelman@stat.columbia.edu}
 }
 

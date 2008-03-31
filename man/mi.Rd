@@ -56,7 +56,7 @@
   \item{object}{A data frame containing the incomplete data. Missing data are coded as NA or mi object.}
   \item{info}{\code{\link{mi.info}} object.}
   \item{n.imp}{Number of multiple imputations. The default is \code{m = 3}.}
-  \item{n.iter}{Number of iterations to get convergence. The default is 5.}
+  \item{n.iter}{Number of iterations to get convergence. The default is 30.}
   \item{R.hat}{R.hat statistic for convergence check, default is 1.1.}
   \item{max.minutes}{Maximum minutes to stop iterating.  The default is 20.}  
   \item{seed}{Random seed}
@@ -70,7 +70,7 @@
       \code{\link{mi}}. See the documentation for \code{\link{prior.control}} for details.}  
   \item{post.run}{default is \code{TRUE} which will run 20 more iterations after the \code{mi} is finished
     if and only if some priors have been added into the \code{mi} process. This is to mitigate the 
-    influence the importance of the priors to the whole procedure.}
+    influence of the priors to the whole procedure.}
 }
 
 \value{ 
@@ -156,11 +156,11 @@ x7 <- rnorm(n)
 x8 <- factor(rep(seq(1,6),10)[sample(1:n, n)])
 x9 <- rpois(n, 50)
 x10 <- runif(n, 0.1, .99)
-y <- x1 + x2 + x9 + rnorm(n)
+y <- x1 + x2 + x7 + x9 + rnorm(n)
 fakedata <- cbind.data.frame(y, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10)
 
 # randomly create missing values
-dat <- mi:::.create.missing(fakedata, pct.mis=10)
+dat <- mi:::.create.missing(fakedata, pct.mis=30)
 
 # get information matrix of the data
 inf <- mi.info(dat)

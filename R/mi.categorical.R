@@ -47,7 +47,7 @@ mi.categorical <- function( formula, data = NULL, n.iter = 100,
   }
   #determ.pred <- as.vector( deter.prob %*% y.cat )
   determ.pred <- predict(lm.cat.imp, newdata=data, type="class")
-#  names( determ.pred ) <- 1:length( determ.pred )
+  names( determ.pred ) <- 1:length( determ.pred )
   if(n.mis>0){
     random.pred <-  Rmultnm( n.mis, deter.prob[mis,], 1:y.ncat)
     random.pred <-  recode(random.pred, paste(1:y.ncat,"='",y.cat,"'",sep="",collapse=";") )        

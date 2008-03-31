@@ -35,6 +35,9 @@ print.mi.lm <- function(x, ...){
   display(x, ...)
 }
   
+print.mi.mer <- function(x, ...){
+  display(x, ...)
+}
   
 
   

@@ -1,3 +1,18 @@
+2008-3-31 Yu-Sung Su     <ys463@columbia.edu>  
+   * DESCRIPTION (Version, Date): 0.04-6
+   * R/coef: add mi.mer method
+   * R/se.coef: add mi.mer method
+   * R/display: add mi.mer method
+   * R/bayesglm.mi: add bayesglm.mi
+   * R/lmer.mi: add lmer.mi, glmer.mi
+   * R/mi: add rho into mi.copy procedure to deal with y = 2x
+
+
+2008-3-20 Yu-Sung Su     <ys463@columbia.edu>  
+   * R/mi.categorical: fix idx name of the random imputed values
+   * R/mi.polr: fix idx name of the random imputed values
+
+
 2008-3-20 Yu-Sung Su     <ys463@columbia.edu>  
    * DESCRIPTION (Version, Date): 0.04-5
    * R/mi: fix all(con.check) error

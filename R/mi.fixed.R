@@ -52,6 +52,8 @@ mi.fixed <- function( formula, data = NULL, ... ) {
 }
 
 mi.copy <- function(Y, X, ... ) {
+#  fit <- lm(Y ~ unlist(X))
+#  rho <- coef(fit)[2]
   nameY <- deparse(substitute(Y))
   nameX <- deparse(substitute(X))
   mis   <- is.na(Y)
@@ -60,13 +62,13 @@ mi.copy <- function(Y, X, ... ) {
   fixd.imp    <- nameX
   determ.pred <- unlist(X)
   names( determ.pred ) <- 1:length( determ.pred )
-  random.pred <- determ.pred[mis]
+  random.pred <- determ.pred[mis] #* rho
   # return the result
   result <- new(c("mi.fixed", "mi.method"),
               model = vector("list", 0),
               expected = numeric(0), 
               random = numeric(0))
-  result@expected <- determ.pred
+  result@expected <- determ.pred #* rho
   result@random   <- random.pred
   return( result )
   on.exit(rm(fixd.imp))

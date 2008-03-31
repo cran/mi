@@ -14,7 +14,7 @@ mi.types <- function(){
             "dichotomous",
             "mixed",
             "proportion",
-            "predictive-mean-match",
+            "predictive-mean-matching",
             "positive-continuous")
   return( type )
 }
@@ -35,7 +35,7 @@ type.models <- function (type) {
         "dichotomous"           = "mi.dichotomous",
         "positive-continuous"   = "mi.continuous",
         "proportion"            = "mi.continuous",
-        "predictive-mean-match" = "mi.pmm",
+        "predictive-mean-matching" = "mi.pmm",
         "fixed"                 = "mi.fixed", 
         "mixed"                 = "mi.continuous"
     )
