@@ -1,7 +1,4 @@
-#==============================================================================
-# Generalized Linear Modeling for multiply imputed dataset
-#==============================================================================
-glm.mi <- function (formula, mi.object, family = gaussian, ... ) 
+bayespolr.mi <- function (formula, mi.object, ... ) 
 {
     call   <- match.call( )
     m      <- m(mi.object)
@@ -10,14 +7,13 @@ glm.mi <- function (formula, mi.object, family = gaussian, ... )
     mi.data <- mi.completed(mi.object)
   
     for ( i in 1:m ) {
-      result[[i]] <- glm( formula, family = family, 
-                          data = mi.data[[i]], ... )
+      result[[i]] <- bayespolr( formula, data = mi.data[[i]], ... )
     }
     coef   <- vector( "list", m )
     se     <- vector( "list", m )
     for( j in 1:m ) {
-      coef[[j]]<- lapply( result, summary )[[ j ]]$coef[ ,1]
-      se[[j]]  <- lapply( result, summary )[[ j ]]$coef[ ,2]
+      coef[[j]]<- lapply(result, summary)[[j]]$coefficients[ ,1]
+      se[[j]]  <- lapply(result, summary)[[j]]$coefficients[ ,2]
     }
     pooled <- mi.pooled(coef, se, m)
     mi.pooled.object <- new("mi.pooled",

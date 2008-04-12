@@ -1,4 +1,33 @@
-2008-3-31 Yu-Sung Su     <ys463@columbia.edu>  
+2009-4-12 Yu-Sung Su     <ys463@columbia.edu>  
+   * DESCRIPTION (Version, Date): 0.05-1   
+   * R/mi.preprocess: new mi.preprocess and mi.postprocess
+   * add "log-contiunous" variable type
+
+2009-4-7 Yu-Sung Su     <ys463@columbia.edu>  
+   * man/mi.pooled: new doc for mi.pooled
+   * R/AllClass: mi.lm, mi.glm, mi.mer are obsoleted
+   * R/mi.pooled: new function to pool estimates
+
+
+2009-4-5 Yu-Sung Su     <ys463@columbia.edu>  
+   * R/mi: fix dimensional probelm when model is of mulitnom; 
+      now coef.convergence is working!
+   * R/mi.preprocess: fix labels lost for unordered-categorical type
+
+2009-4-3 Yu-Sung Su     <ys463@columbia.edu>  
+   * R/mi: monitor the convergence of unordered-categorical type with 
+      binary transformation
+   * R/AllInternal: add .cat2binary .catvarnames, .fool, .foo2
+
+
+2009-4-2 Yu-Sung Su     <ys463@columbia.edu>  
+   * R/mi: allow add.priors to be logical, set FALSE to speicify no prior
+
+
+2009-4-2 Yu-Sung Su     <ys463@columbia.edu>  
+   * R/mi: allow add.priors to be logical, set FALSE to speicify no prior
+
+2009-3-31 Yu-Sung Su     <ys463@columbia.edu>  
    * DESCRIPTION (Version, Date): 0.04-6
    * R/coef: add mi.mer method
    * R/se.coef: add mi.mer method
@@ -8,36 +37,36 @@
    * R/mi: add rho into mi.copy procedure to deal with y = 2x
 
 
-2008-3-20 Yu-Sung Su     <ys463@columbia.edu>  
+2009-3-20 Yu-Sung Su     <ys463@columbia.edu>  
    * R/mi.categorical: fix idx name of the random imputed values
    * R/mi.polr: fix idx name of the random imputed values
 
 
-2008-3-20 Yu-Sung Su     <ys463@columbia.edu>  
+2009-3-20 Yu-Sung Su     <ys463@columbia.edu>  
    * DESCRIPTION (Version, Date): 0.04-5
    * R/mi: fix all(con.check) error
 
-2008-3-11 Yu-Sung Su     <ys463@columbia.edu>  
+2009-3-11 Yu-Sung Su     <ys463@columbia.edu>  
    * DESCRIPTION (Version, Date): 0.04-4
    * pass Rhat option to mi()
 
 
-2008-3-10 Yu-Sung Su     <ys463@columbia.edu>  
+2009-3-10 Yu-Sung Su     <ys463@columbia.edu>  
    * DESCRIPTION (Version, Date): 0.04-3
    * fix random jump, get coef and start from model fit
 
-2008-3-5 Yu-Sung Su     <ys463@columbia.edu>  
+2009-3-5 Yu-Sung Su     <ys463@columbia.edu>  
    * DESCRIPTION (Version, Date): 0.04-2
    * add mi.count
    * add tpye "proportion"
 
 
-2008-2-23 Yu-Sung Su     <ys463@columbia.edu>  
+2009-2-23 Yu-Sung Su     <ys463@columbia.edu>  
    * R/coef: add coef for mi.lm and mi.glm
    * R/se.coef: add se.coef for mi.lm and mi.glm
 
 
-2008-2-4 Yu-Sung Su     <ys463@columbia.edu>  
+2009-2-4 Yu-Sung Su     <ys463@columbia.edu>  
    * man/prepocess: new doc
    * R/mi.continuous: when start is null, no longer set n.iter=1
    * R/mi.dichotomous: when start is null, no longer set n.iter=1
@@ -46,16 +75,16 @@
    * R/imputed: add mi.categorical for imputed
 
 
-2008-1-31 Yu-Sung Su     <ys463@columbia.edu>  
+2009-1-31 Yu-Sung Su     <ys463@columbia.edu>  
    * R/glm.mi: auto.postprocess
    * R/lm.mi: auto.postprocess
 
 
-2008-1-31 Yu-Sung Su     <ys463@columbia.edu>  
+2009-1-31 Yu-Sung Su     <ys463@columbia.edu>  
    * DESCRIPTION (Version, Date): 0.03-0.1
 
 
-2008-1-26 Yu-Sung Su     <ys463@columbia.edu>  
+2009-1-26 Yu-Sung Su     <ys463@columbia.edu>  
    * clean up redundant code
    * no more squareroot-continuous, logscale-continuous, mi.mixed, mi.start, mi.matrix
    * R/AllInternal: add internal function from mi.info
@@ -64,24 +93,24 @@
       2. correct imp.formula and move to AllInternal
   
 
-2008-1-21 Yu-Sung Su     <ys463@columbia.edu>  
+2009-1-21 Yu-Sung Su     <ys463@columbia.edu>  
    * man/mi: description about add.priors.
    * R/mi: merge augment.data and K into add.priors.
 
-2008-1-17 Yu-Sung Su     <ys463@columbia.edu>  
+2009-1-17 Yu-Sung Su     <ys463@columbia.edu>  
    * man/mi.compeleted: add an example of mi.data.list
    * R/AllInternal: add .preprocess.data, .postprocess.data, .create.missing
    * R/AllGeneric: add mi.data.list
    * R/mi.completed: add mi.data.list.mi
 
-2008-1-8 Yu-Sung Su     <ys463@columbia.edu>  
+2009-1-8 Yu-Sung Su     <ys463@columbia.edu>  
    * R/mi.info.update: make mi.info.update into S3 method.
 
-2008-1-7 Yu-Sung Su     <ys463@columbia.edu>  
+2009-1-7 Yu-Sung Su     <ys463@columbia.edu>  
    * DESCRIPTION (Version, Date): depend abind package
    * array.append and array.append3 are obsolete.  Use abind instead.
 
-2008-1-5 Yu-Sung Su     <ys463@columbia.edu>  
+2009-1-5 Yu-Sung Su     <ys463@columbia.edu>  
    * DESCRIPTION (Version, Date): 0.02-03
 
 2008-12-30 Yu-Sung Su     <ys463@columbia.edu>  

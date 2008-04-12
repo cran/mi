@@ -23,21 +23,6 @@ setClass("mi",
             contains  = "list"
 )
 
-setClass("mi.glm",
-            representation(
-                call           = "call",
-                mi.pooled  = "list" ,
-                mi.fit     = "list"),
-            contains  = "list"
-)
-
-setClass("mi.mer",
-            representation(
-                call         = "call",
-                mi.pooled = "list" ,
-                mi.fit    = "list"),
-            contains  = "list"
-)
 
 
 
@@ -57,15 +42,6 @@ setClass("mi.mer",
 #              contains  = "list"
 #)
 
-
-
-setClass("mi.lm",
-            representation(
-                call          = "call",
-                mi.pooled  = "list" ,
-                mi.fit     = "list"),
-                contains      = "list"
-)
 
 
 setClass("mi.method",
@@ -145,4 +121,13 @@ setClass("mi.copy",
             expected = "ANY", 
             random   = "ANY"),
             contains = "mi.method"
+)
+
+
+setClass("mi.pooled",
+            representation(
+                call       = "call",
+                mi.pooled  = "list" ,
+                mi.fit     = "list"),
+                contains   = "list"
 )

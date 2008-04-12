@@ -3,7 +3,7 @@ mi.completed.default <- function(object, m = 1){
   if(object@preprocess){
     info <- object@mi.info.preprocessed
     mimatrix <- data.mi(object)
-    mimatrix <- mi.preprocess(mimatrix, type=object@mi.info$type)$data
+    mimatrix <- mi.preprocess(mimatrix, info=object@mi.info)$data
   }
   else{
     info <- info.mi(object)
@@ -29,7 +29,8 @@ setMethod("mi.completed", signature( object = "mi" ),
       data[[i]] <- mi.completed.default(object, m = i) 
     }
     if(object@preprocess){
-      data <- mi.postprocess(data)
+      info <- object@mi.info.preprocessed
+      data <- mi.postprocess(data, info)
     }
     return(data)
   }
@@ -40,6 +41,14 @@ setMethod("mi.completed", signature( object = "mi" ),
 
 setMethod( "mi.data.frame", signature( object = "mi" ),
   function ( object, m = 1) {
-    mi.completed.default( object, m = m) 
+    if(object@preprocess){
+      data <- mi.completed.default(object, m=m)
+      aa <<- data
+      data <- mi.postprocess(data, info=object@mi.info.preprocessed)
+    }
+    else{
+      data <- mi.completed.default(object, m = m) 
+    }
+    return(data)
   }
 )

@@ -5,7 +5,7 @@
 \alias{mi.data.frame,mi-method}
 
 \title{ 
-    Multiple Imputed Dataframes
+    Multiply Imputed Dataframes
 }
 
 \description{
@@ -43,11 +43,11 @@
 }
 \examples{
   data(CHAIN)
-  imp <- mi (CHAIN, n.iter=6)
+  IMP <- mi (CHAIN, n.iter=6, add.priors=FALSE)
   # get all imputed dataset
-  imputed.matrix <- mi.completed (imp)  
+  imputed.matrix <- mi.completed (IMP)  
   # get the 3rd chain of the imputed dataset
-  imputed.data.frame <- mi.data.frame(imp, m=3) 
+  imputed.data.frame <- mi.data.frame(IMP, m=3) 
 }
 \keyword{models}
 \keyword{manip}

@@ -14,6 +14,7 @@ mi.types()
 
 \arguments{
   \item{type}{Nine types: \code{continuous}, 
+        \code{log-continuous},
         \code{count},
         \code{ordered-categorical}, 
         \code{unordered-categorical}, 

@@ -26,19 +26,10 @@ print.mi <- function ( x, ... ) {
   
   
     
-print.mi.glm <- function(x, ...){
+print.mi.pooled <- function(x, ...){
   display(x, ...)
 }
 
-
-print.mi.lm <- function(x, ...){
-  display(x, ...)
-}
-  
-print.mi.mer <- function(x, ...){
-  display(x, ...)
-}
-  
 
   
   

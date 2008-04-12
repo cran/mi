@@ -1,5 +1,16 @@
+2009-4-5 Yu-Sung Su     <ys463@columbia.edu>  
+  * bayesglm for linear regression seems buggy.
+  * mi.polr seems to create NaN.
+  * fix coef convergence check # DONE
+
+2009-4-2 Yu-Sung Su     <ys463@columbia.edu>  
+  * add option qui for convergence check
+  * add color visualization for convergence check
+  * check convergence of unodered-categorical variable 
+    using binary decomposition # DONE
+
 2009-3-5 Yu-Sung Su     <ys463@columbia.edu>  
-  * add more examples that use all the type
+  * add more examples that use all the type # DONE
   * plot the orginal data, not the preprocessed one
   * fix missing.pattern.plot, not pretty
   

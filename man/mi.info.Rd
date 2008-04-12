@@ -22,8 +22,8 @@
 \arguments{
   \item{data}{ dataframe or matrix of dataset with missing data coded as NAs. }
   \item{threshhold}{ Threshhold value for correlation to be considered a problem.}
-  \item{x}{ An object of a class '"mi.info"'.}
-  \item{object}{ An object of a class '"mi.info"'.}
+  \item{x}{ An object of a class \code{mi.info}.}
+  \item{object}{ An object of a class \code{mi.info}.}
   \item{\dots}{ Currently not used.}
 }
 \details{

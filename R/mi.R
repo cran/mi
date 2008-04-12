@@ -28,6 +28,12 @@ setMethod("mi", signature(object = "data.frame"),
   }
   ProcStart     <- proc.time()                  # starting time
   
+  if(is.logical(add.priors)){
+    if(!add.priors){
+      add.priors <- prior.control(augment.data=FALSE, K=0)
+    }
+  }
+  
   # variable initialization
   time.out.flg  <- FALSE
   converged.flg <- FALSE
@@ -47,7 +53,7 @@ setMethod("mi", signature(object = "data.frame"),
 
   #  # Automatic Preprocess
   if( preprocess ) {
-    proc.tmp <- mi.preprocess(data, type=info$type)
+    proc.tmp <- mi.preprocess(data, info)
     data <- as.data.frame(proc.tmp$data)
     info.org <- info
     info <- mi.info(data)
@@ -55,19 +61,29 @@ setMethod("mi", signature(object = "data.frame"),
       info[[i]]$type <- proc.tmp$type[[i]]
     }
     info <- mi.info.formula.default(data, info)
+    info$imp.formula[1:length(info.org)] <- info.org$imp.formula
   }  
 
   col.mis    <- !complete.cases(t(data)) 
   ncol.mis   <- sum(col.mis)
-  AveVar  <- array(NA, c(n.iter, n.imp, dim(data[,info$include])[2]*2))
+  tot.nlevel <- sum(sapply(.level(info), length))
+  tot.n.unord.cat.var <- sum(sapply(.level(info), is.numeric))
+  n.col.sims.array <- dim(data[, info$include])[2] + tot.nlevel - tot.n.unord.cat.var
+  AveVar  <- array(NA, c(n.iter, n.imp, n.col.sims.array*2))
   s_start <- 1
   s_end   <- n.iter
   
   mis.index <-  apply(data, 2, is.na) 
   data <- data[,.include(info)]
+  namelist <- as.list(info$name)
+  cat.pos <- grep("unordered-categorical", info$type)
+  for(i in cat.pos){
+    namelist[[i]] <- .catvarnames(namelist[[i]], info$level[[i]])
+  }
+  sim.varnames <- unlist(namelist)
   dimnames( AveVar ) <- list(NULL, NULL, 
-                             c(paste("mean(", colnames(data),")",sep=""), 
-                               paste("sd(", colnames(data), ")", sep="")))
+                             c(paste("mean(", sim.varnames,")",sep=""), 
+                               paste("sd(", sim.varnames, ")", sep="")))
   VarName.tm <- names(info)[.include(info) & .nmis(info)>0]
   VarName    <- VarName.tm[order(.imp.order( info )[.include(info) & .nmis(info)>0])]
   length.list <- sum(.include(info) & .nmis(info)>0)
@@ -158,31 +174,19 @@ setMethod("mi", signature(object = "data.frame"),
         }
         mi.data[[i]][[CurrentVar]][is.na(data[[CurrentVar]])] <- mi.object[[i]][[CurrentVar]]@random
         data.tmp <<- mi.data
-        coef.val[[CurrentVar]][[i]] <- rbind(coef.val[[CurrentVar]][[i]],coef(mi.object[[i]][[CurrentVar]]))
+        if(info[[CurrentVar]]$type=="unordered-categorical"){
+          n.level <- length(info[[CurrentVar]]$level)
+          coef.val[[CurrentVar]][[i]] <- rbind(coef.val[[CurrentVar]][[i]],
+            unlist(as.list(coef(mi.object[[i]][[CurrentVar]]))))
+        }
+        else{
+          coef.val[[CurrentVar]][[i]] <- rbind(coef.val[[CurrentVar]][[i]],coef(mi.object[[i]][[CurrentVar]]))
+        }
         start.val[[i]][[jj]] <- coef(mi.object[[i]][[CurrentVar]])
       } ## variable loop 
       cat("\n" )
       
-      #==================================================
-      # should move these foo's way to save computational time      
-      foo1 <- function(v){
-        if(is.numeric(v)){
-          mean(unclass(v), na.rm=TRUE)
-        }
-        else{
-          mean(as.numeric(factor(v)), na.rm=TRUE)
-        }
-      }
-      foo2 <- function(v){
-        if(is.numeric(v)){
-          sd(unclass(v), na.rm=TRUE)
-        }
-        else{
-          sd(as.numeric(factor(v)), na.rm=TRUE)
-        }
-      }
-      #==================================================
-      AveVar[s,i,] <- c(sapply(mi.data[[i]], FUN = foo1), sapply(mi.data[[i]], FUN = foo2))                        
+      AveVar[s,i,] <- c(unlist(sapply(mi.data[[i]], FUN = .foo1)), unlist(sapply(mi.data[[i]], FUN = .foo2)))
     
     } # imputation loop
 
@@ -314,7 +318,7 @@ setMethod("mi", signature(object = "mi"),
   }
   #  # Automatic Preprocess
   if( preprocess ) {
-    proc.tmp <- mi.preprocess(data, type=info$type)
+    proc.tmp <- mi.preprocess(data, info)
     data <- as.data.frame(proc.tmp$data)
     info.org <- info
     info <- mi.info(data)
@@ -328,7 +332,9 @@ setMethod("mi", signature(object = "mi"),
   ncol.mis  <- sum(col.mis)
   n.imp     <- m(object)
   prev.iter <- dim(bugs.mi(object)$sims.array)[1]
-  AveVar    <- array(NA, c(prev.iter + n.iter, n.imp, sum(.include(info))*2))
+  n.col.sims.array <- dim(bugs.mi(object)$sims.array)[3] 
+  sims.array.names <- names(bugs.mi(object)$sims.list)
+  AveVar    <- array(NA, c(prev.iter + n.iter, n.imp, n.col.sims.array))
   coef.conv.check <- object@coef.conv$sims.array
   AveVar[ 1:prev.iter , , ] <- bugs.mi(object)$sims.array
   s_start <- prev.iter + 1
@@ -336,9 +342,7 @@ setMethod("mi", signature(object = "mi"),
     
   mis.index <-  apply(data, 2, is.na)
   data <- data[,.include(info)]
-  dimnames( AveVar ) <- list(NULL, NULL, 
-                             c(paste("mean(", colnames(data),")",sep=""), 
-                               paste("sd(", colnames(data), ")", sep="")))
+  dimnames( AveVar ) <- list(NULL, NULL, sims.array.names)
   VarName.tm <- names(info)[.include(info) & .nmis(info)>0]
   VarName    <- VarName.tm[order(.imp.order( info )[.include(info) & .nmis(info)>0])]
   length.list <- sum(.include(info) & .nmis(info)>0)
@@ -406,30 +410,19 @@ setMethod("mi", signature(object = "mi"),
         # Error Handling        
         mi.data[[i]][[CurrentVar]][is.na(data[[CurrentVar]])] <- mi.object[[i]][[CurrentVar]]@random
         data.tmp <<- mi.data
-        coef.val[[CurrentVar]][[i]] <- rbind(coef.val[[CurrentVar]][[i]],coef(mi.object[[i]][[CurrentVar]]))
-        start.val[[i]][[jj]] <- coef(mi.object[[i]][[CurrentVar]])
+        if(info[[CurrentVar]]$type=="unordered-categorical"){
+          n.level <- length(info[[CurrentVar]]$level)
+          coef.val[[CurrentVar]][[i]] <- rbind(coef.val[[CurrentVar]][[i]],
+            unlist(as.list(coef(mi.object[[i]][[CurrentVar]]))))
+        }
+        else{
+          coef.val[[CurrentVar]][[i]] <- rbind(coef.val[[CurrentVar]][[i]],coef(mi.object[[i]][[CurrentVar]]))
+        }
+            start.val[[i]][[jj]] <- coef(mi.object[[i]][[CurrentVar]])
       } ## variable loop 
       cat("\n" )      
-      #==================================================
-      # should move these foo's way to save computational time      
-      foo1 <- function(v){
-        if(is.numeric(v)){
-          mean(unclass(v), na.rm=TRUE)
-        }
-        else{
-          mean(as.numeric(factor(v)), na.rm=TRUE)
-        }
-      }
-      foo2 <- function(v){
-        if(is.numeric(v)){
-          sd(unclass(v), na.rm=TRUE)
-        }
-        else{
-          sd(as.numeric(factor(v)), na.rm=TRUE)
-        }
-      }
-      #==================================================
-      AveVar[s,i,] <- c(sapply(mi.data[[i]], FUN = foo1), sapply(mi.data[[i]], FUN = foo2))                        
+
+      AveVar[s,i,] <- c(unlist(sapply(mi.data[[i]], FUN = .foo1)), unlist(sapply(mi.data[[i]], FUN = .foo2)))
     
     } # imputation loop
 

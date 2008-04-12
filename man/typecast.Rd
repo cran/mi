@@ -36,6 +36,7 @@
   \item{positive-continuous}{variables that contain more than 5 postive values, NOT including 0s.}
   \item{mixed}{variables that contain more than 5 postive values, including 0s.}
   \item{continuous}{variables that are not belong to any of the above types.}
+  \item{log-continuous}{log-scaled continuous variable}
 }
 
 

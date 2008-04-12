@@ -14,175 +14,89 @@
 #}
 
 # preprocess: this is ugly..but working!..need to improve it
-mi.preprocess <- function(data, type=NULL, varnames = NULL){
+mi.preprocess <- function(data, info){
   n.col <- ncol(data)
   n.row <- nrow(data)
-  var.name <- names(data)
-  if(is.null(type)){
-    type <- typecast(data)
-  }
-  if(is.null(varnames)){
-    TYPE <- NULL
-    idx <- NULL
-    TMP <- NULL
-    for (i in 1:n.col){
-      typ <- type[i]
-      tmp <- NULL
-      if (typ == "mixed"){
-        Ind <- ifelse(data[,i] > 0, 1, ifelse(data[,i]==0, 0, NA))
-        Log <- log(ifelse(data[,i] > 0, data[,i], NA))
-        Ind.lab <- paste(var.name[i], "ind", sep=".")
-        Log.lab <- paste(var.name[i], "log", sep=".")
-        tmp <- cbind(tmp, Ind, Log)
-        dimnames(tmp)[[2]] <- c(Ind.lab, Log.lab)
-        TYPE <- c(TYPE, "dichotomous", "continuous")
-        TMP <- cbind(TMP, tmp)
-        idx <- c(idx, i)
-      }
-      if (typ == "positive-continuous"){
-        Log <- log(data[,i])
-        Log.lab <- paste("log", var.name[i], sep=".")
-        tmp <- cbind(tmp, Log)
-        dimnames(tmp)[[2]] <- Log.lab
-        TYPE <- c(TYPE, "continuous")
-        TMP <- cbind(TMP, tmp)
-        idx <- c(idx, i)
-      }
-      if (typ == "proportion"){
-        Logit <- logit(data[,i])
-        Logit.lab <- paste("logit", var.name[i], sep=".")
-        tmp <- cbind(tmp, Logit)
-        dimnames(tmp)[[2]] <- Logit.lab
-        TYPE <- c(TYPE, "proportion")
-        TMP <- cbind(TMP, tmp)
-        idx <- c(idx, i)
-      }
+  var.name <- info$name
+  type <- info$type
+  for (i in 1:n.col){
+    typ <- type[i]
+    if(typ == "mixed"){
+      tmp <- ifelse(data[,i] > 0, 1, ifelse(data[,i]==0, 0, NA))
+      data <- cbind(data, tmp)
+      Ind.lab <- paste(var.name[i], "ind", sep=".")
+      names(data)[ncol(data)] <- Ind.lab
+      type[ncol(data)] <- "dichotomous"
+      names(type)[ncol(data)] <- Ind.lab
+      data[,i] <- log(ifelse(data[,i]>0, data[,i], NA))
+      type[i] <- "log-continuous"
     }
-    if(!is.null(idx)){
-      type <- type[-idx]
-      type <- c(type, TYPE)
-      var.name <- var.name[-idx]
-      data <- data[,-idx]
-      data <- cbind(data, TMP)
-      if(length(var.name)>0){
-        colnames(data)[1:length(var.name)] <- var.name
-      }
-      data <- as.data.frame(data)
+    if (typ == "positive-continuous"){
+      data[,i] <- log(data[,i])
+      type[i] <- "log-continuous"
+    }
+    if (typ == "proportion"){
+      data[,i] <- logit(data[,i])
+      type[i] <- "proportion"
     }
     else{
-      data <- data
-      type <- type
+      data[,i] <- data[,i]
+      type[i] <- type[i]
     }
   }
-  else{
-    idx <- pmatch(varnames, var.name)
-    TMP <- NULL
-    TYPE <- NULL
-    for (i in idx){
-      typ <- type[i]
-      tmp <- NULL
-      if (typ == "mixed"){
-        Ind <- ifelse(data[,i] > 0, 1, ifelse(data[,i]==0, 0, NA))
-        Log <- log(ifelse(data[,i] > 0, data[,i], NA))
-        Ind.lab <- paste(var.name[i], "ind", sep=".")
-        Log.lab <- paste(var.name[i], "log", sep=".")
-        tmp <- cbind(tmp, Ind, Log)
-        dimnames(tmp)[[2]] <- c(Ind.lab, Log.lab)
-        TYPE <- c(TYPE, "dichotomous", "continuous")
-        TMP <- cbind(TMP, tmp)
-        idx <- c(idx, i)
-      }
-      if (typ == "positive-continuous"){
-        Log <- log(data[,i])
-        Log.lab <- paste("log", var.name[i], sep=".")
-        tmp <- cbind(tmp, Log)
-        dimnames(tmp)[[2]] <- Log.lab
-        TYPE <- c(TYPE, "continuous")
-        TMP <- cbind(TMP, tmp)
-        idx <- c(idx, i)
-      }
-      if (typ == "proportion"){
-        Logit <- logit(data[,i])
-        Logit.lab <- paste("logit", var.name[i], sep=".")
-        tmp <- cbind(tmp, Logit)
-        dimnames(tmp)[[2]] <- Logit.lab
-        TYPE <- c(TYPE, "proportion")
-        TMP <- cbind(TMP, tmp)
-        idx <- c(idx, i)
-      }
-    }
-    if(!is.null(idx)){
-      type <- type[-idx]
-      type <- c(type, TYPE)
-      var.name <- var.name[-idx]
-      data <- data[,-idx]
-      data <- cbind(data, TMP)
-      if(length(var.name)>0){
-        colnames(data)[1:length(var.name)] <- var.name
-      }
-      data <- as.data.frame(data)
-    }
-    else{
-      data <- data
-      type <- type
-    }
-  }
-  names(type) <- names(data)
   return(list(data=data, type=type))
 }
 
-mi.postprocess <- function(mi.data){
-  n.chains <- length(mi.data)
-  var.name <- names(mi.data[[1]])
-  chk1 <- sum(grep(".ind", var.name))
-  chk2 <- sum(grep(".log", var.name))
-  chk3 <- sum(grep("log.", var.name))
-  chk4 <- sum(grep("logit.", var.name))
-  if(chk1 > 0){
-    var.name <- names(mi.data[[1]])
-    idx1 <- grep(".ind", var.name, fixed=TRUE)
-    idx2 <- grep(".log", var.name, fixed=TRUE)
-    idx3 <- c(idx1, idx2)
-    var.name1 <- var.name[idx1]
-    var.name1 <- gsub(".ind", "", var.name1)
-    var.name <- c(var.name1, var.name[-idx3])
-    for (s in 1:n.chains){
-      data <- mi.data[[s]][,idx1]*exp(mi.data[[s]][,idx2])
-      mi.data[[s]] <- mi.data[[s]][,-idx3]
-      mi.data[[s]] <- cbind.data.frame(data, mi.data[[s]])
-      names(mi.data[[s]]) <- var.name
-    }  
+mi.postprocess <- function(mi.data, info){
+  if(class(mi.data)=="list"){
+    n.chains <- length(mi.data)
   }
-  if(chk3 > 0){
-    var.name <- names(mi.data[[1]])
-    idx1 <- grep("log.", var.name, fixed=TRUE)
-    var.name1 <- var.name[idx1]
-    var.name1 <- gsub("log.", "", var.name1)
-    var.name <- c(var.name1, var.name[-idx1])
-    for (s in 1:n.chains){
-      data <- exp(mi.data[[s]][,idx1])
-      mi.data[[s]] <- mi.data[[s]][,-idx1]
-      mi.data[[s]] <- cbind.data.frame(data, mi.data[[s]])
-      names(mi.data[[s]]) <- var.name
-    }  
-  } 
-  if(chk4 > 0){
-    var.name <- names(mi.data[[1]])
-    idx1 <- grep("logit.", var.name, fixed=TRUE)
-    var.name1 <- var.name[idx1]
-    var.name1 <- gsub("logit.", "", var.name1)
-    var.name <- c(var.name1, var.name[-idx1])
-    for (s in 1:n.chains){
-      data <- invlogit(mi.data[[s]][,idx1])
-      mi.data[[s]] <- mi.data[[s]][,-idx1]
-      mi.data[[s]] <- cbind.data.frame(data, mi.data[[s]])
-      names(mi.data[[s]]) <- var.name
-    }  
-  } 
+  if(class(mi.data)=="data.frame"){
+    n.chains <- 1
+  }
+  if(class(mi.data)=="matrix"){
+    n.chains <- 1
+  }
+  n.col <- length(info)
+  varnames <- info$name
+  type <- info$type
+  idx <- grep(".ind", varnames)
+  if(n.chains==1){
+    for (i in 1:n.col){
+      typ <- type[i]
+      if(typ == "log-continuous"){
+        mi.data[,i] <- exp(mi.data[,i])
+      }
+      if(typ == "proportion"){
+        mi.data[,i] <- invlogit(mi.data[,i])
+      }
+      if(sum(grep(".ind", varnames[i]))){
+        mixed.name <- gsub(".ind", "", varnames[i])
+        mi.data[,mixed.name] <- mi.data[,mixed.name] * mi.data[,varnames[i]]
+      }
+    }
+    mi.data <- mi.data[,-idx]
+  }
+  else{
+    for(s in 1:n.chains){
+      for (i in 1:n.col){
+        typ <- type[i]
+        if(typ == "log-continuous"){
+          mi.data[[s]][,i] <- exp(mi.data[[s]][,i])
+        }
+        if(typ == "proportion"){
+          mi.data[[s]][,i] <- invlogit(mi.data[[s]][,i])
+        }
+        if(sum(grep(".ind", varnames[i]))){
+          mixed.name <- gsub(".ind", "", varnames[i])
+          mi.data[[s]][,mixed.name] <- mi.data[[s]][,mixed.name] * mi.data[[s]][,varnames[i]]
+        }
+      }
+     mi.data[[s]] <- mi.data[[s]][,-idx]
+    } 
+  }
   return(mi.data)
 }
-
-
 
 #
 #mi.preprocess <- function( data, info=NULL, trans = trans.func, name = trans.name ){

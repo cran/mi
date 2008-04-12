@@ -104,13 +104,22 @@ type <-function(info){
 # Extracts the level (vector) as list
 # ========================================================================
 
-level <- function(info){
+.level <- function(info){
   foo <- function(x){
     x$level
   }
   level <- sapply(info, FUN = foo)
   return(level)
 }
+
+.n.level <- function(info){
+  foo <- function(x){
+    x$level
+  }
+  level <- sapply(info, FUN = foo)
+  return(level)
+}
+
 
 # ========================================================================
 # Extract imputation formula (character) as list
@@ -187,4 +196,59 @@ level <- function(info){
     Y <- replace(Y, Y==y.levels[1], 0)
     Y <- replace(Y, Y==y.levels[2], 1)
     return(Y)
+}
+
+# ========================================================================
+# decomposing a unordered categorical variable into a binary
+# ========================================================================
+
+
+.cat2binary <- function(x){
+    x.levels <- if (is.double(x)){
+                  sort(unique(x)) 
+                }
+                else{
+                  levels(factor(x))
+                }
+    n.levels <- length(x.levels)
+    new.x <- array(NA, c(length(x), n.levels))
+    for(i in 1:n.levels){
+      new.x[,i] <- ifelse(x==x.levels[i], 1, 0)
+    }
+    return(new.x)
+}
+
+
+.catvarnames <- function(varname, level){
+  new.varnames <-  paste(varname, "(", names(level), ")", sep="")
+  return(new.varnames)
+}
+
+#=================================
+# internal used for AveVar in mi
+#==================================
+.foo1 <- function(v){
+  if(is.numeric(v)){
+    mean(unclass(v), na.rm=TRUE)
+  }
+  else if(is.ordered(v)){
+    mean(as.numeric(factor(v)), na.rm=TRUE)
+  }
+  else{
+    new.v <- .cat2binary(v)
+    apply(new.v, 2, mean)
+  }
+}
+
+.foo2 <- function(v){
+  if(is.numeric(v)){
+    sd(unclass(v), na.rm=TRUE)
+  }
+  else if(is.ordered(v)){
+    sd(as.numeric(factor(v)), na.rm=TRUE)
+  }
+  else{
+    new.v <- .cat2binary(v)
+    apply(new.v, 2, sd)
+  }
 }

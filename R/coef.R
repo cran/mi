@@ -16,39 +16,13 @@ setMethod("coefficients", signature(object = "mi.method"),
 )
 
 
-setMethod("coef", signature(object = "mi.lm"), 
+setMethod("coef", signature(object = "mi.pooled"), 
   function(object){
   object@mi.pooled$coefficients
 }
 )
 
-setMethod("coefficients", signature(object = "mi.lm"), 
-  function(object){
-  object@mi.pooled$coefficients
-}
-)
-
-
-setMethod("coef", signature(object = "mi.glm"), 
-  function(object){
-  object@mi.pooled$coefficients
-}
-)
-
-setMethod("coefficients", signature(object = "mi.glm"), 
-  function(object){
-  object@mi.pooled$coefficients
-}
-)
-
-
-setMethod("coef", signature(object = "mi.mer"), 
-  function(object){
-  object@mi.pooled$coefficients
-}
-)
-
-setMethod("coefficients", signature(object = "mi.mer"), 
+setMethod("coefficients", signature(object = "mi.pooled"), 
   function(object){
   object@mi.pooled$coefficients
 }
