@@ -1,0 +1,138 @@
+# These are imported by lme4 already
+#importFrom("stats",
+#      coef, 
+#      fitted
+#      resid,
+#      residuals
+#      coefficients
+#)
+
+#importFrom("graphics",  
+#      plot
+#)
+
+importFrom("arm",
+      sigma.hat
+)
+
+exportClasses(
+  mi,
+  mi.method,
+  mi.fixed,
+  mi.dichotomous,
+  mi.polr,
+  mi.categorical,
+  mi.continuous,
+  mi.info,
+  mi.logcontinuous,
+  mi.sqrtcontinuous,
+  mi.mixed,
+  mi.pmm
+)
+
+exportMethods(
+  call.mi,
+  data.mi,
+  bugs.mi,
+  info.mi,
+  is.mi,
+#  coef,
+  converged,
+#  fitted,
+  imputed,
+  imp,
+  m,
+  mi.hist,
+  mi.completed,
+  mi.matrix,
+  mi.data.frame,
+  mi.start,
+#  resid,
+  sigma.hat,
+  typecast,
+#  plot,
+  print,
+  show
+)
+
+export(
+  bugs.mi,
+  call.mi,
+  conv.plot,
+  converged,
+  convergence.plot,
+  data.mi,
+  glm.mi,
+  imp,
+  imputed,
+  info.mi,
+  is.mi,
+  is.mi.info,
+  lm.mi,
+  m,
+  marginal.scatterplot,
+  mi,
+  mi.categorical,
+  mi.completed,
+  mi.continuous, 
+  mi.data.frame,
+  mi.dichotomous,
+  mi.fixed,
+  mi.hist,
+  mi.info,
+  mi.info.fix,
+  mi.info.update,
+  mi.info.update.correlated,
+  mi.info.update.determ.pred,
+  mi.info.update.imp.formula,
+  mi.info.update.imp.order,
+  mi.info.update.include,
+  mi.info.update.is.ID,
+  mi.info.update.level,
+  mi.info.update.other,
+  mi.info.update.params,
+  mi.info.update.transform,
+  mi.info.update.type,
+  mi.interactive,
+  mi.logcontinuous, 
+  mi.matrix,
+  mi.mixed,
+  mi.polr,
+  mi.scatterplot,
+  mi.sqrtcontinuous,
+  mi.start,
+  mi.types,
+  missing.pattern.plot,
+  mp.plot,
+  random.imp,
+  typecast,
+  type.models
+)
+
+S3method(coef, mi.method)
+S3method(coef, mi.mixed)
+S3method(fitted, mi.method)
+S3method(fitted, mi.mixed)
+S3method(residuals, mi.method)
+S3method(residuals, mi.mixed)
+S3method(residuals, mi.sqrtcontinuous)
+S3method(residuals, mi.dichotomous)
+S3method(residuals, mi.logcontinuous)
+S3method(residuals, mi.categorical)
+S3method(plot, mi)
+S3method(plot, mi.method)
+S3method(plot, mi.mixed)
+S3method(plot, mi.sqrtcontinuous)
+S3method(plot, mi.polr)
+S3method(plot, mi.categorical)
+S3method(plot, mi.copy)
+S3method(plot, mi.dichotomous)
+S3method(plot, mi.logcontinuous)
+S3method(print, mi)
+S3method(print, mi.info)
+S3method(print, mi.method)
+S3method(print, mi.mixed)
+S3method("[<-", mi.info)
+S3method("$<-", mi.info)
+S3method("[", mi.info)
+S3method("$", mi.info)
