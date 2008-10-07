@@ -4,10 +4,9 @@
 methods::setOldClass("lm")
 methods::setOldClass("glm")
 
-setClass("mi.info",
-            representation()#,
-            #contains = "list"
-)
+setClass("mi.info")
+
+
 setClass("mi",
             representation(
                 call      = "call",
@@ -17,9 +16,14 @@ setClass("mi",
                 imp       = "list",
                 converged = "logical",
                 coef.conv = "ANY",
-                bugs      = "ANY")#,
-            #contains  = "list"
+                bugs      = "ANY"),
+            contains  = "list"
 )
+
+setClass("mi.glm")
+
+setClass("mi.lm")
+
 
 setClass("mi.method",
             representation ="VIRTUAL",

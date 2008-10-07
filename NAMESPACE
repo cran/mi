@@ -12,6 +12,7 @@
 #)
 
 importFrom("arm",
+      display,
       sigma.hat
 )
 
@@ -38,6 +39,7 @@ exportMethods(
   is.mi,
 #  coef,
   converged,
+  display,
 #  fitted,
   imputed,
   imp,
@@ -129,6 +131,8 @@ S3method(plot, mi.copy)
 S3method(plot, mi.dichotomous)
 S3method(plot, mi.logcontinuous)
 S3method(print, mi)
+S3method(print, mi.glm)
+S3method(print, mi.lm)
 S3method(print, mi.info)
 S3method(print, mi.method)
 S3method(print, mi.mixed)

@@ -1,5 +1,10 @@
+2008-10-7 Yu-Sung Su     <ys463@columbia.edu>  
+   * DESCRIPTION (Version, Date): 0.02-02
+   * create display methods for glm.mi & lm.mi
+   * move some internal functions to AllInternal 
+   * create glm.mi & lm.mi classes
+
 2008-10-6  Yu-Sung Su     <ys463@columbia.edu>  
-    * DESCRIPTION (Version, Date): 0.02-02
     * reverse S4 coef methods back to S3 to pass R check
     * reverse S4 fitted methods back to S3 to pass R check
     * reverse S4 residuals methods back to S3 to pass R check

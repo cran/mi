@@ -23,6 +23,27 @@ print.mi <- function ( x, ... ) {
     cat ( "\nComplete cases:", sum ( rowSums(r) == 0 ), "\n" );
     invisible( tab );
   }
+  
+  
+  
+  
+print.mi.glm <- function(x, ...){
+  display(x, ...)
+}
+
+
+print.mi.lm <- function(x, ...){
+  display(x, ...)
+}
+  
+  
+
+  
+  
+  
+  
+  
+  
 # ========================================================================
 # S4 print function for mi.info object
 # ========================================================================
@@ -31,6 +52,7 @@ setMethod("print", signature( x = "mi.info" ),
     print.mi.info( x, ...);
   }
 )
+
 print.mi.info <- function ( x, ... ){
   print( mi.info.table( x ) )
 }

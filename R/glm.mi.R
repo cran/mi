@@ -32,24 +32,3 @@ glm.mi <- function ( formula, mi.object, family = gaussian, ... )
     class( mi.glm.object ) <- c( "mi.glm", "list" );
     return( mi.glm.object );
 }
-
-print.mi.glm<-function( object ){
-  cat( "----------------------------------------\n" );
-  cat( "Pooled Estimate\n" );
-  cat( "----------------------------------------\n" );
-  print( object$call );
-  tab <- cbind( object$glm.mi.pooled[[1]], object$glm.mi.pooled[[2]] );
-  dimnames( tab )[[2]] <- c( "coef.est", "coef.se" );
-  print( tab );
-  cat( "---\n" );
-  cat( "----------------------------------------\n" );
-  cat( "Separate Estimate for each Imputation\n" );
-  cat( "----------------------------------------\n" );
-  for( i in 1:length( object$glm.mi.fit ) ){
-    display( object$glm.mi.fit[[i]] );
-    cat( "----------------------------------------\n" );
-  }
-}
-display.mi.glm<-function( object ){
-  print.mi.glm( object );
-}
