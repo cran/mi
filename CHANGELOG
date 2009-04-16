@@ -1,3 +1,9 @@
+2009-4-16 Yu-Sung Su     <ys463@columbia.edu>  
+   * R/mi.preprocess: fix bugs in mi.postprocess()
+   * R/mi: fix bugs in mi.data.frame (was not using rho for mi.copy)
+   * R/mi.correlated.list: if missing pattern are different in both 
+      correlated variables, treat this as structured correlation
+
 2009-4-12 Yu-Sung Su     <ys463@columbia.edu>  
    * DESCRIPTION (Version, Date): 0.05-1   
    * R/mi.preprocess: new mi.preprocess and mi.postprocess

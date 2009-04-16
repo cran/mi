@@ -43,7 +43,6 @@ setMethod( "mi.data.frame", signature( object = "mi" ),
   function ( object, m = 1) {
     if(object@preprocess){
       data <- mi.completed.default(object, m=m)
-      aa <<- data
       data <- mi.postprocess(data, info=object@mi.info.preprocessed)
     }
     else{

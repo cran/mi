@@ -75,7 +75,12 @@ mi.postprocess <- function(mi.data, info){
         mi.data[,mixed.name] <- mi.data[,mixed.name] * mi.data[,varnames[i]]
       }
     }
-    mi.data <- mi.data[,-idx]
+    if(sum(idx)==0){
+      mi.data <- mi.data
+    }
+    else{
+      mi.data <- mi.data[,-idx]
+    }
   }
   else{
     for(s in 1:n.chains){
@@ -92,7 +97,12 @@ mi.postprocess <- function(mi.data, info){
           mi.data[[s]][,mixed.name] <- mi.data[[s]][,mixed.name] * mi.data[[s]][,varnames[i]]
         }
       }
-     mi.data[[s]] <- mi.data[[s]][,-idx]
+      if(sum(idx)==0){
+        mi.data[[s]] <- mi.data[[s]]
+      }
+      else{
+        mi.data[[s]] <- mi.data[[s]][,-idx]
+      }
     } 
   }
   return(mi.data)

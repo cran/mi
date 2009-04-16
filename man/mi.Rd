@@ -179,7 +179,7 @@ IMP <- mi(dat, info=inf, n.iter=6, post.run=FALSE)
 # IMP <- mi(IMP)       ## NOT RUN
 
 ## this is the suggested (defautl) way of running mi, NOT RUN
-# IMP <- mi(dat, info=inf, add.priors=prior.control(K=1))
+# IMP <- mi(dat, info=inf)
 
 # convergence checking
 converged(IMP)  ## You should get FALSE here because only n.iter is small 

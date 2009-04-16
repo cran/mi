@@ -55,8 +55,7 @@ strongly recommended to use a variable containing more information. Fitted lowes
 }
 \examples{
   data(CHAIN)
-  imp.CHAIN <- mi(CHAIN, n.iter=6, preprocess=FALSE, 
-    add.prior=prior.control(K=0))
+  imp.CHAIN <- mi(CHAIN, n.iter=6, preprocess=FALSE, add.priors=FALSE)
   plot(imp.CHAIN)
 }
 \keyword{ hplot }
