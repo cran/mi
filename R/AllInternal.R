@@ -252,3 +252,14 @@ type <-function(info){
     apply(new.v, 2, sd)
   }
 }
+
+
+.change.formula.ordered <- function(x, varnames){
+  x <- gsub(varnames, paste("ordered(", varnames, ")", sep=""), x)
+  return(x)
+}
+
+.change.formula.unordered <- function(x, varnames){
+  x <- gsub(varnames, paste("factor(", varnames, ")", sep=""), x)
+  return(x)
+}

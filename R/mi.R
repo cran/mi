@@ -119,17 +119,15 @@ setMethod("mi", signature(object = "data.frame"),
       # variable loop
       for( jj in 1:length(VarName) ) {
         CurrentVar <- VarName[jj]
-        #=================================================================
-        # probability of cooling 
-        # K/s decides whether samples from marginal or not by q
-        # q = Binomial(p=K/s, n=1)
-        #=================================================================
-        if(add.priors.method=="reshuffling"){
+       if(add.priors.method=="reshuffling"){
           prob.add.prior <- add.priors$K/s
           prob.add.prior <- ifelse(prob.add.prior > 1, 1, prob.add.prior)
           q <- rbinom(1, 1, prob=prob.add.prior)           
           if(q){
             cat(paste(CurrentVar, "*", sep=""), " ")
+          }
+          else{
+            cat(CurrentVar, "  ")
           }
         }
         else if(add.priors.method=="fading"){

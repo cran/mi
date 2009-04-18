@@ -1,4 +1,11 @@
+2009-4-18 Yu-Sung Su     <ys463@columbia.edu>  
+   * DESCRIPTION (Version, Date): 0.06-2
+   * R/mi: fix a bug in the print out of the process
+   * R/mi.info: update.mi.info: revise formula when type is updates as 
+      ordered or unorderd categorical type.
+
 2009-4-16 Yu-Sung Su     <ys463@columbia.edu>  
+   * DESCRIPTION (Version, Date): 0.06-1   
    * R/mi.preprocess: fix bugs in mi.postprocess()
    * R/mi: fix bugs in mi.data.frame (was not using rho for mi.copy)
    * R/mi.correlated.list: if missing pattern are different in both 
