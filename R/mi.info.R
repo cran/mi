@@ -44,7 +44,7 @@ mi.info <- function( data, threshhold  = 0.99999 )
       names(info[[i]]$level) <- lev
       } 
     else if( info[[i]]$var.class[1] == "factor" ) {
-      lev <-levels( data[ ,i] )[ !is.na( levels( data[ ,i] ) )]
+      lev <- levels( data[ ,i] )[ !is.na( levels( data[ ,i] ) )]
       lev <- lev[!( lev %in% c( "NA", "RF", "DK" ) )]
       if( length( lev ) == 2 ) {
           info[[i]]$level <- c( 0, 1 )
@@ -659,11 +659,11 @@ update.mi.info <- function(object, target, list, ...){
   for ( i in 1:length( list ) ) {
     object[[nam[i]]][[target]] <- list[[nam[i]]]
     if(target=="type"){
-      if(object$type[nam[i]]=="ordered-categorical"){
+      if(object$type[[nam[i]]]=="ordered-categorical"){
         object$imp.formula <- sapply(object$imp.formula, 
           .change.formula.ordered, varnames=nam[i])
       }
-      if(object$type[nam[i]]=="unordered-categorical"){
+      if(object$type[[nam[i]]]=="unordered-categorical"){
         object$imp.formula <- sapply(object$imp.formula, 
           .change.formula.unordered, varnames=nam[i])
       }

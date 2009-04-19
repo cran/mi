@@ -220,39 +220,51 @@ type <-function(info){
 
 
 .catvarnames <- function(varname, level){
-  new.varnames <-  paste(varname, "(", names(level), ")", sep="")
+  new.varnames <-  paste(varname, "(", level, ")", sep="")
   return(new.varnames)
 }
 
 #=================================
 # internal used for AveVar in mi
 #==================================
-.foo1 <- function(v){
-  if(is.numeric(v)){
+.foo1 <- function(v, type){
+  browser()
+  for(i in 1:length(v)){
+    if(type=="unordered-categorical"){
+      new.v <- .cat2binary(v)
+    }
+  }
+  if(type == "unorderd-categorical"){
+    new.v <- .cat2binary(v)
+    apply(new.v, 2, mean)  
+  }
+  if(type == "orderd-categorical"){
+    mean(as.numeric(ordered(v)), na.rm=TRUE)
+  }
+  else{
     mean(unclass(v), na.rm=TRUE)
   }
-  else if(is.ordered(v)){
-    mean(as.numeric(factor(v)), na.rm=TRUE)
-  }
-  else{
-    new.v <- .cat2binary(v)
-    apply(new.v, 2, mean)
-  }
 }
 
-.foo2 <- function(v){
-  if(is.numeric(v)){
+.foo2 <- function(v, info){
+  if(type == "unorderd-categorical"){
+    new.v <- .cat2binary(v)
+    apply(new.v, 2, sd)  
+  }
+  if(type == "orderd-categorical"){
+    sd(as.numeric(ordered(v)), na.rm=TRUE)
+  }
+  else{
     sd(unclass(v), na.rm=TRUE)
   }
-  else if(is.ordered(v)){
-    sd(as.numeric(factor(v)), na.rm=TRUE)
-  }
-  else{
-    new.v <- .cat2binary(v)
-    apply(new.v, 2, sd)
-  }
 }
 
+
+
+
+# ===========================
+#  Internal use in update.mi.info
+#============================
 
 .change.formula.ordered <- function(x, varnames){
   x <- gsub(varnames, paste("ordered(", varnames, ")", sep=""), x)

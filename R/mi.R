@@ -67,6 +67,16 @@ setMethod("mi", signature(object = "data.frame"),
     info <- mi.info.formula.default(data, info)
     info$imp.formula[1:length(info.org)] <- info.org$imp.formula
   }  
+  
+  # level check
+  for(i in 1:ncol(data)){
+    if (info$type[[i]]=="unordered-categorical"){
+      if(is.null(info$level[[i]])){
+        info$level[[i]] <- na.exclude(unique(data[,i]))
+      }
+    }
+  }
+  
 
   col.mis    <- !complete.cases(t(data)) 
   ncol.mis   <- sum(col.mis)
@@ -91,7 +101,6 @@ setMethod("mi", signature(object = "data.frame"),
   VarName.tm <- names(info)[.include(info) & .nmis(info)>0]
   VarName    <- VarName.tm[order(.imp.order( info )[.include(info) & .nmis(info)>0])]
   length.list <- sum(.include(info) & .nmis(info)>0)
-  
   # list initialization
   mi.data       <- vector("list", n.imp)
   start.val     <- vector("list", n.imp)
@@ -116,6 +125,7 @@ setMethod("mi", signature(object = "data.frame"),
     # imputation loop
     for ( i in 1:n.imp ){
       cat( " Imputation", i,  ": " )
+      avevar.tmp <- NULL
       # variable loop
       for( jj in 1:length(VarName) ) {
         CurrentVar <- VarName[jj]
@@ -191,10 +201,23 @@ setMethod("mi", signature(object = "data.frame"),
           coef.val[[CurrentVar]][[i]] <- rbind(coef.val[[CurrentVar]][[i]],coef(mi.object[[i]][[CurrentVar]]))
         }
         start.val[[i]][[jj]] <- coef(mi.object[[i]][[CurrentVar]])
+       
+        if(info$type[[jj]]=="unordered-categorical"){
+          new.v <- .cat2binary(mi.data[[i]][,jj])
+          avevar.tmp <- c(avevar.tmp, apply(new.v, 2, mean), apply(new.v, 2, sd))
+        }
+        else if(info$type[[jj]]=="ordered-categorical"){
+          avevar.tmp <- c(avevar.tmp, mean(as.numeric(ordered(mi.data[[i]][,jj])), na.rm=TRUE), 
+                          sd(as.numeric(ordered(mi.data[[i]][,jj])), na.rm=TRUE))
+        }
+        else{
+          avevar.tmp <- c(avevar.tmp, mean(unclass(mi.data[[i]][,jj]), na.rm=TRUE), 
+                          sd(unclass(mi.data[[i]][,jj]), na.rm=TRUE))
+        } 
       } ## variable loop 
       cat("\n" )
-      
-      AveVar[s,i,] <- c(unlist(sapply(mi.data[[i]], FUN = .foo1)), unlist(sapply(mi.data[[i]], FUN = .foo2)))
+      AveVar[s,i,] <- avevar.tmp
+     
     
     } # imputation loop
 
@@ -382,6 +405,7 @@ setMethod("mi", signature(object = "mi"),
     # imputation loop
     for ( i in 1:n.imp ){
       cat( " Imputation", i,  ": " )
+      avevar.tmp <- NULL
       # variable loop
       for( jj in 1:length(VarName) ) {
 
@@ -425,10 +449,26 @@ setMethod("mi", signature(object = "mi"),
           coef.val[[CurrentVar]][[i]] <- rbind(coef.val[[CurrentVar]][[i]],coef(mi.object[[i]][[CurrentVar]]))
         }
         start.val[[i]][[jj]] <- coef(mi.object[[i]][[CurrentVar]])
+      
+      
+        if(info$type[[jj]]=="unordered-categorical"){
+          new.v <- .cat2binary(mi.data[[i]][,jj])
+          avevar.tmp <- c(avevar.tmp, apply(new.v, 2, mean), apply(new.v, 2, sd))
+        }
+        else if(info$type[[jj]]=="ordered-categorical"){
+          avevar.tmp <- c(avevar.tmp, mean(as.numeric(ordered(mi.data[[i]][,jj])), na.rm=TRUE), 
+                          sd(as.numeric(ordered(mi.data[[i]][,jj])), na.rm=TRUE))
+        }
+        else{
+          avevar.tmp <- c(avevar.tmp, mean(unclass(mi.data[[i]][,jj]), na.rm=TRUE), 
+                          sd(unclass(mi.data[[i]][,jj]), na.rm=TRUE))
+        } 
+ 
       } ## variable loop 
       cat("\n" )      
       
-      AveVar[s,i,] <- c(unlist(sapply(mi.data[[i]], FUN = .foo1)), unlist(sapply(mi.data[[i]], FUN = .foo2)))
+      AveVar[s,i,] <- avevar.tmp
+
     
     } # imputation loop
 

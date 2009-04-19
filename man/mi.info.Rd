@@ -26,9 +26,6 @@
   \item{object}{ An object of a class \code{mi.info}.}
   \item{\dots}{ Currently not used.}
 }
-\details{
-  ~~ If necessary, more details than the description above ~~
-}
 \value{
   \item{info}{information matrix
    \tabular{llll}{
