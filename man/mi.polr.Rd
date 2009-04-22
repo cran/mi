@@ -76,7 +76,7 @@
   y[seq(1,100,10)]<-NA
   dat.xy <- data.frame(x,y)
   # imputation
-  polr.imp <- mi.polr(factor(y)~x, data = dat.xy)
+  polr.imp <- mi.polr(y~x, data = dat.xy)
 }
 
 \keyword{ models }

@@ -33,8 +33,8 @@ mi.info <- function( data, threshhold  = 0.99999 )
     info[[i]]$var.class <- class(data[,i])
     # level
     if( info[[i]]$var.class[1] == "character" ) {
-      lev <- unique(as.character(data[,i]))[!is.na(unique(as.character(data[,i])))]
-      lev <- lev[order(lev)]
+      lev <- sort(unique(as.character(data[,i]))[!is.na(unique(as.character(data[,i])))])
+      #lev <- lev[order(lev)]
       if(length(lev) == 2 ) {
         info[[i]]$level <- c(0, 1)
       } 
@@ -42,7 +42,7 @@ mi.info <- function( data, threshhold  = 0.99999 )
         info[[i]]$level <- 1:length(lev)
       }
       names(info[[i]]$level) <- lev
-      } 
+    } 
     else if( info[[i]]$var.class[1] == "factor" ) {
       lev <- levels( data[ ,i] )[ !is.na( levels( data[ ,i] ) )]
       lev <- lev[!( lev %in% c( "NA", "RF", "DK" ) )]
@@ -147,18 +147,18 @@ mi.info <- function( data, threshhold  = 0.99999 )
 
 mi.info.formula.default <-function(data, info){
   varnames <- dimnames(data)[[2]]
-  for(i in 1:length(varnames)){
-    type <- info[[i]]$type
-    if(type=="ordered-categorical"){
-      varnames[i] <- paste("ordered(",varnames[i],")",sep="")
-    }
-    else if(type=="unordered-categorical"){
-      varnames[i] <- paste("factor(",varnames[i],")",sep="")
-    }
-    else{
-      varnames[i] <- varnames[i]
-    }
-  }
+#  for(i in 1:length(varnames)){
+#    type <- info[[i]]$type
+#    if(type=="ordered-categorical"){
+#      varnames[i] <- paste("ordered(",varnames[i],")",sep="")
+#    }
+#    if(type=="unordered-categorical"){
+#      varnames[i] <- paste("factor(",varnames[i],")",sep="")
+#    }
+#    else{
+#      varnames[i] <- varnames[i]
+#    }
+#  }
   for(i in 1:dim(data)[2]){
     # default formula
     inc <- .include(info)
@@ -185,13 +185,13 @@ mi.info.params.default <-function( info ){
 # Default formula for the type
 # ========================================================================
 type.default.formula <- function(response.name, predictor.name, type) {
-  if (type=="ordered-categorical"){
-    form <- paste( paste( "ordered(", response.name, ") ~",sep=""),paste(predictor.name,collapse=" + "))
-  } 
-  else if (type=="unordered-categorical"){
-    form <- paste( paste( "factor(", response.name, ") ~",sep=""),paste(predictor.name,collapse=" + "))
-  } 
-  else if (type=="fixed"){
+#  if (type=="ordered-categorical"){
+#    form <- paste( paste( "ordered(", response.name, ") ~",sep=""),paste(predictor.name,collapse=" + "))
+#  } 
+#  else if (type=="unordered-categorical"){
+#    form <- paste( paste( "factor(", response.name, ") ~",sep=""),paste(predictor.name,collapse=" + "))
+#  } 
+  if (type=="fixed"){
     form <- paste( response.name, " ~",response.name)
   } 
   else{
@@ -458,7 +458,7 @@ mi.check.correlation <- function ( data, threshhold = 0.99999 ){
 mi.correlated.list <- function ( data, threshhold = 0.99999 ){
   options(warn = -1)
   cor.data <- cor( data, use="pairwise.complete.obs" )
-  diag(cor.data)<-1
+  diag(cor.data) <- 1
   index <- abs( cor.data - diag(dim(cor.data)[1])) >= threshhold 
   result <- vector("list",dim(index)[1])
   for( i in 1:dim(index)[1] ){
@@ -481,7 +481,8 @@ mi.correlated.list <- function ( data, threshhold = 0.99999 ){
         unique.cor[[k]] <- NA
       }
     }
-    unique.cor <- unique.cor[!sapply(sapply(unique.cor,is.na),any)]
+    unique.cor <- unique.cor[!sapply(sapply(unique.cor,is.na),any)]  
+    unique.cor <- unique.cor[!sapply(unique.cor,is.null)] 
   }
   options(warn = 0)
   return(unique.cor)
@@ -664,9 +665,13 @@ update.mi.info <- function(object, target, list, ...){
           .change.formula.ordered, varnames=nam[i])
       }
       if(object$type[[nam[i]]]=="unordered-categorical"){
+        object$imp.formula[[nam[i]]] <- gsub(paste("ordered(",nam[i], ")", sep=""), 
+                                            nam[i], 
+                                            object$imp.formula[[nam[i]]])
         object$imp.formula <- sapply(object$imp.formula, 
           .change.formula.unordered, varnames=nam[i])
       }
+      
     }
   }
   return(info=object)

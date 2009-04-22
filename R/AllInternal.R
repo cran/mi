@@ -92,7 +92,7 @@ data.tmp <<- NULL # to pass R CMD check
 # Extracts the type (character) as vector
 # ========================================================================
 
-type <-function(info){
+.type <-function(info){
   foo <- function(x){
     x$type
   }
@@ -205,7 +205,7 @@ type <-function(info){
 
 .cat2binary <- function(x){
     x.levels <- if (is.double(x)){
-                  sort(unique(x)) 
+                  sort(unique(x))
                 }
                 else{
                   levels(factor(x))
@@ -228,33 +228,59 @@ type <-function(info){
 # internal used for AveVar in mi
 #==================================
 .foo1 <- function(v, type){
-  browser()
-  for(i in 1:length(v)){
-    if(type=="unordered-categorical"){
-      new.v <- .cat2binary(v)
-    }
-  }
-  if(type == "unorderd-categorical"){
+  if(type=="unordered-categorical"){
     new.v <- .cat2binary(v)
-    apply(new.v, 2, mean)  
+    return(apply(new.v, 2, mean))
   }
-  if(type == "orderd-categorical"){
-    mean(as.numeric(ordered(v)), na.rm=TRUE)
+  else if(type=="ordered-categorical"){
+    return(mean(as.numeric(factor(v)), na.rm=TRUE))
   }
-  else{
-    mean(unclass(v), na.rm=TRUE)
+  else {
+    return(mean(unclass(v), na.rm=TRUE))
   }
 }
 
-.foo2 <- function(v, info){
-  if(type == "unorderd-categorical"){
+.foo2 <- function(v, type){
+  if(type=="unordered-categorical"){
     new.v <- .cat2binary(v)
-    apply(new.v, 2, sd)  
+    return(apply(new.v, 2, sd))
   }
-  if(type == "orderd-categorical"){
-    sd(as.numeric(ordered(v)), na.rm=TRUE)
+  else if(type=="ordered-categorical"){
+    return(sd(as.numeric(factor(v)), na.rm=TRUE))
   }
-  else{
+  else {
+    return(sd(unclass(v), na.rm=TRUE))
+  }
+}
+#  if(is.numeric(v)){
+#    mean(unclass(v), na.rm=TRUE)
+#  }
+#  else if(is.ordered(v)){
+#    mean(as.numeric(factor(v)), na.rm=TRUE)
+#  }
+#  else if(is.factor(v)){
+#    new.v <- .cat2binary(v)
+#    apply(new.v, 2, mean)
+#  }
+#  else if(is.character(v)){
+#    new.v <- .cat2binary(v)
+#    apply(new.v, 2, mean)
+#  }
+#  else{
+#    new.v <- .cat2binary(v)
+#    apply(new.v, 2, mean)
+#  }
+#}
+
+.foo2 <- function(v, type){
+  if(type=="unordered-categorical"){
+    new.v <- .cat2binary(v)
+    apply(new.v, 2, sd)
+  }
+  else if(type=="ordered-categorical"){
+    sd(as.numeric(factor(v)), na.rm=TRUE)
+  }
+  else {
     sd(unclass(v), na.rm=TRUE)
   }
 }
@@ -262,14 +288,16 @@ type <-function(info){
 
 
 
-# ===========================
-#  Internal use in update.mi.info
-#============================
 
+# ===============================
+#  Internal use in update.mi.info
+#=================================
 .change.formula.ordered <- function(x, varnames){
-  x <- gsub(varnames, paste("ordered(", varnames, ")", sep=""), x)
+  x <- gsub(paste("factor(", varnames, ")", sep=""), varnames, x, fix=TRUE)
   return(x)
 }
+
+
 
 .change.formula.unordered <- function(x, varnames){
   x <- gsub(varnames, paste("factor(", varnames, ")", sep=""), x)

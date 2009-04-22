@@ -35,6 +35,12 @@ mi.polr <- function ( formula, data = NULL, drop.unused.levels = TRUE,
   # convert the levels
   Y.levels <- levels(ordered(Y))
   Y.nlevel <- nlevels(ordered(Y))
+  response.name <- names(mf)[1]  
+  form <- formula
+  form <- gsub(response.name, paste("ordered(", response.name, ")", sep=""), form)
+  if(!is.na(form[2])){
+    form <- as.formula(paste(form[2], form[1], form[3]))
+  }
 
 
 #
@@ -46,7 +52,7 @@ mi.polr <- function ( formula, data = NULL, drop.unused.levels = TRUE,
 #  levels( Y ) <- 1:Y.nlevel
 #  Y  <- factor( as.double( Y ) )
 
-  bplr.imp    <- bayespolr( formula = formula, data = data, start = 0, 
+  bplr.imp    <- bayespolr( formula = form, data = data, start = 0, 
                               method = c( "logistic" ), 
                               drop.unused.levels = FALSE, n.iter = n.iter )
   expect.prob <- predict( bplr.imp, newdata = data, type = "probs" )

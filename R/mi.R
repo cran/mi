@@ -72,28 +72,48 @@ setMethod("mi", signature(object = "data.frame"),
   for(i in 1:ncol(data)){
     if (info$type[[i]]=="unordered-categorical"){
       if(is.null(info$level[[i]])){
-        info$level[[i]] <- na.exclude(unique(data[,i]))
+        info$level[[i]] <- sort(na.exclude(unique(data[,i])))
       }
     }
   }
   
 
-  col.mis    <- !complete.cases(t(data)) 
-  ncol.mis   <- sum(col.mis)
-  tot.nlevel <- sum(sapply(.level(info), length))
-  tot.n.unord.cat.var <- sum(sapply(.level(info), is.numeric))
-  n.col.sims.array <- dim(data[, .include(info)])[2] + tot.nlevel - tot.n.unord.cat.var
+  #col.mis    <- !complete.cases(t(data)) 
+  #ncol.mis   <- sum(col.mis)
+  ncol.mis <- sum(.nmis(info)>0)
+  #tot.n.unord.cat.var <- sum(sapply(.level(info), is.numeric))
+
+  idx.include.cat <- (.include(info)&.nmis(info)>0& .type(info)=="unordered-categorical")
+  if(all(idx.include.cat==0)){
+    tot.nlevel <- 0
+    tot.n.unord.cat.var <- 0
+  }
+  else{
+    tot.nlevel <- sum(sapply(info$level[idx.include.cat], length))
+    tot.n.unord.cat.var <- sum(idx.include.cat)
+  }
+  idx.include.var <- (.include(info)&.nmis(info)>0)
+  if(sum(idx.include.var)==1){
+    n.col.sims.array <- 1 + tot.nlevel - tot.n.unord.cat.var
+  }
+  else{
+    n.col.sims.array <- dim(data[, idx.include.var])[2] + tot.nlevel - tot.n.unord.cat.var
+  }
   AveVar  <- array(NA, c(n.iter, n.imp, n.col.sims.array*2))
   s_start <- 1
   s_end   <- n.iter
-  
   mis.index <-  apply(data, 2, is.na) 
   data <- data[,.include(info)]
-  namelist <- as.list(info$name[.include(info)])
-  cat.pos <- grep("unordered-categorical", info$type)
-  for(i in cat.pos){
-    namelist[[i]] <- .catvarnames(namelist[[i]], info$level[[i]])
+  
+  namelist <- as.list(info$name)
+  if(!all(idx.include.cat==0)){
+    cat.include <- info$name[idx.include.cat]
+    cat.pos <- charmatch(cat.include, info$name)
+    for(i in cat.pos){
+      namelist[[i]] <- .catvarnames(namelist[[i]], info$level[[i]])
+    }
   }
+  namelist <- namelist[(.include(info)&.nmis(info)>0)]
   sim.varnames <- unlist(namelist)
   dimnames( AveVar ) <- list(NULL, NULL, 
                              c(paste("mean(", sim.varnames,")",sep=""), 
@@ -201,22 +221,16 @@ setMethod("mi", signature(object = "data.frame"),
           coef.val[[CurrentVar]][[i]] <- rbind(coef.val[[CurrentVar]][[i]],coef(mi.object[[i]][[CurrentVar]]))
         }
         start.val[[i]][[jj]] <- coef(mi.object[[i]][[CurrentVar]])
-       
-        if(info$type[[jj]]=="unordered-categorical"){
-          new.v <- .cat2binary(mi.data[[i]][,jj])
-          avevar.tmp <- c(avevar.tmp, apply(new.v, 2, mean), apply(new.v, 2, sd))
-        }
-        else if(info$type[[jj]]=="ordered-categorical"){
-          avevar.tmp <- c(avevar.tmp, mean(as.numeric(ordered(mi.data[[i]][,jj])), na.rm=TRUE), 
-                          sd(as.numeric(ordered(mi.data[[i]][,jj])), na.rm=TRUE))
-        }
-        else{
-          avevar.tmp <- c(avevar.tmp, mean(unclass(mi.data[[i]][,jj]), na.rm=TRUE), 
-                          sd(unclass(mi.data[[i]][,jj]), na.rm=TRUE))
-        } 
       } ## variable loop 
       cat("\n" )
-      AveVar[s,i,] <- avevar.tmp
+      avevar.mean <- NULL
+      avevar.sd <- NULL
+      for (mm in 1:length(VarName)){
+        avevar.mean <- c(avevar.mean, .foo1(mi.data[[i]][,VarName[mm]], type=info$type[VarName[mm]]))
+        avevar.sd <- c(avevar.sd, .foo2(mi.data[[i]][,VarName[mm]], type=info$type[VarName[mm]]))
+      }
+
+      AveVar[s,i,] <- c(avevar.mean, avevar.sd)
      
     
     } # imputation loop
@@ -449,26 +463,18 @@ setMethod("mi", signature(object = "mi"),
           coef.val[[CurrentVar]][[i]] <- rbind(coef.val[[CurrentVar]][[i]],coef(mi.object[[i]][[CurrentVar]]))
         }
         start.val[[i]][[jj]] <- coef(mi.object[[i]][[CurrentVar]])
-      
-      
-        if(info$type[[jj]]=="unordered-categorical"){
-          new.v <- .cat2binary(mi.data[[i]][,jj])
-          avevar.tmp <- c(avevar.tmp, apply(new.v, 2, mean), apply(new.v, 2, sd))
-        }
-        else if(info$type[[jj]]=="ordered-categorical"){
-          avevar.tmp <- c(avevar.tmp, mean(as.numeric(ordered(mi.data[[i]][,jj])), na.rm=TRUE), 
-                          sd(as.numeric(ordered(mi.data[[i]][,jj])), na.rm=TRUE))
-        }
-        else{
-          avevar.tmp <- c(avevar.tmp, mean(unclass(mi.data[[i]][,jj]), na.rm=TRUE), 
-                          sd(unclass(mi.data[[i]][,jj]), na.rm=TRUE))
-        } 
- 
+
       } ## variable loop 
       cat("\n" )      
-      
-      AveVar[s,i,] <- avevar.tmp
+      avevar.mean <- NULL
+      avevar.sd <- NULL
+      for (mm in 1:length(VarName)){
+        avevar.mean <- c(avevar.mean, .foo1(mi.data[[i]][,VarName[mm]], type=info$type[VarName[mm]]))
+        avevar.sd <- c(avevar.sd, .foo2(mi.data[[i]][,VarName[mm]], type=info$type[VarName[mm]]))
+      }
 
+      AveVar[s,i,] <- c(avevar.mean, avevar.sd)
+     
     
     } # imputation loop
 

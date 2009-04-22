@@ -1,3 +1,8 @@
+2009-4-22 Yu-Sung Su     <ys463@columbia.edu>  
+   * DESCRIPTION (Version, Date): 0.06-5
+   * redesign formulas
+   * R/mi.info: fix a bug in mi.correlated.list
+
 2009-4-18 Yu-Sung Su     <ys463@columbia.edu>  
    * DESCRIPTION (Version, Date): 0.06-2
    * R/mi: fix a bug in the print out of the process
