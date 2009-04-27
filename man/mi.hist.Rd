@@ -4,13 +4,13 @@
 \alias{mi.hist,ANY,ANY-method}
 \alias{mi.hist,mi.method,ANY-method}
 \alias{mi.hist,mi.categorical,ANY-method}
-\alias{mi.hist,mi.dichotomous,ANY-method}
+\alias{mi.hist,mi.binary,ANY-method}
 \alias{mi.hist,mi.polr,ANY-method}
 \alias{mi.hist,mi.pmm,ANY-method}
 \alias{mi.hist,ANY-method}
 \alias{mi.hist,mi.method-method}
 \alias{mi.hist,mi.categorical-method}
-\alias{mi.hist,mi.dichotomous-method}
+\alias{mi.hist,mi.binary-method}
 \alias{mi.hist,mi.polr-method}
 \alias{mi.hist,mi.pmm-method}
 
@@ -25,11 +25,11 @@
 }
 \usage{
   mi.hist( object, Yobs, \dots)
-\S4method{mi.hist}{mi.method,ANY}( object, Yobs, ... )
-\S4method{mi.hist}{mi.categorical,ANY}( object, Yobs, ... )
-\S4method{mi.hist}{mi.dichotomous,ANY}( object, Yobs, ... )
-\S4method{mi.hist}{mi.polr,ANY}( object, Yobs, ... )
-\S4method{mi.hist}{mi.pmm,ANY}( object, Yobs, ... )
+\S4method{mi.hist}{mi.method,ANY}( object, Yobs, \dots)
+\S4method{mi.hist}{mi.categorical,ANY}( object, Yobs, \dots)
+\S4method{mi.hist}{mi.binary,ANY}( object, Yobs,\dots)
+\S4method{mi.hist}{mi.polr,ANY}( object, Yobs, \dots)
+\S4method{mi.hist}{mi.pmm,ANY}( object, Yobs, \dots)
 }
 \arguments{
     \item{Yobs}{ observed values.}

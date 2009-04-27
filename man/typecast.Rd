@@ -30,11 +30,11 @@
 
 \value{
   \item{fixed}{varaibles that contain only one value.}
-  \item{dichotomous}{variables that contain two values.}
+  \item{binary}{variables that contain two values.}
   \item{ordered-categorical}{variables that contain 3 to 5 postive values.}
   \item{unorderd-categorial}{variables that contain characters or more than 5 postive levels}
   \item{positive-continuous}{variables that contain more than 5 postive values, NOT including 0s.}
-  \item{mixed}{variables that contain more than 5 postive values, including 0s.}
+  \item{nonnegative}{variables that contain more than 5 postive values, including 0s.}
   \item{continuous}{variables that are not belong to any of the above types.}
   \item{log-continuous}{log-scaled continuous variable}
 }

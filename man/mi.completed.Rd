@@ -43,7 +43,7 @@
 }
 \examples{
   data(CHAIN)
-  IMP <- mi (CHAIN, n.iter=6, add.priors=FALSE)
+  IMP <- mi (CHAIN, n.iter=6, add.noise=FALSE)
   # get all imputed dataset
   imputed.matrix <- mi.completed (IMP)  
   # get the 3rd chain of the imputed dataset

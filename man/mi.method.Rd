@@ -6,6 +6,7 @@
 % Function
 \alias{imputed}
 \alias{print,mi.method-method}
+\alias{plot,mi.method-method}
 \alias{plot,mi.method,ANY-method}
 \alias{fitted,mi.method-method}
 \alias{coef,mi.method-method}
@@ -50,7 +51,7 @@
   mi.method is a virtual class for all the \code{mi} classes.  
   Basically all the necessary functions are defined under \code{mi.method} class, thus
   most of the \code{mi} classes that do not have specific method defined for them inherits their methods from this class.
-  For some special class as \code{mi.mixed} these methods are extended to tailor to the needs.
+  For some special class as \code{mi.nonnegative} these methods are extended to tailor to the needs.
 }
 
 

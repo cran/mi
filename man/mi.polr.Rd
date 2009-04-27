@@ -6,6 +6,7 @@
 \alias{mi.polr}
 \alias{resid,mi.polr-method}
 \alias{residuals,mi.polr-method}
+\alias{plot,mi.polr-method}
 \alias{plot,mi.polr,ANY-method}
 \title{
     Elementary function: multinomial log-linear models to impute a ordered categorical variable.

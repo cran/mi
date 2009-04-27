@@ -12,8 +12,8 @@ mi.types <- function(){
             "count",
             "ordered-categorical",
             "unordered-categorical",
-            "dichotomous",
-            "mixed",
+            "binary",
+            "nonnegative",
             "proportion",
             "predictive-mean-matching",
             "positive-continuous")
@@ -34,12 +34,12 @@ type.models <- function (type) {
         "count"                    = "mi.count",
         "ordered-categorical"      = "mi.polr",
         "unordered-categorical"    = "mi.categorical",
-        "dichotomous"              = "mi.dichotomous",
+        "binary"              = "mi.binary",
         "positive-continuous"      = "mi.continuous",
         "proportion"               = "mi.continuous",
         "predictive-mean-matching" = "mi.pmm",
         "fixed"                    = "mi.fixed", 
-        "mixed"                    = "mi.continuous"
+        "nonnegative"                    = "mi.continuous"
     )
     return(imputation.method[type]) # Will be NULL if the method is undefined
 }

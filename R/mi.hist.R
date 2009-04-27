@@ -26,7 +26,7 @@ setMethod( "mi.hist", signature( object= "ANY", Yobs = "ANY"  ),
     mis.lty <- 1
   }
     mis <- Yimp[ is.na( Yobs ) ] ##the vector of the imputed values
-    if( type == "mixed" ) { 
+    if( type == "nonnegative" ) { 
         ipd   <- Yimp[ is.na( Yobs ) ]
         obs   <- Yobs[ !is.na( Yobs ) ]
         pz.ipd<- round( sum( ipd==0 ) / length( ipd ) * 100, 0 )
@@ -78,7 +78,7 @@ setMethod( "mi.hist", signature( object= "ANY", Yobs = "ANY"  ),
         histlineplot ( h.imp, col = imp.col , lty = imp.lty, lwd = imp.lwd ) 
         axis( 1, tick = TRUE, col.axis = 'black' )
     }
-    else if( type == "dichotomous" ) {
+    else if( type == "binary" ) {
         b <-seq( 0, ceiling( max( Yimp ) ), 0.2 )
         h.obs <- hist( obs.nomis, plot = FALSE, breaks = b )
         h.mis <- hist( mis,  plot = FALSE, breaks = b )
@@ -204,7 +204,7 @@ setMethod( "mi.hist", signature( object = "mi.method", Yobs="ANY" ),
 }
 )
 
-setMethod("mi.hist", signature( object = "mi.dichotomous",Yobs = "ANY"),  
+setMethod("mi.hist", signature( object = "mi.binary",Yobs = "ANY"),  
  function (  object, Yobs,b = NULL, binwidth = NULL, gray.scale = FALSE, 
             main = paste("Histogram of ", deparse( substitute( Yobs ) )),            
             xlab = deparse( substitute( Yobs ) ), ylab = "Frequency", 

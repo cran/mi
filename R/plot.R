@@ -2,13 +2,13 @@
 # S4 plot function for mi object
 # ==============================================================================
 
-setMethod( "plot", signature( x = "mi", y="missing" ),
-  function(x, ...) {
-    plot.mi(x, ...)
+setMethod( "plot", signature( x = "mi", y="ANY" ),
+  function(x, y, ...) {
+    plot.mi(x, y, ...)
   }
 )
 
-plot.mi <- function ( x, m = 1, vrb = NULL, vrb.name = "Variable Score",
+plot.mi <- function ( x, y, m = 1, vrb = NULL, vrb.name = "Variable Score",
                         gray.scale = FALSE, mfrow=c(1, 4), ... ) 
 {
   if (m(x) < m) { 
@@ -24,11 +24,14 @@ plot.mi <- function ( x, m = 1, vrb = NULL, vrb.name = "Variable Score",
     par(mfrow = mfrow)
     for(i in 1:dim(Y)[2]){
       par( ask = TRUE )
+      old.par <- par(no.readonly = TRUE)  
+      par(mar=c(3,3,3,1), mgp=c(1.5,.25,0), tcl=-0.2)
       if(!is.null(mids[[i]])) {
-        plot(x = mids[[i]], y = Y[ ,names(mids)[i]], main = names(Y)[i])
+        plot(x = mids[[i]], y = Y[ ,names(mids)[i]], main = names(Y)[i], gray.scale=gray.scale)
       }
     }
   }
+  par(old.par)
 }
 
 # ==============================================================================
@@ -37,7 +40,7 @@ plot.mi <- function ( x, m = 1, vrb = NULL, vrb.name = "Variable Score",
 
 
 setMethod( "plot", signature( x = "mi.method", y ="ANY"), 
-  function( x, y, main = deparse( substitute( y ) ), gray.scale = FALSE ){      
+  function( x, y, main = deparse( substitute( y ) ), gray.scale = FALSE, ...){      
     fit   <- fitted( x )
     res   <- residuals( x, y )
     sigma <- sigma.hat( x )
@@ -58,7 +61,7 @@ setMethod( "plot", signature( x = "mi.method", y ="ANY"),
 # ==============================================================================
 
 setMethod("plot", signature(x = "mi.polr", y="ANY"), 
-function ( x, y, main=deparse( substitute( y ) ), gray.scale = FALSE ) {
+function ( x, y, main=deparse( substitute( y ) ), gray.scale = FALSE, ...) {
   #par(mfrow=c(1,4))
   fit     <- .factor2num( fitted( x ))
   res     <- .factor2num( residuals( x, y ))
@@ -78,7 +81,7 @@ function ( x, y, main=deparse( substitute( y ) ), gray.scale = FALSE ) {
 # ==============================================================================
 
 setMethod("plot", signature(x = "mi.categorical", y="ANY"), 
-function ( x, y, main=deparse( substitute( y ) ),gray.scale = FALSE ) {
+function ( x, y, main=deparse( substitute( y ) ), gray.scale = FALSE, ...) {
   #par(mfrow=c(1,4))
   fit     <- as.numeric(fitted( x ))
   res     <- residuals(x, y)
@@ -94,12 +97,12 @@ function ( x, y, main=deparse( substitute( y ) ),gray.scale = FALSE ) {
 )
 
 # ==============================================================================
-# S4 plot function for mi.dichotomous object
+# S4 plot function for mi.binary object
 # ==============================================================================
 
 
-setMethod("plot", signature(x = "mi.dichotomous",y="ANY"), 
-function ( x, y, main=deparse( substitute( y ) ), gray.scale = FALSE ) {
+setMethod("plot", signature(x = "mi.binary",y="ANY"), 
+function ( x, y, main=deparse( substitute( y ) ), gray.scale = FALSE, ...) {
    #par(mfrow=c(1,4))
    fit     <- fitted( x )
    res     <- residuals( x, y )

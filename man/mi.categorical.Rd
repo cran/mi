@@ -6,6 +6,7 @@
 \alias{mi.categorical}
 \alias{resid,mi.categorical-method}
 \alias{residuals,mi.categorical-method}
+\alias{plot,mi.categorical-method}
 \alias{plot,mi.categorical,ANY-method}
 
 \title{ 
@@ -33,12 +34,12 @@
   \item{data}{ A data frame containing the incomplete data and the matrix of the complete predictors. }
   \item{n.iter}{ Maximum number of iteration. }
   \item{MaxNWts}{ The maximum allowable number of weights. See nnet for detail. }
-  \item{\dots}{ Currently not used. }
   \item{object}{ \code{mi.categorical} object.}
   \item{x}{ \code{mi.categorical} object.}
   \item{y}{ Observed values.}
   \item{main}{ main title of the plot. }
   \item{gray.scale}{ When set to TRUE, makes the plot into gray scale with predefined color and line type. }
+  \item{\dots}{Currently not used.}
 
 }
 \details{
@@ -66,14 +67,14 @@
     \code{\link{mi}}
 }
 \examples{
-  x<-rnorm(100,0,1)
-  y<-x+4
-  y<-round(y)
-  y[y<0]<-0
+  x <-rnorm(100,0,1)
+  y <- x+4
+  y <- round(y)
+  y[y<0] <- 0
   # create artificial missingness on y
-  y[seq(1,100,10)]<-NA
+  y[seq(1,100,10)] <- NA
   dat.xy <- data.frame(x,y)
-  mi.categorical(formula =y~x,data=dat.xy)
+  mi.categorical(formula = y ~ x, data = dat.xy)
 }
 \keyword{models}
 \keyword{aplot}

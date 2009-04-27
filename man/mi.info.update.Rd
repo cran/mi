@@ -5,7 +5,7 @@
 \alias{mi.info.update.level}
 \alias{mi.info.update.include}
 \alias{mi.info.update.is.ID}
-\alias{mi.info.update.correlated}
+\alias{mi.info.update.collinear}
 \alias{mi.info.update.transform}
 \alias{mi.info.update.imp.order}
 \alias{mi.info.update.determ.pred}
@@ -22,7 +22,7 @@ mi.info.update.type(object, list)
 mi.info.update.level(object, list)
 mi.info.update.include(object, list)
 mi.info.update.is.ID(object, list)
-mi.info.update.correlated(object, list)
+mi.info.update.collinear(object, list)
 mi.info.update.transform(object, list)
 mi.info.update.imp.order(object, list)
 mi.info.update.determ.pred(object, list)

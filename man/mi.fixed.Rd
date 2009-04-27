@@ -23,8 +23,8 @@
 \arguments{
   \item{formula}{an object of class '"formula"' (or one that can be coerced to that class): a symbolic description of the model to be fitted.  See bayesglm 'formula' for details.}
   \item{data}{ A data frame containing the incomplete data and the matrix of the complete predictors. }
-  \item{Y}{A variable that is correlated with X}.
-  \item{X}{A variable that is correlated with Y}.
+  \item{Y}{A variable that is collinear with X}.
+  \item{X}{A variable that is colliear with Y}.
   \item{\dots}{ Currently not used}
 %  \item{x}{ An object of class '"mi.copy"'.}
 %  \item{y}{ Observed values.}

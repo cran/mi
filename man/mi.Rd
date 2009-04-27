@@ -41,13 +41,13 @@
 \usage{
 \S4method{mi}{data.frame}( object, info,  n.imp = 3, n.iter = 30, 
     R.hat = 1.1, max.minutes = 20, rand.imp.method = "bootstrap", 
-    preprocess = TRUE, continue.on.convergence = FALSE,
+    preprocess = TRUE, run.past.convergence = FALSE,
     seed = NA, check.coef.convergence = FALSE, 
-    add.priors = prior.control(), post.run = TRUE)
+    add.noise = noise.control(), post.run = TRUE)
     
 \S4method{mi}{mi}( object, info, n.imp = 3, n.iter = 30, 
     R.hat = 1.1, max.minutes = 20, rand.imp.method = "bootstrap", 
-    preprocess = TRUE, continue.on.convergence = FALSE,
+    preprocess = TRUE, run.past.convergence = FALSE,
     seed = NA, check.coef.convergence = FALSE)
 
 }
@@ -63,15 +63,15 @@
   \item{rand.imp.method}{Method for random imputation, see \code{\link{random.imp}}}
   \item{preprocess}{Preprocess the data according to the variable types, 
     see \code{\link{mi.preprocess}}}
-  \item{continue.on.convergence}{If set to \code{TRUE} the \code{mi} will run 
+  \item{run.past.convergence}{If set to \code{TRUE} the \code{mi} will run 
     until maximum iteration is reached or maximum minutes pass.}
   \item{check.coef.convergence}{default = \code{FALSE}}
-  \item{add.priors}{a list of parameters for controlling the process of adding priors for
-      \code{\link{mi}}. See the documentation for \code{\link{prior.control}} for details.
-      Set \code{add.priors=FALSE} to use no prior.}  
+  \item{add.noise}{a list of parameters for controlling the process of adding noise for
+      \code{\link{mi}}. See the documentation for \code{\link{noise.control}} for details.
+      Set \code{add.noise=FALSE} to add no noise.}  
   \item{post.run}{default is \code{TRUE} which will run 20 more iterations after the \code{mi} is finished
-    if and only if some priors have been added into the \code{mi} process. This is to mitigate the 
-    influence of the priors to the whole procedure.}
+    if and only if some noise have been added into the \code{mi} process. This is to mitigate the 
+    influence of the noise to the whole procedure.}
 }
 
 \value{ 
@@ -133,7 +133,7 @@ and looping through until approximate convergence.
 
 \seealso{ 
     \code{\link{mi.completed}}, \code{\link{mi.data.frame}},
-    \code{\link{mi.continuous}}, \code{\link{mi.dichotomous}},
+    \code{\link{mi.continuous}}, \code{\link{mi.binary}},
     \code{\link{mi.count}}, \code{\link{mi.categorical}},
     \code{\link{mi.polr}},  \code{\link{typecast}}, 
     \code{\link{mi.info}}, \code{\link{mi.preprocess}}  
@@ -172,8 +172,8 @@ inf <- update(inf, "type", list(x10="count"))
 # run the imputation
 ## this is for test only
 IMP <- mi(dat, info=inf, n.iter=6, post.run=FALSE)
-# no prior
-# IMP <- mi(dat, info=inf, n.iter=6, add.priors=FALSE)
+# no noise
+# IMP <- mi(dat, info=inf, n.iter=6, add.noise=FALSE)
 
 # pick up where you left off
 # IMP <- mi(IMP)       ## NOT RUN

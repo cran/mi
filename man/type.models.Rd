@@ -18,11 +18,11 @@ mi.types()
         \code{count},
         \code{ordered-categorical}, 
         \code{unordered-categorical}, 
-        \code{dichotomous},
+        \code{binary},
         \code{positive-continuous},
         \code{proportion},
         \code{predictive-mean-matching},
-        \code{mixed},
+        \code{nonnegative},
         \code{fixed}}
 }
 

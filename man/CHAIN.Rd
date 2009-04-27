@@ -33,7 +33,7 @@
       (better health is associated with higher scale values) at round 6th.
     }
     \item{\code{mcs37.W1}}{
-      a dichotomous measure of poor mental health ( 1=Yes, 0=No ) at round 6th.
+      a binary measure of poor mental health ( 1=Yes, 0=No ) at round 6th.
     }
     \item{\code{b05.W1}}{
       ordered interval for the CD4 count

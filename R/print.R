@@ -52,14 +52,14 @@ print.mi.info <- function ( x, ... ){
 
 mi.info.table <- function ( info ) {
   result<-data.frame(matrix(NA,nrow=length(info),ncol=7))
-  dimnames(result)<-list(c(1:length(info)),c("names","include","order","number.mis","all.mis","type","correlated"))
+  dimnames(result)<-list(c(1:length(info)),c("names","include","order","number.mis","all.mis","type","collinear"))
   result[,1]<-sapply(info,function(inf){inf$name})
   result[,2]<-sapply(info,function(inf){if(inf$include){"Yes"}else{"No"}}) 
   result[,3]<-sapply(info,function(inf){inf$imp.order})
   result[,4]<-sapply(info,function(inf){inf$nmis})
   result[,5]<-sapply(info,function(inf){if(inf$all.missing){"Yes"}else{"No"}}) 
   result[,6]<-sapply(info,function(inf){inf$type})
-  result[,7]<-sapply(info,function(inf){if(is.na(inf$correlated[1])){"No"}else{paste(inf$correlated,collapse=", ")}})  
+  result[,7]<-sapply(info,function(inf){if(is.na(inf$collinear[1])){"No"}else{paste(inf$collinear,collapse=", ")}})  
   invisible(result)
 }
 # ==============================================================================

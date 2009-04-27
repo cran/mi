@@ -1,7 +1,7 @@
 # ==============================================================================
-# imputation function for dichotomous variable
+# imputation function for binary variable
 # ==============================================================================
-mi.dichotomous <- function( formula, data = NULL, start = NULL, n.iter = 100,
+mi.binary <- function( formula, data = NULL, start = NULL, n.iter = 100,
                              draw.from.beta=FALSE,... ) {
   call <- match.call()
   mf <- match.call(expand.dots = FALSE)
@@ -79,7 +79,7 @@ mi.dichotomous <- function( formula, data = NULL, start = NULL, n.iter = 100,
     random.pred <- as.logical(random.pred)                         
   }                                                                 
 
-  result <- new(c("mi.dichotomous", "mi.method"),
+  result <- new(c("mi.binary", "mi.method"),
               model = vector("list", 0), 
               expected = numeric(0), 
               random = numeric(0))

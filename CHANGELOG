@@ -1,3 +1,10 @@
+2009-4-28 Yu-Sung Su     <ys463@columbia.edu>  
+   * DESCRIPTION (Version, Date): 0.07-1
+   * rename mi.dichotomous to mi.binary
+   * rename correlated slot to collinear
+   * rename continue.on.convergence to run.past.convergence
+
+
 2009-4-22 Yu-Sung Su     <ys463@columbia.edu>  
    * DESCRIPTION (Version, Date): 0.06-5
    * redesign formulas
@@ -87,7 +94,7 @@
 2009-2-4 Yu-Sung Su     <ys463@columbia.edu>  
    * man/prepocess: new doc
    * R/mi.continuous: when start is null, no longer set n.iter=1
-   * R/mi.dichotomous: when start is null, no longer set n.iter=1
+   * R/mi.binary: when start is null, no longer set n.iter=1
    * R/mi.preprocess: new mi.preprocess and mi.postprocess
    * R/typecast: new typecast, new type (postitive continuous)
    * R/imputed: add mi.categorical for imputed
@@ -104,7 +111,7 @@
 
 2009-1-26 Yu-Sung Su     <ys463@columbia.edu>  
    * clean up redundant code
-   * no more squareroot-continuous, logscale-continuous, mi.mixed, mi.start, mi.matrix
+   * no more squareroot-continuous, logscale-continuous, mi.nonnegative, mi.start, mi.matrix
    * R/AllInternal: add internal function from mi.info
    * R/mi.info: 
       1. remove some internal functions to AllInternal

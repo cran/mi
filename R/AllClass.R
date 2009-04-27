@@ -72,7 +72,7 @@ setClass("mi.count",
 
 
 
-setClass("mi.dichotomous",
+setClass("mi.binary",
         representation(
             model    = "list", 
             expected = "ANY", 

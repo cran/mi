@@ -38,7 +38,7 @@
      \tab \tab -include: \tab Include in the imputation process or not\cr
      \tab \tab -is.ID: \tab Is ID variable or not\cr
      \tab \tab -all.missing: \tab All observation missing or not\cr
-     \tab \tab -correlated: \tab Correlated variables\cr
+     \tab \tab -collinear: \tab Collineared variables\cr
      \tab \tab -determ.pred: \tab Deterministic predictor\cr
      \tab \tab -imp.formula: \tab Imputation formula\cr
      \tab \tab -params: \tab Parameters for the imputation model\cr

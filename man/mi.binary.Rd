@@ -1,15 +1,16 @@
-\name{mi.dichotomous}
+\name{mi.binary}
 \docType{class}
 % Classes
-\alias{mi.dichotomous-class}
+\alias{mi.binary-class}
 % Function
-\alias{mi.dichotomous}
-\alias{plot,mi.dichotomous,ANY-method}
+\alias{mi.binary}
+\alias{plot,mi.binary-method}
+\alias{plot,mi.binary,ANY-method}
 % methods
-\alias{resid,mi.dichotomous-method}
-\alias{residuals,mi.dichotomous-method}
+\alias{resid,mi.binary-method}
+\alias{residuals,mi.binary-method}
 \title{
-    Elementary function: Bayesian logistic regression to impute a dichotomous variable.
+    Elementary function: Bayesian logistic regression to impute a binary variable.
 }
 \description{
     Imputes univariate missing data using bayesglm, an 
@@ -17,11 +18,11 @@
     Cauchy prior distribution for the coefficients.
 }
 \usage{
-mi.dichotomous(formula, data = NULL, start = NULL, n.iter = 100, 
+mi.binary(formula, data = NULL, start = NULL, n.iter = 100, 
   draw.from.beta = FALSE, \dots)
-\S4method{resid}{mi.dichotomous}(object, y)
-\S4method{residuals}{mi.dichotomous}(object, y)
-\S4method{plot}{mi.dichotomous,ANY}( x, y, main=deparse( substitute( y ) ), gray.scale = FALSE, \dots)
+\S4method{resid}{mi.binary}(object, y)
+\S4method{residuals}{mi.binary}(object, y)
+\S4method{plot}{mi.binary,ANY}( x, y, main=deparse( substitute( y ) ), gray.scale = FALSE, \dots)
 }
 
 \arguments{
@@ -31,8 +32,8 @@ mi.dichotomous(formula, data = NULL, start = NULL, n.iter = 100,
   \item{n.iter}{ Maximum number of iteration for bayesglm. The default is 100.}
   \item{draw.from.beta}{ Draws from posterior distribution of the betas to add randomness. }
   \item{\dots}{ Currently not used. }
-  \item{object}{\code{mi.dichotomous} object.}
-  \item{x}{ \code{mi.dichotomous} object.}
+  \item{object}{\code{mi.binary} object.}
+  \item{x}{ \code{mi.binary} object.}
   \item{y}{ Observed values.}
   \item{main}{ main title of the plot. }
   \item{gray.scale}{ When set to TRUE, makes the plot into gray scale with predefined color and line type. }
@@ -70,7 +71,7 @@ mi.dichotomous(formula, data = NULL, start = NULL, n.iter = 100,
   y[seq(1,100,10)]<-NA
   dat.xy <- data.frame(x,y)
   # imputation
-  mi.dichotomous(y~x, data = dat.xy)
+  mi.binary(y~x, data = dat.xy)
 }
 \seealso{
     \code{\link{mi.info}}, 

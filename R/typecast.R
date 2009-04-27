@@ -13,7 +13,7 @@ setMethod("typecast", signature( object = "ANY" ),
       "fixed"
     } 
     else if (len == 2){ # 2 category variable
-      "dichotomous"
+      "binary"
     }
     else if (is.numeric(object)){     # if the variable is numeric
       if (all(values>0) & all(values < 1)){
@@ -26,7 +26,7 @@ setMethod("typecast", signature( object = "ANY" ),
         "positive-continuous" 
       } 
       else if (len > 5 & "0" %in% values & all(values >= 0)){# more than 5 category with 0 and all positive numbers
-        "mixed" 
+        "nonnegative" 
       } 
       else { # everything else
         "continuous" 

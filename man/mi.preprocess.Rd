@@ -3,7 +3,7 @@
 \alias{mi.postprocess}
 
 \title{Preproessing and Postprocessing mi data object}
-\description{Function for propressing and postprocessing \code{mixed},
+\description{Function for propressing and postprocessing \code{nonnegative},
   and \code{positive-continuous} variable types in mi data object}
 
 \usage{
@@ -19,8 +19,8 @@
 
 
 \details{
-\code{mi.proprocess} will transform the \code{mixed} and \code{positive-continuous}
-variable types.  If the variable is of \code{mixed} type, the function transforms the variable
+\code{mi.proprocess} will transform the \code{nonnegative} and \code{positive-continuous}
+variable types.  If the variable is of \code{nonnegative} type, the function transforms the variable
 into two variables: an indicator indicates whether the value is postive or not and 
 a transformed variable that takes on all positive value and is transformed either by taking
 a log; 0 and NA will be treated as missing for such a variable. If the variable

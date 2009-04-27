@@ -9,18 +9,19 @@ mi.info <- function( data, threshhold  = 0.99999 )
   info <- vector("list", dim(data)[2])
   names(info) <- dimnames(data)[[2]]
   data.original.name <- deparse(substitute(data))
-  correlated <- mi.check.correlation(data, threshhold)
+  collinear <- mi.check.correlation(data, threshhold)
 #  foo <- function(lst){
 #    lst[-1]
 #  }
 #  unlist(lapply(correlated, FUN=foo))
+
   ord <- 1
   for( i in 1:dim( data )[2] ) {
     info[[i]] <- vector( "list", 14 )
     names( info[[i]] ) <- c( "name","imp.order", "nmis", "type", "var.class",
                             "level", 
                             "include", "is.ID", "all.missing",
-                            "correlated", "determ.pred", "imp.formula", 
+                            "collinear", "determ.pred", "imp.formula", 
                             #"transform",
                             "params", "other" )
     info[[i]]$name <- dimnames(data)[[2]][i]
@@ -91,13 +92,13 @@ mi.info <- function( data, threshhold  = 0.99999 )
     else{
       info[[i]]$imp.order <- NA
     }
-    # correlated 
-    info[[i]]$correlated <- correlated[[i]]
+    # collinear 
+    info[[i]]$collinear <- collinear[[i]]
     # params
     formal.args <- formals( as.character( type.models( info[[i]]$type ) ) )
     info[[i]]$params <- formal.args[!names( formal.args ) %in% c( "formula", "data", "start", "..." )]    
     # transform
-    #info[[i]]$transform <- if(info[[i]]$type%in%c("unordered-categorical","dichotomous")){}
+    #info[[i]]$transform <- if(info[[i]]$type%in%c("unordered-categorical","binary")){}
   }
  
   # all missing
@@ -106,15 +107,15 @@ mi.info <- function( data, threshhold  = 0.99999 )
     cat("\avariable(s)", paste( names(info)[allmis],collapse=", ",sep=""),
          "has(have) no observed value, and will be omitted.\n\n" )
   }
-  # correlated then exclude  
-  data.correlated <- mi.correlated.list(data)
-  if(length(data.correlated) > 0) {
-    for(c.idx in 1:length(data.correlated)) {
-      c.nm <- data.correlated[[c.idx]][-1]
+  # collinear then exclude  
+  data.collinear <- mi.correlated.list(data)
+  if(length(data.collinear) > 0) {
+    for(c.idx in 1:length(data.collinear)) {
+      c.nm <- data.collinear[[c.idx]][-1]
       for( nm.idx in 1:length(c.nm)){
         info[[c.nm[nm.idx]]]$include     <- FALSE
         info[[c.nm[nm.idx]]]$imp.order   <- NA
-        info[[c.nm[nm.idx]]]$determ.pred <- paste(data.correlated[[c.idx]][1] )
+        info[[c.nm[nm.idx]]]$determ.pred <- paste(data.collinear[[c.idx]][1] )
       }
     }
   }
@@ -128,8 +129,8 @@ mi.info <- function( data, threshhold  = 0.99999 )
   # default formula
   info <- mi.info.formula.default( data, info )
   if( length( mi.correlated.list( data ) ) > 0 ) {
-    cat( "\afollowing variables are correlated\n" )
-    print( data.correlated )
+    cat( "\afollowing variables are collinear\n" )
+    print( data.collinear )
   }
   # Rank checks
 #  dtch<-data[complete.cases(data[,include(info)]),include(info)]
@@ -526,7 +527,7 @@ mi.interactive <- function ( data ){
   cat("starting mi: \n")
   cat("----------------------------------- \n\n")
   # run mi
-  data.mi <- mi( data, info, n.iter=default$n.iter, n.imp = default$m, max.minutes=default$max.minutes, continue.on.convergence=default$continue.on.convergence )
+  data.mi <- mi( data, info, n.iter=default$n.iter, n.imp = default$m, max.minutes=default$max.minutes, run.past.convergence=default$run.past.convergence )
   stop.mi <- FALSE
   if(!converged(data.mi)){
     resp.rerun<-menu(c("yes","no"),title="mi did not converge, would you like to keep it running?")
@@ -544,7 +545,7 @@ mi.interactive <- function ( data ){
     if(deflt.chng==1){
       default<-mi.default.check()
     }
-    data.mi <- mi( data.mi, info,n.iter=default$n.iter, max.minutes=default$max.minutes, continue.on.convergence=default$continue.on.convergence )
+    data.mi <- mi( data.mi, info,n.iter=default$n.iter, max.minutes=default$max.minutes, run.past.convergence=default$run.past.convergence )
     if(!converged(data.mi)){
       resp.rerun<-menu(c("yes","no"),title="mi did not converge, would you like to keep it running?")
       if(resp.rerun==2){
@@ -607,7 +608,7 @@ mi.info.uncode <-function( data, info ){
 # check default setting
 # ========================================================================
 
-mi.default.check<- function( n.iter=30, m=3, max.minutes =20, continue.on.convergence=FALSE ){
+mi.default.check<- function( n.iter=30, m=3, max.minutes =20, run.past.convergence=FALSE ){
   # number of iteration
   cat( "mi will run for 30 iteration by default.\n" )
   resp.iter<-menu( c( "yes","no" ), title="would you like change it?" )
@@ -633,9 +634,9 @@ mi.default.check<- function( n.iter=30, m=3, max.minutes =20, continue.on.conver
   cat( "mi will run until convergence but you can make it run longer \n" )
   resp.conv <- menu( c( "yes", "no" ), title = "would you like it to run after convergence?" )
   if( resp.conv == 1 ){
-    continue.on.convergence <- TRUE
+    run.past.convergence <- TRUE
   }
-  return( list( n.iter = n.iter, m = m, max.minutes = max.minutes, continue.on.convergence = continue.on.convergence ) )
+  return( list( n.iter = n.iter, m = m, max.minutes = max.minutes, run.past.convergence = run.past.convergence ) )
 }
 
 center <- function( x ) {
@@ -699,8 +700,8 @@ mi.info.update.is.ID <- function (object, list ) {
   return(info)  
 }
 
-mi.info.update.correlated <- function (object, list ) {
-  info <- update(object, target="correlated", list ) 
+mi.info.update.collinear <- function (object, list ) {
+  info <- update(object, target="collinear", list ) 
   return(info)
 }
 

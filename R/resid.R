@@ -8,7 +8,7 @@ setMethod("residuals", signature(object = "mi.method"),
 }
 )
 
-setMethod("residuals", signature(object = "mi.dichotomous"), 
+setMethod("residuals", signature(object = "mi.binary"), 
   function(object, y){
   .dichot(y) - fitted(object)
 }
@@ -42,7 +42,7 @@ setMethod("resid", signature(object = "mi.method"),
 }
 )
 
-setMethod("resid", signature(object = "mi.dichotomous"), 
+setMethod("resid", signature(object = "mi.binary"), 
   function(object, y){
   .dichot(y) - fitted(object)
 }

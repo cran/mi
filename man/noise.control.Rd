@@ -1,14 +1,14 @@
-\name{prior.control}
-\alias{prior.control}
+\name{noise.control}
+\alias{noise.control}
 
 \title{Auxiliary for Adding Priors to Missing Data Imputation}
 \description{
-  Auxiliary function as user interface for adding priors for \code{mi} procedure.
+  Auxiliary function as user interface for adding noise for \code{mi} procedure.
   Typically only used when calling \code{mi}.
 }
 
 \usage{
-prior.control(method=c("reshuffling", "fading"), pct.aug=10, K=1)
+noise.control(method=c("reshuffling", "fading"), pct.aug=10, K=1)
 
 }
 \arguments{
@@ -39,20 +39,20 @@ If \code{fading} method is used, the imputation will augment
 \examples{
 ### NOT RUN
 #===========================================================
-# add fadding empirical priors by augmenting 10% of the data
+# add fadding empirical noise by augmenting 10% of the data
 #===========================================================
 if(0){
  data(CHAIN)
- IMP <- mi(CHAIN, add.priors=prior.control(method="fading", pct.aug=10))
+ IMP <- mi(CHAIN, add.noise=noise.control(method="fading", pct.aug=10))
 #=================================================
-# add priors by randomly drawing from the marginal
+# add noise by randomly drawing from the marginal
 #=================================================
 ## This is the default setting
- IMP <- mi(CHAIN, add.priors=prior.control(method="reshuffling", K=1))
+ IMP <- mi(CHAIN, add.noise=noise.control(method="reshuffling", K=1))
 #=================================================
-# use no prior
+# add no noise
 #=================================================
- IMP <- mi(CHAIN, add.priors=FALSE)
+ IMP <- mi(CHAIN, add.noise=FALSE)
 }
 }
 

@@ -21,12 +21,12 @@ mi.preprocess <- function(data, info){
   type <- info$type
   for (i in 1:n.col){
     typ <- type[i]
-    if(typ == "mixed"){
+    if(typ == "nonnegative"){
       tmp <- ifelse(data[,i] > 0, 1, ifelse(data[,i]==0, 0, NA))
       data <- cbind(data, tmp)
       Ind.lab <- paste(var.name[i], "ind", sep=".")
       names(data)[ncol(data)] <- Ind.lab
-      type[ncol(data)] <- "dichotomous"
+      type[ncol(data)] <- "binary"
       names(type)[ncol(data)] <- Ind.lab
       data[,i] <- log(ifelse(data[,i]>0, data[,i], NA))
       type[i] <- "log-continuous"
@@ -71,8 +71,8 @@ mi.postprocess <- function(mi.data, info){
         mi.data[,i] <- invlogit(mi.data[,i])
       }
       if(sum(grep(".ind", varnames[i]))){
-        mixed.name <- gsub(".ind", "", varnames[i])
-        mi.data[,mixed.name] <- mi.data[,mixed.name] * mi.data[,varnames[i]]
+        nonnegative.name <- gsub(".ind", "", varnames[i])
+        mi.data[,nonnegative.name] <- mi.data[,nonnegative.name] * mi.data[,varnames[i]]
       }
     }
     if(sum(idx)==0){
@@ -93,8 +93,8 @@ mi.postprocess <- function(mi.data, info){
           mi.data[[s]][,i] <- invlogit(mi.data[[s]][,i])
         }
         if(sum(grep(".ind", varnames[i]))){
-          mixed.name <- gsub(".ind", "", varnames[i])
-          mi.data[[s]][,mixed.name] <- mi.data[[s]][,mixed.name] * mi.data[[s]][,varnames[i]]
+          nonnegative.name <- gsub(".ind", "", varnames[i])
+          mi.data[[s]][,nonnegative.name] <- mi.data[[s]][,nonnegative.name] * mi.data[[s]][,varnames[i]]
         }
       }
       if(sum(idx)==0){
@@ -169,7 +169,7 @@ mi.postprocess <- function(mi.data, info){
 #trans.func<-function(type){
 #    fun <-if     (type == "squareroot-continuous" ) {sqrt}
 #          else if(type == "logscale-continuous" ) {log}
-#          else if(type == "mixed" ) {function ( x ) {
+#          else if(type == "nonnegative" ) {function ( x ) {
 #                                        x[x>0&!is.na(x)]<-sqrt(x[x>0&!is.na(x)])  
 #                                        return(x)
 #                                      } }
@@ -179,7 +179,7 @@ mi.postprocess <- function(mi.data, info){
 #trans.name<-function(type){
 #    name <-if     (type == "squareroot-continuous" ) {"sqrt."}
 #          else if(type == "logscale-continuous" ) {"log."}
-#          else if(type == "mixed" ) {"msqrt."}
+#          else if(type == "nonnegative" ) {"msqrt."}
 #          else { NULL }
 #    return( name )
 #}
@@ -187,7 +187,7 @@ mi.postprocess <- function(mi.data, info){
 #inverse.func<-function(type){
 #    fun <-if     (type == "squareroot-continuous" ) {function ( x ) { x^2 }}
 #          else if(type == "logscale-continuous" ) {function ( x ) { exp( x ) }}
-#          else if(type == "mixed" ) {function ( x ) {
+#          else if(type == "nonnegative" ) {function ( x ) {
 #                                        x[ x>0 & !is.na( x ) ] <- ( x[ x>0 & !is.na( x ) ] )^2 
 #                                        return( x )
 #                                      } }

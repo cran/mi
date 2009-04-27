@@ -2,7 +2,7 @@
 # mi main function
 #==============================================================================
 
-prior.control <- function(method=c("reshuffling", "fading"), pct.aug=10, K = 1){
+noise.control <- function(method=c("reshuffling", "fading"), pct.aug=10, K = 1){
   method <- match.arg(method)
   if(method=="reshuffling"){
     return(list(method=method, K=K))
@@ -17,9 +17,9 @@ prior.control <- function(method=c("reshuffling", "fading"), pct.aug=10, K = 1){
 setMethod("mi", signature(object = "data.frame"), 
         function (object, info, n.imp = 3, n.iter = 30, R.hat = 1.1,
                   max.minutes = 20, rand.imp.method = "bootstrap", 
-                  preprocess = TRUE, continue.on.convergence = FALSE,
+                  preprocess = TRUE, run.past.convergence = FALSE,
                   seed = NA, check.coef.convergence = FALSE, 
-                  add.priors = prior.control(), post.run = TRUE) 
+                  add.noise = noise.control(), post.run = TRUE) 
 { 
   call <- match.call()                         # call
   if(!is.na(seed)){
@@ -31,11 +31,11 @@ setMethod("mi", signature(object = "data.frame"),
   }
   ProcStart     <- proc.time()                  # starting time
   
-  if(is.logical(add.priors)){
-    add.priors.method <- "other"
+  if(is.logical(add.noise)){
+    add.noise.method <- "other"
   }
   else{
-    add.priors.method <- add.priors$method
+    add.noise.method <- add.noise$method
   }
   
   # variable initialization
@@ -149,10 +149,10 @@ setMethod("mi", signature(object = "data.frame"),
       # variable loop
       for( jj in 1:length(VarName) ) {
         CurrentVar <- VarName[jj]
-       if(add.priors.method=="reshuffling"){
-          prob.add.prior <- add.priors$K/s
-          prob.add.prior <- ifelse(prob.add.prior > 1, 1, prob.add.prior)
-          q <- rbinom(1, 1, prob=prob.add.prior)           
+       if(add.noise.method=="reshuffling"){
+          prob.add.noise <- add.noise$K/s
+          prob.add.noise <- ifelse(prob.add.noise > 1, 1, prob.add.noise)
+          q <- rbinom(1, 1, prob=prob.add.noise)           
           if(q){
             cat(paste(CurrentVar, "*", sep=""), " ")
           }
@@ -160,7 +160,7 @@ setMethod("mi", signature(object = "data.frame"),
             cat(CurrentVar, "  ")
           }
         }
-        else if(add.priors.method=="fading"){
+        else if(add.noise.method=="fading"){
           cat(paste(CurrentVar, "*", sep=""), " ")
         }
         else{
@@ -173,13 +173,13 @@ setMethod("mi", signature(object = "data.frame"),
         names(dat) <- c(CurrentVar, names(data[,!CurVarFlg, drop=FALSE] ))
         model.type <- as.character(type.models( info[[CurrentVar]]$type))
         
-        if(add.priors.method=="reshuffling"){
+        if(add.noise.method=="reshuffling"){
           if(q){
             dat <- random.imp(dat, method = rand.imp.method)
           }
         }
-        if(add.priors.method=="fading"){
-          pct.aug <- add.priors$pct.aug
+        if(add.noise.method=="fading"){
+          pct.aug <- add.noise$pct.aug
           n.aug <- trunc(nrow(data)*(pct.aug/100))
           dat <- rbind(dat, .randdraw(dat, n=n.aug))
         }                
@@ -205,7 +205,7 @@ setMethod("mi", signature(object = "data.frame"),
         on.exit()
         options(show.error.messages = TRUE)
         # Error Handling        
-        if(add.priors.method=="reshuffling"){        
+        if(add.noise.method=="reshuffling"){        
           if(q){
             mi.object[[i]][[CurrentVar]]@random <- dat[is.na(data[,CurrentVar, drop=FALSE]),CurrentVar]
           }
@@ -241,7 +241,7 @@ setMethod("mi", signature(object = "data.frame"),
       con.check <- as.bugs.array(AveVar[1:s, , ])
       if(all(con.check$summary[,8] < R.hat)) { 
         converged.flg <- TRUE
-        if(!continue.on.convergence){ 
+        if(!run.past.convergence){ 
           break
         }
       }
@@ -278,7 +278,7 @@ setMethod("mi", signature(object = "data.frame"),
 
   # impute correlated variables
   for( cor.idx in 1:length(info)) {
-    if( length(info[[cor.idx]]$correlated) > 0 
+    if( length(info[[cor.idx]]$collinear) > 0 
          && info[[cor.idx]]$nmis > 0 
           && info[[cor.idx]]$include == FALSE ) {
       rho <- coef(lm(org.data[[names(info)[cor.idx]]] ~ org.data[[info[[cor.idx]]$determ.pred]]))[2]
@@ -321,8 +321,8 @@ setMethod("mi", signature(object = "data.frame"),
             mi.info.preprocessed = info2)
   with(globalenv(), rm(data.tmp))
   if(post.run){
-    if(!is.logical(add.priors)){
-      m <- mi(m, continue.on.convergence=TRUE, n.iter=20, R.hat=R.hat)
+    if(!is.logical(add.noise)){
+      m <- mi(m, run.past.convergence=TRUE, n.iter=20, R.hat=R.hat)
     }
   }
   return(m)
@@ -332,7 +332,7 @@ setMethod("mi", signature(object = "data.frame"),
 setMethod("mi", signature(object = "mi"), 
         function (object, info, n.imp = 3, n.iter = 30, R.hat = 1.1,
                   max.minutes = 20, rand.imp.method = "bootstrap", 
-                  preprocess = TRUE, continue.on.convergence = FALSE,
+                  preprocess = TRUE, run.past.convergence = FALSE,
                   seed = NA, check.coef.convergence = FALSE) 
 { 
   call <- match.call()                         # call
@@ -484,7 +484,7 @@ setMethod("mi", signature(object = "mi"),
       con.check <- as.bugs.array(AveVar[1:s, , ])
       if(all(con.check$summary[,8] < R.hat)) { 
         converged.flg <- TRUE
-        if(!continue.on.convergence){ 
+        if(!run.past.convergence){ 
           break
         }
       }
@@ -518,9 +518,9 @@ setMethod("mi", signature(object = "mi"),
 #    data <- mi.info.uncode(data, info)
 #  }
 
-  # impute correlated variables
+  # impute collinear variables
   for( cor.idx in 1:length(info)) {
-    if( length(info[[cor.idx]]$correlated) > 0 
+    if( length(info[[cor.idx]]$collinear) > 0 
          && info[[cor.idx]]$nmis > 0 
           && info[[cor.idx]]$include == FALSE ) {
       rho <- coef(lm(org.data[[names(info)[cor.idx]]] ~ org.data[[info[[cor.idx]]$determ.pred]]))[2]
