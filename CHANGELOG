@@ -1,3 +1,8 @@
+2009-5-4 Yu-Sung Su     <ys463@columbia.edu>  
+   * DESCRIPTION (Version, Date): 0.07-2
+   * new function: write.mi
+
+
 2009-4-28 Yu-Sung Su     <ys463@columbia.edu>  
    * DESCRIPTION (Version, Date): 0.07-1
    * rename mi.dichotomous to mi.binary

@@ -81,7 +81,6 @@ export(
   is.mi.info,
   lm.mi,
   lmer.mi,
-  glmer.mi,
   m,
   mi,
   marginal.scatterplot,
@@ -121,7 +120,8 @@ export(
   noise.control,
   random.imp,
   typecast,
-  type.models
+  type.models,
+  write.mi
 )
 
 S3method(update, mi.info)

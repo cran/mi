@@ -4,8 +4,6 @@
 \alias{mi-class}
 % functions
 \alias{mi}
-\alias{mi,data.frame-method}
-\alias{mi,mi-method}
 \alias{is.mi}
 \alias{bugs.mi}
 \alias{call.mi}
@@ -15,6 +13,9 @@
 \alias{info.mi}
 \alias{imp}
 \alias{m}
+% methods
+\alias{mi,data.frame-method}
+\alias{mi,mi-method}
 \alias{is.mi,mi-method}
 \alias{bugs.mi,mi-method}
 \alias{call.mi,mi-method}
@@ -25,12 +26,9 @@
 \alias{m,mi-method}
 \alias{print,mi-method}
 \alias{imp,mi-method}
-  
-% methods
-\alias{mi,mi-method}
 \alias{show,mi-method}
 
-\title{ Multiple Iterative Regression Imputation }
+\title{Multiple Iterative Regression Imputation}
 
 \description{
  Produce a multiply imputed matrix applying the elementary functions iteratively 
@@ -53,42 +51,36 @@
 }
 
 \arguments{
-  \item{object}{A data frame containing the incomplete data. Missing data are coded as NA or mi object.}
-  \item{info}{\code{\link{mi.info}} object.}
-  \item{n.imp}{Number of multiple imputations. The default is \code{m = 3}.}
-  \item{n.iter}{Number of iterations to get convergence. The default is 30.}
-  \item{R.hat}{R.hat statistic for convergence check, default is 1.1.}
-  \item{max.minutes}{Maximum minutes to stop iterating.  The default is 20.}  
-  \item{seed}{Random seed}
-  \item{rand.imp.method}{Method for random imputation, see \code{\link{random.imp}}}
-  \item{preprocess}{Preprocess the data according to the variable types, 
-    see \code{\link{mi.preprocess}}}
-  \item{run.past.convergence}{If set to \code{TRUE} the \code{mi} will run 
-    until maximum iteration is reached or maximum minutes pass.}
-  \item{check.coef.convergence}{default = \code{FALSE}}
-  \item{add.noise}{a list of parameters for controlling the process of adding noise for
-      \code{\link{mi}}. See the documentation for \code{\link{noise.control}} for details.
-      Set \code{add.noise=FALSE} to add no noise.}  
-  \item{post.run}{default is \code{TRUE} which will run 20 more iterations after the \code{mi} is finished
-    if and only if some noise have been added into the \code{mi} process. This is to mitigate the 
-    influence of the noise to the whole procedure.}
+  \item{object}{A data frame or an \code{mi} object that contains an incomplete data. \code{mi} identifies \code{NA}s as the missing data.}
+  \item{info}{The \code{\link{mi.info}} object.}
+  \item{n.imp}{The number of multiple imputations. Default is 3 chains.}
+  \item{n.iter}{The maximum number of imputation iterations. Default is 30 iterations.}
+  \item{R.hat}{The value of the \code{R.hat} statistic used as a convergence criterion. Default is 1.1.}
+  \item{max.minutes}{The maximum minutes to operate the whole imputation process. Default is 20 minutes.}
+  \item{rand.imp.method}{The methods for random imputation. Currently, \code{mi} implements only the \code{boostrap} method.}
+  \item{preprocess}{Default is \code{TRUE}.  \code{mi} will transform the variables that are of \code{nonnegative}, \code{positive-continuous}, and \code{proportion} types.}
+  \item{run.past.convergence}{Default is \code{FALSE}. If the value is set to be \code{TRUE},  \code{mi} will run until the values of either \code{n.iter} or \code{max.minutes} are reached even if the imputation is converged.}
+  \item{seed}{The random number seed.}
+  \item{check.coef.convergence}{Default is \code{FALSE}. If the value is set to be \code{TRUE}, \code{mi} will check the convergence of the coefficients of imputation models.}
+  \item{add.noise}{A list of parameters for controlling the process of adding noise to \code{mi} via \code{\link{noise.control}}.}
+  \item{post.run}{Default is \code{TRUE}. \code{mi} will run 20 more iterations after an imputation process is finished if and only if \code{add.noise} is not \code{FALSE}. This is to mitigate the influence of the noise to the whole imputation process.}
 }
 
 \value{ 
 A list of object of class \code{mi}, which stands for \dQuote{multiple imputation}.
 
   Each object is itself a list of 10 elements.
-  \item{call}{Theimputation model}
-  \item{data}{The original data frame}
-  \item{m}{ The number of imputations.}
-  \item{mi.info}{Information matrix of the \code{mi}}
+  \item{call}{Theimputation model.}
+  \item{data}{The original data frame.}
+  \item{m}{The number of imputations.}
+  \item{mi.info}{Information matrix of the \code{mi}.}
   \item{imp}{A list of length(m) of imputations.}
   \item{converged}{Binary variable to indicate if the \code{mi} has converged.}
   \item{coef.conv}{Binary variable to indicate if the coefs of \code{mi} model have converged, return
     \code{NULL} if \code{check.coef.convergence = FALSE}}
   \item{bugs}{BUGS array of the mean and sd of each iteration.}
   \item{preprocess}{Binary variable to indicate if \code{preprocess=TRUE} in the \code{mi} process}
-  \item{mi.info.preprocessed}{Information matrix that actually used in the \code{mi} if \code{preprocess=TRUE}}
+  \item{mi.info.preprocessed}{Information matrix that actually used in the \code{mi} if \code{preprocess=TRUE}.}
   
   Each \code{imp[[m]]} is itself a list containg k variable lists of 3 objects:
   
@@ -111,6 +103,10 @@ and looping through until approximate convergence.
 }
 
 \references{
+    Yu-Sung Su, Andrew Gelman, Jennifer Hill, Masanao Yajimi. \emph{Forthcoming}.
+    \dQuote{Multiple Imputation with Diagnostics (mi) in R: Opening Windows into the Black Box}.
+    \emph{Journal of Statistical Software}.
+
     Kobi Abayomi, Andrew Gelman and Marc Levy. (2008).
     \dQuote{Diagnostics for multivariate imputations}.
     \emph{Applied Statistics} 57, Part 3: 273--291.
@@ -184,6 +180,7 @@ IMP <- mi(dat, info=inf, n.iter=6, post.run=FALSE)
 # convergence checking
 converged(IMP)  ## You should get FALSE here because only n.iter is small 
 bugs.mi(IMP)    ## BUGS object to look at the R hat statistics
+plot(IMP@bugs)  ## visually check R.hat
 
 # visually check the imputation
 plot(IMP)
