@@ -59,8 +59,9 @@ mi.binary <- function( formula, data = NULL, start = NULL, n.iter = 100,
   if(n.mis>0){
     if (draw.from.beta) {
         sim.bglm.imp <- sim(bglm.imp, 1)
-        prob.pred <- invlogit(tcrossprod(cbind((X[mis, 1, drop = FALSE] * 
-            0 + 1), X[mis, , drop = FALSE]), sim.bglm.imp$beta))
+        prob.pred <- invlogit(
+          tcrossprod(
+            as.matrix(cbind((X[mis, 1, drop=FALSE]*0+1), X[mis,,drop=FALSE])), sim.bglm.imp$coef))
         random.temp <- rbinom(n.mis, 1, prob.pred)
     }
     else {

@@ -45,7 +45,9 @@ mi.count <- function ( formula, data = NULL, start = NULL,
   if(draw.from.beta){
     sim.bglm.imp    <- sim(bglm.imp,1)
     random.pred     <- rpois(n.mis, 
-                            tcrossprod(cbind(X[mis,1,drop=FALSE]*0+1,X[mis,,drop=FALSE]),sim.bglm.imp$beta))
+                            tcrossprod(
+                              as.matrix(cbind(X[mis,1,drop=FALSE]*0+1,X[mis,,drop=FALSE])),
+                              sim.bglm.imp$coef))
   }
   else{
     random.pred <- rpois(n.mis, determ.pred[mis])
