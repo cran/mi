@@ -3,7 +3,7 @@
 # ==============================================================================
 
 mi.count <- function ( formula, data = NULL, start = NULL, 
-                            n.iter = 100, draw.from.beta = FALSE, ...  ) {
+                            n.iter = 100, draw.from.beta = TRUE, ...  ) {
   call <- match.call()
   mf   <- match.call(expand.dots = FALSE)
   m    <- match(c("formula", "data"), names(mf), 0)
@@ -14,13 +14,14 @@ mi.count <- function ( formula, data = NULL, start = NULL,
   mf <- eval(mf, parent.frame())
   mt <- attr(mf, "terms")
   Y  <- model.response(mf, "any")
+
   if (length(dim(Y)) == 1) {
     nm <- rownames(Y)
     dim(Y) <- NULL
     if (!is.null(nm)) 
       names(Y) <- nm
   }
-  X <- mf[,-1,drop=FALSE]
+#  X <- mf[,-1,drop=FALSE]
   namesD <- if(is.null(data)){ 
               NULL 
             }  
@@ -41,18 +42,30 @@ mi.count <- function ( formula, data = NULL, start = NULL,
   bglm.imp    <- bayesglm( formula = formula, data = data, family = quasipoisson, 
                             n.iter = n.iter, start = start, 
                             drop.unused.levels = FALSE, Warning=FALSE,... )
+####get right design matrix#
+  tt <- terms(bglm.imp)
+  Terms <- delete.response(tt)
+  m <- model.frame(Terms, data=data,  xlev = bglm.imp$xlevels)
+  X <- as.matrix(model.matrix(Terms, m, contrasts.arg = bglm.imp$contrasts)[,-1])
+############################
+
   determ.pred <- predict( bglm.imp, newdata = data, type = "response" )
-  if(draw.from.beta){
-    sim.bglm.imp    <- sim(bglm.imp,1)
-    random.pred     <- rpois(n.mis, 
-                            tcrossprod(
-                              as.matrix(cbind(X[mis,1,drop=FALSE]*0+1,X[mis,,drop=FALSE])),
-                              sim.bglm.imp$coef))
+
+  if(n.mis>0){
+    if(draw.from.beta){
+      sim.bglm.imp    <- sim(bglm.imp,1)
+      lambda <- exp(tcrossprod(as.matrix(cbind(X[mis,1,drop=FALSE]*0+1,X[mis,,drop=FALSE])),
+                                sim.bglm.imp$coef))
+      random.pred     <- rpois(n.mis, lambda)
+    }
+    else{
+      random.pred <- rpois(n.mis, determ.pred[mis])
+    }
+    names(random.pred) <- names(determ.pred[mis])
   }
   else{
-    random.pred <- rpois(n.mis, determ.pred[mis])
+    random.pred <- numeric(0)
   }
-  names(random.pred) <- names(determ.pred[mis])
 
   # return
   result <- new(c("mi.count", "mi.method"),

@@ -660,20 +660,19 @@ update.mi.info <- function(object, target, list, ...){
   } 
   for ( i in 1:length( list ) ) {
     object[[nam[i]]][[target]] <- list[[nam[i]]]
-    if(target=="type"){
-      if(object$type[[nam[i]]]=="ordered-categorical"){
-        object$imp.formula <- sapply(object$imp.formula, 
-          .change.formula.ordered, varnames=nam[i])
-      }
-      if(object$type[[nam[i]]]=="unordered-categorical"){
-        object$imp.formula[[nam[i]]] <- gsub(paste("ordered(",nam[i], ")", sep=""), 
-                                            nam[i], 
-                                            object$imp.formula[[nam[i]]])
-        object$imp.formula <- sapply(object$imp.formula, 
-          .change.formula.unordered, varnames=nam[i])
-      }
-      
-    }
+    #if(target=="type"){
+#      if(object$type[[nam[i]]]=="ordered-categorical"){
+#        object$imp.formula <- sapply(object$imp.formula, 
+#          .change.formula.ordered, varnames=nam[i])
+#      }
+#      if(object$type[[nam[i]]]=="unordered-categorical"){
+#        object$imp.formula[[nam[i]]] <- gsub(paste("ordered(",nam[i], ")", sep=""), 
+#                                            nam[i], 
+#                                            object$imp.formula[[nam[i]]])
+#        object$imp.formula <- sapply(object$imp.formula, 
+#          .change.formula.unordered, varnames=nam[i])
+#      }      
+#    }
   }
   return(info=object)
 }

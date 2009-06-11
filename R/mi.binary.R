@@ -2,7 +2,7 @@
 # imputation function for binary variable
 # ==============================================================================
 mi.binary <- function( formula, data = NULL, start = NULL, n.iter = 100,
-                             draw.from.beta=FALSE,... ) {
+                             draw.from.beta=TRUE,... ) {
   call <- match.call()
   mf <- match.call(expand.dots = FALSE)
   m <- match(c("formula", "data"), names(mf), 0)
@@ -20,7 +20,7 @@ mi.binary <- function( formula, data = NULL, start = NULL, n.iter = 100,
           names(Y) <- nm
       }
   }
-  X <- as.matrix(mf[, -1, drop = FALSE])
+#  X <- as.matrix(mf[, -1, drop = FALSE])
   namesD <- if (is.null(data)) {
                 NULL
             }
@@ -46,15 +46,21 @@ mi.binary <- function( formula, data = NULL, start = NULL, n.iter = 100,
   }  
   if (is.null(data)) {
       data <- mf
-      data[,1] <- Y
+      data[,names(mf)[1]] <- Y
   }
   else{
-     data[,1] <- Y
+     data[,names(mf)[1]] <- Y
   }
   
   bglm.imp <- bayesglm(formula = formula, data = data, family = binomial(link = "logit"), 
       n.iter = n.iter, start = start, drop.unused.levels = FALSE, 
       Warning = FALSE, ...)
+####get right design matrix#
+  tt <- terms(bglm.imp)
+  Terms <- delete.response(tt)
+  m <- model.frame(Terms, data=data,  xlev = bglm.imp$xlevels)
+  X <- as.matrix(model.matrix(Terms, m, contrasts.arg = bglm.imp$contrasts)[,-1])
+############################
   determ.pred <- predict(bglm.imp, newdata = data, type = "response")
   if(n.mis>0){
     if (draw.from.beta) {

@@ -45,8 +45,7 @@
     
 \S4method{mi}{mi}( object, info, n.iter = 30, 
     R.hat = 1.1, max.minutes = 20, rand.imp.method = "bootstrap", 
-    preprocess = TRUE, run.past.convergence = FALSE,
-    seed = NA, check.coef.convergence = FALSE)
+    run.past.convergence = FALSE,  seed = NA)
 
 }
 

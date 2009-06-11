@@ -19,7 +19,7 @@ mi.polr <- function ( formula, data = NULL, drop.unused.levels = TRUE,
     if ( !is.null( nm)) 
       names ( Y ) <- nm
   }
-  X <- as.matrix( mf[ , -1, drop = FALSE ] )
+#  X <- as.matrix( mf[ , -1, drop = FALSE ] )
   namesD <- if( is.null( data ) ) { 
               NULL
             } 
@@ -55,6 +55,9 @@ mi.polr <- function ( formula, data = NULL, drop.unused.levels = TRUE,
   bplr.imp    <- bayespolr( formula = form, data = data, start = 0, 
                               method = c( "logistic" ), 
                               drop.unused.levels = FALSE, n.iter = n.iter )
+
+
+
   expect.prob <- predict( bplr.imp, newdata = data, type = "probs" )
   determ.pred <- predict(bplr.imp, newdata=data, type="class")#as.vector( expect.prob %*% as.double( Y.levels ) )
   names( determ.pred ) <- 1:length( determ.pred )

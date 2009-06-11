@@ -12,7 +12,7 @@
 }
 \usage{
 mi.continuous(formula, data = NULL, start = NULL, n.iter = 100, 
-    draw.from.beta = FALSE, \dots)
+    draw.from.beta = TRUE, \dots)
 }
 
 \arguments{

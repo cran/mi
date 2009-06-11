@@ -3,7 +3,7 @@
 # ==============================================================================
 
 mi.continuous <- function ( formula, data = NULL, start = NULL, 
-                            n.iter = 100, draw.from.beta = FALSE, ...  ) {
+                            n.iter = 100, draw.from.beta = TRUE, ...  ) {
   call <- match.call()
   mf   <- match.call(expand.dots = FALSE)
   m    <- match(c("formula", "data"), names(mf), 0)
@@ -20,7 +20,7 @@ mi.continuous <- function ( formula, data = NULL, start = NULL,
     if (!is.null(nm)) 
       names(Y) <- nm
   }
-  X <- mf[,-1,drop=FALSE]
+#  X <- mf[,-1,drop=FALSE]
   namesD <- if(is.null(data)){ 
               NULL 
             }  
@@ -41,6 +41,13 @@ mi.continuous <- function ( formula, data = NULL, start = NULL,
   bglm.imp    <- bayesglm( formula = formula, data = data, family = gaussian, 
                             n.iter = n.iter, start = start, 
                             drop.unused.levels = FALSE, Warning=FALSE,... )
+
+####get right design matrix#
+  tt <- terms(bglm.imp)
+  Terms <- delete.response(tt)
+  m <- model.frame(Terms, data=data,  xlev = bglm.imp$xlevels)
+  X <- as.matrix(model.matrix(Terms, m, contrasts.arg = bglm.imp$contrasts)[,-1])
+############################
   determ.pred <- predict( bglm.imp, newdata = data, type = "response" )
   if(n.mis>0){
     if(draw.from.beta){

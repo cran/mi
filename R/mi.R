@@ -53,7 +53,9 @@ setMethod("mi", signature(object = "data.frame"),
   data       <- object
   if(missing(info)) {     
     info <- mi.info(data)    # create mi.info
-  }      
+  }
+  data <- .update.data(data, info)
+        
 
   #  # Automatic Preprocess
   if( preprocess ) {
@@ -332,8 +334,8 @@ setMethod("mi", signature(object = "data.frame"),
 setMethod("mi", signature(object = "mi"), 
         function (object, info, n.iter = 30, R.hat = 1.1,
                   max.minutes = 20, rand.imp.method = "bootstrap", 
-                  preprocess = TRUE, run.past.convergence = FALSE,
-                  seed = NA, check.coef.convergence = FALSE) 
+                  run.past.convergence = FALSE,
+                  seed = NA) 
 { 
   call <- match.call()                         # call
   if(!is.na(seed)){
@@ -359,6 +361,22 @@ setMethod("mi", signature(object = "mi"),
   if(missing(info)){
     info <- info.mi(object)
   }
+  data <- .update.data(data, info)
+  
+  if(object@preprocess){
+    preprocess <- TRUE
+  }
+  else{
+    preprocess <- FALSE
+  }
+  
+  if(is.null(object@coef.conv)){
+    check.coef.convergence <- FALSE
+  }
+  else{
+    check.coef.convergence <- TRUE
+  }
+  
   #  # Automatic Preprocess
   if( preprocess ) {
     proc.tmp <- mi.preprocess(data, info)

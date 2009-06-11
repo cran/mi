@@ -1,3 +1,13 @@
+.update.data <- function(data, info){
+  K <- dim(data)[2]
+  for(i in 1:K){
+    if(info$type[i]=="unordered-categorical"){
+      data[,i] <-  as.factor(data[,i])
+    }
+  }
+  return(data)
+}
+
 
 
 # ========================================================================
@@ -233,10 +243,10 @@ data.tmp <<- NULL # to pass R CMD check
     return(apply(new.v, 2, mean))
   }
   else if(type=="ordered-categorical"){
-    return(mean(as.numeric(factor(v)), na.rm=TRUE))
+    return(mean(as.numeric(factor(na.exclude(v)))))
   }
   else {
-    return(mean(unclass(v), na.rm=TRUE))
+    return(mean(unclass(na.exclude(v))))
   }
 }
 
@@ -246,7 +256,7 @@ data.tmp <<- NULL # to pass R CMD check
     return(apply(new.v, 2, sd))
   }
   else if(type=="ordered-categorical"){
-    return(sd(as.numeric(factor(v)), na.rm=TRUE))
+    return(sd(as.numeric(factor(na.exclude(v)))))
   }
   else {
     return(sd(unclass(v), na.rm=TRUE))
@@ -278,7 +288,7 @@ data.tmp <<- NULL # to pass R CMD check
     apply(new.v, 2, sd)
   }
   else if(type=="ordered-categorical"){
-    sd(as.numeric(factor(v)), na.rm=TRUE)
+    sd(as.numeric(factor(na.exclude(v))))
   }
   else {
     sd(unclass(v), na.rm=TRUE)

@@ -1,3 +1,16 @@
+2009-6-16 Yu-Sung Su     <ys463@columbia.edu>  
+   * DESCRIPTION (Version, Date): 0.08-01
+   * R/mi.continuous, mi.binary, mi.count: draw.from.beta=TRUE, fix a bug
+      in getting design matrix X.
+   * R/mi.count: fix a bug in computing lambda.
+   * R/mi: take out redundant code in mi method.
+   * R/update.mi.info: formula no longer needs factor()
+   
+   
+2009-6-10 Yu-Sung Su     <ys463@columbia.edu>  
+   * DESCRIPTION (Version, Date): 0.07-4
+   * R/mi.pooled: fix a bug in mi.pooled (B term)
+
 2009-6-10 Yu-Sung Su     <ys463@columbia.edu>  
    * DESCRIPTION (Version, Date): 0.07-3
 
