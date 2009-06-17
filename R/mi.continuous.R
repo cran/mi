@@ -46,17 +46,15 @@ mi.continuous <- function ( formula, data = NULL, start = NULL,
   tt <- terms(bglm.imp)
   Terms <- delete.response(tt)
   m <- model.frame(Terms, data=data,  xlev = bglm.imp$xlevels)
-  X <- as.matrix(model.matrix(Terms, m, contrasts.arg = bglm.imp$contrasts)[,-1])
+  X <- as.matrix(model.matrix(Terms, m, contrasts.arg = bglm.imp$contrasts))
 ############################
-  determ.pred <- predict( bglm.imp, newdata = data, type = "response" )
+  determ.pred <- predict(bglm.imp, newdata = data, type = "response" )
   if(n.mis>0){
     if(draw.from.beta){
-      sim.bglm.imp    <- sim(bglm.imp,1)
-      random.pred     <- rnorm(n.mis, 
-                              tcrossprod(
-                                as.matrix(cbind(X[mis,1,drop=FALSE]*0+1,X[mis,,drop=FALSE])),
-                                sim.bglm.imp$coef), 
-                              sim.bglm.imp$sigma)
+      sim.bglm.imp  <- sim(bglm.imp,1)
+      sim.coef <- sim.bglm.imp$coef
+      sim.sigma <- sim.bglm.imp$sigma
+      random.pred <- rnorm(n.mis, tcrossprod(X[mis,,drop=FALSE], sim.coef), sim.sigma)
     }
     else{
       random.pred <- rnorm(n.mis, determ.pred[mis], sigma.hat(bglm.imp))

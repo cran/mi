@@ -30,7 +30,7 @@ setMethod("residuals", signature(object = "mi.polr"),
 setMethod("residuals", signature(object = "mi.count"), 
   function(object, y){
   res <- y - fitted(object)
-  stud.res <- res/sqrt(y)
+  stud.res <- res/sd(fitted(object))
   return(stud.res)
 }
 )
@@ -64,7 +64,7 @@ setMethod("resid", signature(object = "mi.polr"),
 setMethod("resid", signature(object = "mi.count"), 
   function(object, y){
   res <- y - fitted(object)
-  stud.res <- res/sqrt(y)
+  stud.res <- res/sd(fitted(object))
   return(stud.res)
 }
 )

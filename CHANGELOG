@@ -1,3 +1,6 @@
+2009-6-17 Yu-Sung Su     <ys463@columbia.edu>  
+   * R/mi.continuous, mi.binary, mi.count: better way to get xb.
+
 2009-6-16 Yu-Sung Su     <ys463@columbia.edu>  
    * DESCRIPTION (Version, Date): 0.08-01
    * R/mi.continuous, mi.binary, mi.count: draw.from.beta=TRUE, fix a bug

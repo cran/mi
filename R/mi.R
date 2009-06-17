@@ -54,8 +54,7 @@ setMethod("mi", signature(object = "data.frame"),
   if(missing(info)) {     
     info <- mi.info(data)    # create mi.info
   }
-  data <- .update.data(data, info)
-        
+  data <- .update.data(data, info)        
 
   #  # Automatic Preprocess
   if( preprocess ) {
@@ -174,7 +173,6 @@ setMethod("mi", signature(object = "data.frame"),
         dat <- data.frame(data[,CurVarFlg, drop=FALSE], mi.data[[i]][,!CurVarFlg])
         names(dat) <- c(CurrentVar, names(data[,!CurVarFlg, drop=FALSE] ))
         model.type <- as.character(type.models( info[[CurrentVar]]$type))
-        
         if(add.noise.method=="reshuffling"){
           if(q){
             dat <- random.imp(dat, method = rand.imp.method)

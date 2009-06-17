@@ -2,7 +2,7 @@
   K <- dim(data)[2]
   for(i in 1:K){
     if(info$type[i]=="unordered-categorical"){
-      data[,i] <-  as.factor(data[,i])
+      data[,i] <-  as.factor(as.character(data[,i]))
     }
   }
   return(data)

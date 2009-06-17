@@ -153,7 +153,7 @@ mi.info.formula.default <-function(data, info){
 #    if(type=="ordered-categorical"){
 #      varnames[i] <- paste("ordered(",varnames[i],")",sep="")
 #    }
-#    if(type=="unordered-categorical"){
+#    if(info[[i]]$type=="unordered-categorical"){
 #      varnames[i] <- paste("factor(",varnames[i],")",sep="")
 #    }
 #    else{
@@ -660,7 +660,7 @@ update.mi.info <- function(object, target, list, ...){
   } 
   for ( i in 1:length( list ) ) {
     object[[nam[i]]][[target]] <- list[[nam[i]]]
-    #if(target=="type"){
+#    if(target=="type"){
 #      if(object$type[[nam[i]]]=="ordered-categorical"){
 #        object$imp.formula <- sapply(object$imp.formula, 
 #          .change.formula.ordered, varnames=nam[i])
