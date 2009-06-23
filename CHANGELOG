@@ -1,3 +1,15 @@
+2009-6-23 Yu-Sung Su     <ys463@columbia.edu> 
+   * DESCRIPTION (Version, Date): 0.08-03
+   * R/mi: fix a bug in mi.mi, (sampling from wrong data)
+
+2009-6-19 Yu-Sung Su     <ys463@columbia.edu> 
+   * R/mi.continuous, m.binary, mi.count: n.iter=5 if !is.null(start)
+
+2009-6-18 Yu-Sung Su     <ys463@columbia.edu>  
+   * DESCRIPTION (Version, Date): 0.08-02
+   * AllInternal: coerce numerical unordered-categorical variable into  
+      factor variable (as.factor(as.characer(x)))
+
 2009-6-17 Yu-Sung Su     <ys463@columbia.edu>  
    * R/mi.continuous, mi.binary, mi.count: better way to get xb.
 

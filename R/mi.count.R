@@ -36,7 +36,7 @@ mi.count <- function ( formula, data = NULL, start = NULL,
 
   # main program
   if( !is.null( start ) ){ 
-    #n.iter <- 1
+    n.iter <- 30
     start[is.na(start)] <- 0
   }
   bglm.imp    <- bayesglm( formula = formula, data = data, family = quasipoisson, 

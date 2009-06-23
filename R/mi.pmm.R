@@ -33,7 +33,7 @@ mi.pmm<-function(formula, data = NULL, start = NULL, n.iter = 100, ... )
     data <- mf 
   }
   if(!is.null(start)){
-    n.iter <- 1
+    n.iter <- 30
   }
   bglm.imp  <- bayesglm( formula , start = start, n.iter = n.iter )
   yhat <- predict( bglm.imp , newdata = data.frame( Y, X ) ) 

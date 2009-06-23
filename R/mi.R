@@ -411,12 +411,12 @@ setMethod("mi", signature(object = "mi"),
   start.val     <- vector("list", n.imp)
   mi.object     <- vector("list", n.imp)
   for (j in 1:n.imp){ 
-    mi.data[[j]]  <- if(preprocess){
+    mi.data[[j]]  <- #if(preprocess){
                         random.imp(data, method = rand.imp.method)
-                      }
-                      else{
-                        mi.data.frame(object, m=j)[,.include(info)] 
-                      }
+                      #}
+                      #else{
+                      #  mi.data.frame(object, m=j)[,.include(info)] 
+                      #}
     start.val[[j]]<- vector("list", length.list)
     mi.object[[j]]<- vector("list", ncol.mis)
     names(mi.object[[j]]) <- names(info)[.nmis(info)>0]

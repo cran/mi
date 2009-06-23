@@ -41,7 +41,7 @@ mi.binary <- function( formula, data = NULL, start = NULL, n.iter = 100,
   Y <- recode(Y, paste("'", y.levels, "'=", c(0, 1), sep = "", collapse = "; "))
 
   if (!is.null(start)) {
-      n.iter <- 1
+      n.iter <- 30
       start[is.na(start)] <- 0
   }  
   if (is.null(data)) {
