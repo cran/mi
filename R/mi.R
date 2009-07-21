@@ -62,10 +62,13 @@ setMethod("mi", signature(object = "data.frame"),
     data <- as.data.frame(proc.tmp$data)
     info.org <- info
     info <- mi.info(data)
+    for(i in 1:length(info.org)){
+      info[[i]] <- info.org[[i]]    
+    }
     for(i in 1:ncol(data)){
       info[[i]]$type <- proc.tmp$type[[i]]
     }
-    info <- mi.info.formula.default(data, info)
+    info <- mi.info.formula.default(info)
     info$imp.formula[1:length(info.org)] <- info.org$imp.formula
   }  
   
@@ -104,7 +107,7 @@ setMethod("mi", signature(object = "data.frame"),
   s_start <- 1
   s_end   <- n.iter
   mis.index <-  apply(data, 2, is.na) 
-  data <- data[,.include(info)]
+  data <- data[,.include(info), drop=FALSE]
   
   namelist <- as.list(info$name)
   if(!all(idx.include.cat==0)){
@@ -169,7 +172,6 @@ setMethod("mi", signature(object = "data.frame"),
         }
         
         CurVarFlg <- ( names ( data ) == CurrentVar )
-
         dat <- data.frame(data[,CurVarFlg, drop=FALSE], mi.data[[i]][,!CurVarFlg])
         names(dat) <- c(CurrentVar, names(data[,!CurVarFlg, drop=FALSE] ))
         model.type <- as.character(type.models( info[[CurrentVar]]$type))
@@ -278,9 +280,9 @@ setMethod("mi", signature(object = "data.frame"),
 
   # impute correlated variables
   for( cor.idx in 1:length(info)) {
-    if( length(info[[cor.idx]]$collinear) > 0 
+    if( !is.na(info[[cor.idx]]$collinear) 
          && info[[cor.idx]]$nmis > 0 
-          && info[[cor.idx]]$include == FALSE ) {
+          && info[[cor.idx]]$include==FALSE ) {
       rho <- coef(lm(org.data[[names(info)[cor.idx]]] ~ org.data[[info[[cor.idx]]$determ.pred]]))[2]
       for ( ii in 1:n.imp ){
         mi.object[[ii]][[names(info)[[cor.idx]]]] <- do.call( mi.copy, 
@@ -381,12 +383,17 @@ setMethod("mi", signature(object = "mi"),
     data <- as.data.frame(proc.tmp$data)
     info.org <- info
     info <- mi.info(data)
+    for(i in 1:length(info.org)){
+      info[[i]] <- info.org[[i]]    
+    }
     for(i in 1:ncol(data)){
       info[[i]]$type <- proc.tmp$type[[i]]
     }
-    info <- mi.info.formula.default(data, info)
+    info <- mi.info.formula.default(info)
+    info$imp.formula[1:length(info.org)] <- info.org$imp.formula
   }  
-
+  
+  
   col.mis   <- !complete.cases(t(data))
   ncol.mis  <- sum(col.mis)
   n.imp     <- m(object)
@@ -536,7 +543,7 @@ setMethod("mi", signature(object = "mi"),
 
   # impute collinear variables
   for( cor.idx in 1:length(info)) {
-    if( length(info[[cor.idx]]$collinear) > 0 
+    if( !is.na(info[[cor.idx]]$collinear) 
          && info[[cor.idx]]$nmis > 0 
           && info[[cor.idx]]$include == FALSE ) {
       rho <- coef(lm(org.data[[names(info)[cor.idx]]] ~ org.data[[info[[cor.idx]]$determ.pred]]))[2]

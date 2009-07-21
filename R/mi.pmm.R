@@ -1,7 +1,7 @@
 # ==============================================================================
 # imputation function using predictive mean matching
 # ==============================================================================
-mi.pmm<-function(formula, data = NULL, start = NULL, n.iter = 100, ... )
+mi.pmm <- function(formula, data = NULL, start = NULL, n.iter = 100, ... )
 {
   call <- match.call()
   mf   <- match.call(expand.dots = FALSE)

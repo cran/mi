@@ -56,8 +56,8 @@ mi.info <- function( data, threshhold  = 0.99999 )
       names( info[[i]]$level ) <- lev
     }
 
-    info[[i]]$is.ID <- if( length(unique( data[ !is.na(data[,i]),i] )) == length( data[,i] ) 
-                        && is.integer( data[,i] ) && all(data[,i]==data[order( data[,i] ),i]) ){ 
+    info[[i]]$is.ID <- if(length(unique(data[!is.na(data[,i]),i]))==length(data[,i]) &&
+                        all(data[,i]==sort(data[,i]))){ 
                           TRUE
                         } 
                         else { 
@@ -127,7 +127,7 @@ mi.info <- function( data, threshhold  = 0.99999 )
     info[[ord.index]]$imp.order <- ord.temp[ord.index]
   }
   # default formula
-  info <- mi.info.formula.default( data, info )
+  info <- mi.info.formula.default(info)
   if( length( mi.correlated.list( data ) ) > 0 ) {
     cat( "\afollowing variables are collinear\n" )
     print( data.collinear )
@@ -146,8 +146,8 @@ mi.info <- function( data, threshhold  = 0.99999 )
   return( info )
 }
 
-mi.info.formula.default <-function(data, info){
-  varnames <- dimnames(data)[[2]]
+mi.info.formula.default <-function(info){
+  varnames <- names(info)
 #  for(i in 1:length(varnames)){
 #    type <- info[[i]]$type
 #    if(type=="ordered-categorical"){
@@ -160,7 +160,7 @@ mi.info.formula.default <-function(data, info){
 #      varnames[i] <- varnames[i]
 #    }
 #  }
-  for(i in 1:dim(data)[2]){
+  for(i in 1:length(info)){
     # default formula
     inc <- .include(info)
     inc[i] <- FALSE
@@ -660,26 +660,42 @@ update.mi.info <- function(object, target, list, ...){
   } 
   for ( i in 1:length( list ) ) {
     object[[nam[i]]][[target]] <- list[[nam[i]]]
-#    if(target=="type"){
-#      if(object$type[[nam[i]]]=="ordered-categorical"){
-#        object$imp.formula <- sapply(object$imp.formula, 
-#          .change.formula.ordered, varnames=nam[i])
-#      }
-#      if(object$type[[nam[i]]]=="unordered-categorical"){
-#        object$imp.formula[[nam[i]]] <- gsub(paste("ordered(",nam[i], ")", sep=""), 
-#                                            nam[i], 
-#                                            object$imp.formula[[nam[i]]])
-#        object$imp.formula <- sapply(object$imp.formula, 
-#          .change.formula.unordered, varnames=nam[i])
-#      }      
-#    }
+    # is.ID
+    if(target=="is.ID"){
+      if(object[[nam[i]]][["include"]]){
+        list[[i]] <- ifelse(list[[i]], FALSE, TRUE)
+        object[[nam[i]]][["include"]] <- list[[nam[i]]]
+      }
+    }
+    # all.missing
+    if(target=="all.missing"){
+      if(object[[nam[i]]][["include"]]){
+        list[[i]] <- ifelse(list[[i]], FALSE, TRUE)
+        object[[nam[i]]][["include"]] <- list[[nam[i]]]
+      }
+    }
   }
-  return(info=object)
+  # imp.order
+  for(i in 1:length(object)){
+    ord <- 1
+    if(object[[i]][["include"]] && object[[i]][["nmis"]]>0){
+      object[[i]][["imp.order"]] <- ord
+      ord <- ord + 1
+    } 
+    else{
+      object[[i]][["imp.order"]] <- NA
+    }
+  }
+  object <- mi.info.formula.default(object)
+  if(target=="imp.formula"){
+    object[[nam]][["imp.formula"]] <- list[[nam]]
+  }
+  class(object) <- "mi.info"
+  return(object)
 }
 
                             
 mi.info.update.type <- function (object, list ) {
-  class(object) <- "mi.info"
   info <- update(object, target="type", list )
   return(info)
 }
@@ -695,8 +711,8 @@ mi.info.update.include <- function (object, list ) {
 }
 
 mi.info.update.is.ID <- function (object, list ) {
-  info <- update(object, target="is.ID", list ) 
-  return(info)  
+  object <- update(object, target="is.ID", list) 
+  return(object)  
 }
 
 mi.info.update.collinear <- function (object, list ) {
@@ -704,10 +720,10 @@ mi.info.update.collinear <- function (object, list ) {
   return(info)
 }
 
-mi.info.update.transform <- function (object, list ) {
-  info <- update (object, target="transform", list )
-  return(info)
-}
+#mi.info.update.transform <- function (object, list ) {
+#  info <- update (object, target="transform", list )
+#  return(info)
+#}
 
 mi.info.update.imp.order <- function ( object, list ) {
   info <- update (object, target="imp.order", list )

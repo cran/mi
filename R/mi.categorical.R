@@ -91,6 +91,6 @@ Rmultnm <- function( n, prob.mat, category  ) {
       prob[i,] <- rmultinom( 1, 1, prob.mat[i, ] )
     }
   }
-  y.imp <- as.double( prob %*% category )
+  y.imp <- as.double(prob %*% category)
   return( y.imp )
 }

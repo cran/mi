@@ -105,7 +105,7 @@ export(
   mi.info.update.level,
   mi.info.update.other,
   mi.info.update.params,
-  mi.info.update.transform,
+#  mi.info.update.transform,
   mi.info.update.type,
   mi.interactive,
   mi.preprocess,

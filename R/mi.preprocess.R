@@ -18,10 +18,10 @@ mi.preprocess <- function(data, info){
   n.col <- ncol(data)
   n.row <- nrow(data)
   var.name <- info$name
-  type <- info$type
+  type <- .type(info)
+  incl <- .include(info)
   for (i in 1:n.col){
-    typ <- type[i]
-    if(typ == "nonnegative"){
+    if(type[i] == "nonnegative" & incl[i]){
       tmp <- ifelse(data[,i] > 0, 1, ifelse(data[,i]==0, 0, NA))
       data <- cbind(data, tmp)
       Ind.lab <- paste(var.name[i], "ind", sep=".")
@@ -31,17 +31,13 @@ mi.preprocess <- function(data, info){
       data[,i] <- log(ifelse(data[,i]>0, data[,i], NA))
       type[i] <- "log-continuous"
     }
-    if (typ == "positive-continuous"){
+    else if (type[i] == "positive-continuous" & incl[i]){
       data[,i] <- log(data[,i])
       type[i] <- "log-continuous"
     }
-    if (typ == "proportion"){
+    else if (type[i] == "proportion" & incl[i]){
       data[,i] <- logit(data[,i])
       type[i] <- "proportion"
-    }
-    else{
-      data[,i] <- data[,i]
-      type[i] <- type[i]
     }
   }
   return(list(data=data, type=type))

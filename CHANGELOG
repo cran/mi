@@ -1,3 +1,8 @@
+2009-7-21 Yu-Sung Su     <ys463@columbia.edu> 
+   * DESCRIPTION (Version, Date): 0.08-04
+   * R/mi.info: fix a slot changing logic in update.mi.info
+
+
 2009-6-23 Yu-Sung Su     <ys463@columbia.edu> 
    * DESCRIPTION (Version, Date): 0.08-03
    * R/mi: fix a bug in mi.mi, (sampling from wrong data)
