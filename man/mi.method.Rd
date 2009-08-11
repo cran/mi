@@ -56,9 +56,9 @@
 
 
 \references{
-    Andrew Gelman and Jennifer Hill, 
-    Data Analysis Using Regression and Multilevel/Hierarchical Models, 
-    Cambridge University Press, 2006.
+    Yu-Sung Su, Andrew Gelman, Jennifer Hill, Masanao Yajima. \emph{Forthcoming}.
+    \dQuote{Multiple Imputation with Diagnostics (mi) in R: Opening Windows into the Black Box}.
+    \emph{Journal of Statistical Software}.
 }
 
 \author{

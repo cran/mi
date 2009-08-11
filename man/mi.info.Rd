@@ -48,11 +48,9 @@
 }
 
 \references{
-    Andrew Gelman and M. Grazia Pittau,  
-    A flexible program for missing-data imputation and model checking, 
-    Technical report, Columbia University, New York; Andrew Gelman and Jennifer Hill, 
-    Data Analysis Using Regression and Multilevel/Hierarchical Models, 
-    Cambridge University Press, 2007.
+    Yu-Sung Su, Andrew Gelman, Jennifer Hill, Masanao Yajima. \emph{Forthcoming}.
+    \dQuote{Multiple Imputation with Diagnostics (mi) in R: Opening Windows into the Black Box}.
+    \emph{Journal of Statistical Software}.
 }
 
 \author{

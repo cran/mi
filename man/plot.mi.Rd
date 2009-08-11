@@ -35,13 +35,13 @@ strongly recommended to use a variable containing more information. Fitted lowes
   Binned residual plots are for each binary variable.
 }
 \references{
+    Yu-Sung Su, Andrew Gelman, Jennifer Hill, Masanao Yajima. \emph{Forthcoming}.
+    \dQuote{Multiple Imputation with Diagnostics (mi) in R: Opening Windows into the Black Box}.
+    \emph{Journal of Statistical Software}.
+
     Kobi Abayomi, Andrew Gelman and Marc Levy. (2008).
     \dQuote{Diagnostics for multivariate imputations}.
     \emph{Applied Statistics} 57, Part 3: 273--291.
-
-    Andrew Gelman and Maria Grazia Pittau.
-    \dQuote{A flexible program for missing-data imputation and model checking.}
-    \emph{Technical report}. Columbia University, New York.
    
     Andrew Gelman and Jennifer Hill. (2007).
     \emph{Data Analysis Using Regression and Multilevel/Hierarchical Models}.

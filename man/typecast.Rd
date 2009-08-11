@@ -41,15 +41,15 @@
 
 
 \references{ 
-    Andrew Gelman and M. Grazia Pittau.
-    \dQuote{A flexible program for missing-data imputation and model checking}. 
-    \emph{Technical report}. Columbia University, New York;
+    Yu-Sung Su, Andrew Gelman, Jennifer Hill, Masanao Yajima. \emph{Forthcoming}.
+    \dQuote{Multiple Imputation with Diagnostics (mi) in R: Opening Windows into the Black Box}.
+    \emph{Journal of Statistical Software}.
 }
 
 \author{
-  Masanao Yajima  \email{yajima@stat.columbia.edu},
   Yu-Sung Su      \email{ys463@columbia.edu},
-  M.Grazia Pittau \email{grazia@stat.columbia.edu},
+  Masanao Yajima  \email{yajima@stat.columbia.edu},
+  M.Grazia Pittau \email{grazia@stat.columbia.edu}
 }
 
 \seealso{

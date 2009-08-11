@@ -27,9 +27,16 @@ such that \code{q = K/s}.
 If \code{fading} method is used, the imputation will augment 
 }
 
+\references{
+    Yu-Sung Su, Andrew Gelman, Jennifer Hill, Masanao Yajima. \emph{Forthcoming}.
+    \dQuote{Multiple Imputation with Diagnostics (mi) in R: Opening Windows into the Black Box}.
+    \emph{Journal of Statistical Software}.
+
+}
+
 
 \author{
-  Yu-Sung Su \email{yajima@stat.columbia.edu}
+  Yu-Sung Su \email{yusung@stat.columbia.edu}
 }
 
 \seealso{ 

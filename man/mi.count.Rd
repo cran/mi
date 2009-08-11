@@ -49,13 +49,17 @@ mi.count(formula, data = NULL, start = NULL, n.iter = 100,
     \item{random   }{Vector of length n.mis of random predicted values predicted by using the binomial distribution.}
 }
 \references{
+    Yu-Sung Su, Andrew Gelman, Jennifer Hill, Masanao Yajima. \emph{Forthcoming}.
+    \dQuote{Multiple Imputation with Diagnostics (mi) in R: Opening Windows into the Black Box}.
+    \emph{Journal of Statistical Software}.
+
     Andrew Gelman and Jennifer Hill, 
-    Data Analysis Using Regression and Multilevel/Hierarchical Models, 
+    \emph{Data Analysis Using Regression and Multilevel/Hierarchical Models}, 
     Cambridge University Press, 2007.
 }
 \author{
   Masanao Yajima \email{yajima@stat.columbia.edu},
-  Yu-Sung Su \email{ys463@stat.columbia.edu},
+  Yu-Sung Su \email{ys463@columbia.edu},
   M.Grazia Pittau \email{grazia@stat.columbia.edu},
   Andrew Gelman \email{gelman@stat.columbia.edu}
 }

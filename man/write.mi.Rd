@@ -3,13 +3,16 @@
 \title{
 Writes mi impuations to file
 }
+
 \description{
 Writes the imputed datasets to file for the \code{mi} object 
 into the \code{csv}, \code{dta}, and \code{table} format.
 }
+
 \usage{
 write.mi(object, format = c("csv", "dta", "table"), \dots)
 }
+
 \arguments{
   \item{object}{\code{mi} object}
   \item{format}{output format, only \dQuote{csv}, \dQuote{dta} and \dQuote{table} format are supported.}
@@ -29,6 +32,18 @@ The output files should be
     ...
   }
 }
+
+
+\author{
+  Yu-Sung Su      \email{ys463@columbia.edu},
+}
+
+\references{ 
+    Yu-Sung Su, Andrew Gelman, Jennifer Hill, Masanao Yajima. \emph{Forthcoming}.
+    \dQuote{Multiple Imputation with Diagnostics (mi) in R: Opening Windows into the Black Box}.
+    \emph{Journal of Statistical Software}.
+}
+
 
 \seealso{
 \code{\link[utils]{write.csv}}, \code{\link[utils]{write.table}}, \code{\link[foreign]{write.dta}}

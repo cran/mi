@@ -43,9 +43,9 @@ mi.info.update.other(object, list)
 }
 
 \references{ 
-    Andrew Gelman and M. Grazia Pittau.
-    \dQuote{A flexible program for missing-data imputation and model checking}. 
-    \emph{Technical report}. Columbia University, New York;
+    Yu-Sung Su, Andrew Gelman, Jennifer Hill, Masanao Yajima. \emph{Forthcoming}.
+    \dQuote{Multiple Imputation with Diagnostics (mi) in R: Opening Windows into the Black Box}.
+    \emph{Journal of Statistical Software}.
   
     Andrew Gelman and Jennifer Hill. (2007).
     \emph{Data Analysis Using Regression and Multilevel/Hierarchical Models}.
@@ -54,7 +54,7 @@ mi.info.update.other(object, list)
 
 \author{
   Masanao Yajima \email{yajima@stat.columbia.edu},
-  Yu-Sung Su \email{yusung@stat.columbia.edu},
+  Yu-Sung Su \email{ys463@columbia.edu},
   M.Grazia Pittau \email{grazia@stat.columbia.edu},
   Andrew Gelman \email{gelman@stat.columbia.edu}
 }

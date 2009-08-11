@@ -32,6 +32,12 @@ mi.types()
   Andrew Gelman \email{gelman@stat.columbia.edu}
 }
 
+\references{
+    Yu-Sung Su, Andrew Gelman, Jennifer Hill, Masanao Yajima. \emph{Forthcoming}.
+    \dQuote{Multiple Imputation with Diagnostics (mi) in R: Opening Windows into the Black Box}.
+    \emph{Journal of Statistical Software}.
+}
+
 
 \seealso{\code{\link{mi.info}}}
 

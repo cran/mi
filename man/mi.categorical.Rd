@@ -52,12 +52,12 @@
 }
 \references{
     Andrew Gelman and Jennifer Hill, 
-    Data Analysis Using Regression and Multilevel/Hierarchical Models, 
+    \emph{Data Analysis Using Regression and Multilevel/Hierarchical Models}, 
     Cambridge University Press, 2007.
 }
 \author{
   Masanao Yajima \email{yajima@stat.columbia.edu},
-  Yu-Sung Su \email{ys463@stat.columbia.edu},
+  Yu-Sung Su \email{ys463@columbia.edu},
   M.Grazia Pittau \email{grazia@stat.columbia.edu},
   Andrew Gelman \email{gelman@stat.columbia.edu}
 }
