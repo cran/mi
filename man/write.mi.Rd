@@ -46,7 +46,7 @@ The output files should be
 
 
 \seealso{
-\code{\link[utils]{write.csv}}, \code{\link[utils]{write.table}}, \code{\link[foreign]{write.dta}}
+\code{\link{write.csv}}, \code{\link{write.table}}, \code{\link{write.dta}}
 }
 
 
