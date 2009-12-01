@@ -38,17 +38,17 @@
 
 
 
-.check.log.var <- function(x){
-  check1 <- min(x, na.rm=TRUE) < 0
-  if(check1) stop("log cannot take on negative values")
-  check2 <- min(x, na.rm=TRUE) == 0 
-  if(check2){
-    k <- round((min(x[x>0], na.rm=TRUE) + 0)/2,2)
-    return(k)
-  }
-  else return(0)
-}
-
+#.check.log.var <- function(x){
+#  check1 <- min(x, na.rm=TRUE) < 0
+#  if(check1) stop("log cannot take on negative values")
+#  check2 <- min(x, na.rm=TRUE) == 0 
+#  if(check2){
+#    k <- round((min(x[x>0], na.rm=TRUE) + 0)/2,2)
+#    return(k)
+#  }
+#  else return(0)
+#}
+#
 
 
 
@@ -282,34 +282,34 @@ data.tmp <<- NULL # to pass R CMD check
 #  }
 #}
 
-.foo2 <- function(v, type){
-  if(type=="unordered-categorical"){
-    new.v <- .cat2binary(v)
-    apply(new.v, 2, sd)
-  }
-  else if(type=="ordered-categorical"){
-    sd(as.numeric(factor(na.exclude(v))))
-  }
-  else {
-    sd(unclass(v), na.rm=TRUE)
-  }
-}
+#.foo2 <- function(v, type){
+#  if(type=="unordered-categorical"){
+#    new.v <- .cat2binary(v)
+#    apply(new.v, 2, sd)
+#  }
+#  else if(type=="ordered-categorical"){
+#    sd(as.numeric(factor(na.exclude(v))))
+#  }
+#  else {
+#    sd(unclass(v), na.rm=TRUE)
+#  }
+#}
 
 
 
 
-
-# ===============================
-#  Internal use in update.mi.info
-#=================================
-.change.formula.ordered <- function(x, varnames){
-  x <- gsub(paste("factor(", varnames, ")", sep=""), varnames, x, fix=TRUE)
-  return(x)
-}
-
-
-
-.change.formula.unordered <- function(x, varnames){
-  x <- gsub(varnames, paste("factor(", varnames, ")", sep=""), x)
-  return(x)
-}
+#
+## ===============================
+##  Internal use in update.mi.info
+##=================================
+#.change.formula.ordered <- function(x, varnames){
+#  x <- gsub(paste("factor(", varnames, ")", sep=""), varnames, x, fix=TRUE)
+#  return(x)
+#}
+#
+#
+#
+#.change.formula.unordered <- function(x, varnames){
+#  x <- gsub(varnames, paste("factor(", varnames, ")", sep=""), x)
+#  return(x)
+#}
