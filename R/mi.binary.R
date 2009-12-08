@@ -62,11 +62,11 @@ mi.binary <- function( formula, data = NULL, start = NULL, n.iter = 100,
       ####get right design matrix#
         tt <- terms(bglm.imp)
         Terms <- delete.response(tt)
-        mf <- model.frame(Terms, data=data,  xlev = bglm.imp$xlevels)
+        mf <- model.frame(Terms, data=data[mis,,drop=FALSE],  xlev = bglm.imp$xlevels)
         mf <- as.matrix(model.matrix(Terms, mf, contrasts.arg = bglm.imp$contrasts))
       ############################
         sim.coef  <- sim(bglm.imp,1)$coef
-        prob.pred <- invlogit(tcrossprod(mf[mis,,drop=FALSE], sim.coef))
+        prob.pred <- invlogit(tcrossprod(mf, sim.coef))
         random.temp <- rbinom(n.mis, 1, prob.pred)
     }
     else {

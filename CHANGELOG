@@ -1,3 +1,7 @@
+2009-12-7 Yu-Sung Su  <ys463@columbia.edu> 
+   * R/mi.continuous, mi.binary, mi.count, mi.polr, mi.categorical: use mis indices to 
+      save memory usage
+
 2009-12-1 Yu-Sung Su  <ys463@columbia.edu> 
    * R/mi.continuous, mi.binary, mi.count: overwrite and use of mf objects to save 
       memory

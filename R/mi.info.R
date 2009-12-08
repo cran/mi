@@ -326,6 +326,7 @@ mi.info.fix <- function( info ) {
                   change.list <- list(Var.to.fix=mi.types()[res.var3.type])
                   names(change.list) <- Var.to.fix
                   info <- update(info, target="type", change.list)
+                  
                   #type.default.formula(,info[[Var.to.fix]]$type)
                 }
                 else if(res.var3 ==2){
@@ -657,9 +658,13 @@ update.mi.info <- function(object, target, list, ...){
     else {
       nam <- 1:length(list)
     }
-  } 
+  }
   for ( i in 1:length( list ) ) {
     object[[nam[i]]][[target]] <- list[[nam[i]]]
+    if(target=="type"){
+      formal.args <- formals(as.character(type.models(object[[nam[i]]]$type)))
+      object[[nam[i]]]$params <-  formal.args[!names( formal.args )%in%c("formula","data","start","...")]  
+    }
     # is.ID
     if(target=="is.ID"){
       if(object[[nam[i]]][["include"]]){
@@ -694,7 +699,12 @@ update.mi.info <- function(object, target, list, ...){
   return(object)
 }
 
-                            
+#  for(i in 1:length(info)){
+#    formal.args <- formals(as.character(type.models(info[[i]]$type)))
+#    info[[i]]$params <-  formal.args[!names( formal.args )%in%c("formula","data","start","...")]  
+#  }
+
+                          
 mi.info.update.type <- function (object, list ) {
   info <- update(object, target="type", list )
   return(info)

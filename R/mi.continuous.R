@@ -48,13 +48,13 @@ mi.continuous <- function ( formula, data = NULL, start = NULL,
     ####get right design matrix#
       tt <- terms(bglm.imp)
       Terms <- delete.response(tt)
-      mf <- model.frame(Terms, data=data,  xlev = bglm.imp$xlevels)
+      mf <- model.frame(Terms, data=data[mis,,drop=FALSE],  xlev = bglm.imp$xlevels)
       mf <- as.matrix(model.matrix(Terms, mf, contrasts.arg = bglm.imp$contrasts))
     ############################
       sim.bglm.imp  <- sim(bglm.imp,1)
       sim.coef <- sim.bglm.imp$coef
       sim.sigma <- sim.bglm.imp$sigma
-      random.pred <- rnorm(n.mis, tcrossprod(mf[mis,,drop=FALSE], sim.coef), sim.sigma)
+      random.pred <- rnorm(n.mis, tcrossprod(mf, sim.coef), sim.sigma)
     }
     else{
       random.pred <- rnorm(n.mis, determ.pred[mis], sigma.hat(bglm.imp))
@@ -81,6 +81,6 @@ mi.continuous <- function ( formula, data = NULL, start = NULL,
   result@random   <- random.pred
   return(result)
   on.exit(rm(Y))
-  on.exit(rm(X))
+  on.exit(rm(mf))
   on.exit(rm(bglm.imp))
 }
