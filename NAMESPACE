@@ -12,6 +12,10 @@ importFrom("stats",
       coefficients
 )
 
+importFrom("Matrix",
+      tcrossprod
+)
+
 
 
 importFrom("arm",

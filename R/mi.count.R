@@ -50,10 +50,10 @@ mi.count <- function ( formula, data = NULL, start = NULL,
       tt <- terms(bglm.imp)
       Terms <- delete.response(tt)
       mf <- model.frame(Terms, data=data[mis,,drop=FALSE],  xlev = bglm.imp$xlevels)
-      mf <- as.matrix(model.matrix(Terms, mf, contrasts.arg = bglm.imp$contrasts))
+      mf <- Matrix(model.matrix(Terms, mf, contrasts.arg = bglm.imp$contrasts), sparse=TRUE)
     ############################
       sim.coef  <- sim(bglm.imp,1)$coef
-      lambda <- exp(tcrossprod(mf, sim.coef))
+      lambda <- exp(as.matrix(tcrossprod(mf, sim.coef)))
       random.pred <- rpois(n.mis, lambda)
     }
     else{

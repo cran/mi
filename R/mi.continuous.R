@@ -49,12 +49,12 @@ mi.continuous <- function ( formula, data = NULL, start = NULL,
       tt <- terms(bglm.imp)
       Terms <- delete.response(tt)
       mf <- model.frame(Terms, data=data[mis,,drop=FALSE],  xlev = bglm.imp$xlevels)
-      mf <- as.matrix(model.matrix(Terms, mf, contrasts.arg = bglm.imp$contrasts))
+      mf <- Matrix(model.matrix(Terms, mf, contrasts.arg = bglm.imp$contrasts), sparse=TRUE)
     ############################
       sim.bglm.imp  <- sim(bglm.imp,1)
       sim.coef <- sim.bglm.imp$coef
       sim.sigma <- sim.bglm.imp$sigma
-      random.pred <- rnorm(n.mis, tcrossprod(mf, sim.coef), sim.sigma)
+      random.pred <- rnorm(n.mis, as.matrix(tcrossprod(mf, sim.coef)), sim.sigma)
     }
     else{
       random.pred <- rnorm(n.mis, determ.pred[mis], sigma.hat(bglm.imp))

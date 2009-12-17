@@ -63,10 +63,10 @@ mi.binary <- function( formula, data = NULL, start = NULL, n.iter = 100,
         tt <- terms(bglm.imp)
         Terms <- delete.response(tt)
         mf <- model.frame(Terms, data=data[mis,,drop=FALSE],  xlev = bglm.imp$xlevels)
-        mf <- as.matrix(model.matrix(Terms, mf, contrasts.arg = bglm.imp$contrasts))
+        mf <- Matrix(model.matrix(Terms, mf, contrasts.arg = bglm.imp$contrasts), sparse=TRUE)
       ############################
         sim.coef  <- sim(bglm.imp,1)$coef
-        prob.pred <- invlogit(tcrossprod(mf, sim.coef))
+        prob.pred <- invlogit(as.matrix(tcrossprod(mf, sim.coef)))
         random.temp <- rbinom(n.mis, 1, prob.pred)
     }
     else {
