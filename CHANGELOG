@@ -1,6 +1,10 @@
-2009-12-7 Yu-Sung Su  <ys463@columbia.edu> 
-   * R/mi.continuous, mi.binary, mi.count, mi.polr, mi.categorical: use mis indices to 
-      save memory usage
+2009-7-21 Yu-Sung Su     <ys463@columbia.edu> 
+   * DESCRIPTION (Version, Date): 0.08-05
+   * R/mi: clean up code.
+
+2009-12-1 Yu-Sung Su  <ys463@columbia.edu> 
+   * R/mi.continuous, mi.binary, mi.count: overwrite and use of mf objects to save 
+      memory
 
 2009-12-1 Yu-Sung Su  <ys463@columbia.edu> 
    * R/mi.continuous, mi.binary, mi.count: overwrite and use of mf objects to save 
@@ -9,7 +13,6 @@
 2009-11-30 Yu-Sung Su     <ys463@columbia.edu> 
    * R/mi.continuous, mi.binary, mi.count: hide new X's into the draw.from.beta loop 
     to save memory.
-
 
 2009-7-21 Yu-Sung Su     <ys463@columbia.edu> 
    * DESCRIPTION (Version, Date): 0.08-04

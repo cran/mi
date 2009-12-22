@@ -33,8 +33,8 @@ mi.polr <- function ( formula, data = NULL, drop.unused.levels = TRUE,
   }
 
   # convert the levels
-  Y.levels <- levels(ordered(Y))
-  Y.nlevel <- nlevels(ordered(Y))
+  #Y.levels <- levels(ordered(Y))
+  #Y.nlevel <- nlevels(ordered(Y))
   response.name <- names(mf)[1]  
   form <- formula
   form <- gsub(response.name, paste("ordered(", response.name, ")", sep=""), form)
@@ -55,15 +55,15 @@ mi.polr <- function ( formula, data = NULL, drop.unused.levels = TRUE,
   bplr.imp    <- bayespolr( formula = form, data = data, start = 0, 
                               method = c( "logistic" ), 
                               drop.unused.levels = FALSE, n.iter = n.iter )
-  expect.prob <- predict( bplr.imp, newdata = data, type = "probs" )
-  determ.pred <- predict(bplr.imp, newdata=data, type="class")#as.vector( expect.prob %*% as.double( Y.levels ) )
+  expect.prob <- predict(bplr.imp, newdata = data, type = "probs" )
+  determ.pred <- factor(max.col(expect.prob), levels = seq_along(bplr.imp$lev), labels=bplr.imp$lev)
+  #determ.pred <- predict(bplr.imp, newdata=data, type="class")#as.vector( expect.prob %*% as.double( Y.levels ) )
   names( determ.pred ) <- 1:length( determ.pred )
 
   if(n.mis>0){
-    random.pred <- Rmultnm(n.mis, expect.prob[mis,], 1:Y.nlevel)    
-    random.pred <-  recode(random.pred, paste(1:Y.nlevel,"='",Y.levels,"'",sep="",collapse=";") )        
+    random.pred <- Rmultnm(n.mis, expect.prob[mis,], 1:length(bplr.imp$lev))    
+    random.pred <-  recode(random.pred, paste(1:length(bplr.imp$lev),"='", bplr.imp$lev,"'",sep="",collapse=";") )        
     names(random.pred) <- names(determ.pred[mis])
-  #random.pred <- Y.levels[random.pred]
   }
   else{
     random.pred <- NULL

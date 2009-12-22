@@ -237,7 +237,7 @@ data.tmp <<- NULL # to pass R CMD check
 #=================================
 # internal used for AveVar in mi
 #==================================
-.foo1 <- function(v, type){
+.getmean <- function(v, type){
   if(type=="unordered-categorical"){
     new.v <- .cat2binary(v)
     return(apply(new.v, 2, mean))
@@ -250,7 +250,7 @@ data.tmp <<- NULL # to pass R CMD check
   }
 }
 
-.foo2 <- function(v, type){
+.getsd <- function(v, type){
   if(type=="unordered-categorical"){
     new.v <- .cat2binary(v)
     return(apply(new.v, 2, sd))

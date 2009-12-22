@@ -13,7 +13,6 @@ noise.control <- function(method=c("reshuffling", "fading"), pct.aug=10, K = 1){
 }
 
 
-
 setMethod("mi", signature(object = "data.frame"), 
         function (object, info, n.imp = 3, n.iter = 30, R.hat = 1.1,
                   max.minutes = 20, rand.imp.method = "bootstrap", 
@@ -22,6 +21,7 @@ setMethod("mi", signature(object = "data.frame"),
                   add.noise = noise.control(), post.run = TRUE) 
 { 
   call <- match.call()                         # call
+
   if(!is.na(seed)){
     set.seed(seed) 
   }    # set random seed
@@ -29,6 +29,7 @@ setMethod("mi", signature(object = "data.frame"),
   if(n.iter <= 5){ 
     stop(message="number of iteration must be more than 5")
   }
+
   ProcStart     <- proc.time()                  # starting time
   
   if(is.logical(add.noise)){
@@ -47,13 +48,15 @@ setMethod("mi", signature(object = "data.frame"),
   coef.conv.check <- NULL
 
   # For data frame and matrix  
-  #object     <- data.frame(object)
   nameD      <- deparse(substitute(object))
   org.data   <- object
   data       <- object
+
   if(missing(info)) {     
     info <- mi.info(data)    # create mi.info
   }
+
+  # this makes sure categorical data is factorized
   data <- .update.data(data, info)        
 
   #  # Automatic Preprocess
@@ -70,6 +73,7 @@ setMethod("mi", signature(object = "data.frame"),
     }
     info <- mi.info.formula.default(info)
     info$imp.formula[1:length(info.org)] <- info.org$imp.formula
+    rm(proc.tmp)
   }  
   
   # level check
@@ -103,6 +107,7 @@ setMethod("mi", signature(object = "data.frame"),
   else{
     n.col.sims.array <- dim(data[, idx.include.var])[2] + tot.nlevel - tot.n.unord.cat.var
   }
+  
   AveVar  <- array(NA, c(n.iter, n.imp, n.col.sims.array*2))
   s_start <- 1
   s_end   <- n.iter
@@ -125,6 +130,7 @@ setMethod("mi", signature(object = "data.frame"),
   VarName.tm <- names(info)[.include(info) & .nmis(info)>0]
   VarName    <- VarName.tm[order(.imp.order( info )[.include(info) & .nmis(info)>0])]
   length.list <- sum(.include(info) & .nmis(info)>0)
+  
   # list initialization
   mi.data       <- vector("list", n.imp)
   start.val     <- vector("list", n.imp)
@@ -149,11 +155,10 @@ setMethod("mi", signature(object = "data.frame"),
     # imputation loop
     for ( i in 1:n.imp ){
       cat( " Imputation", i,  ": " )
-      avevar.tmp <- NULL
       # variable loop
       for( jj in 1:length(VarName) ) {
         CurrentVar <- VarName[jj]
-       if(add.noise.method=="reshuffling"){
+        if(add.noise.method=="reshuffling"){
           prob.add.noise <- add.noise$K/s
           prob.add.noise <- ifelse(prob.add.noise > 1, 1, prob.add.noise)
           q <- rbinom(1, 1, prob=prob.add.noise)           
@@ -174,15 +179,17 @@ setMethod("mi", signature(object = "data.frame"),
         CurVarFlg <- ( names ( data ) == CurrentVar )
         dat <- data.frame(data[,CurVarFlg, drop=FALSE], mi.data[[i]][,!CurVarFlg])
         names(dat) <- c(CurrentVar, names(data[,!CurVarFlg, drop=FALSE] ))
+        ####Deside which model to use #################################
         model.type <- as.character(type.models( info[[CurrentVar]]$type))
+        ###############################################################
+
         if(add.noise.method=="reshuffling"){
           if(q){
             dat <- random.imp(dat, method = rand.imp.method)
           }
         }
         if(add.noise.method=="fading"){
-          pct.aug <- add.noise$pct.aug
-          n.aug <- trunc(nrow(data)*(pct.aug/100))
+          n.aug <- trunc(nrow(data)*(add.noise$pct.aug/100))
           dat <- rbind(dat, .randdraw(dat, n=n.aug))
         }                
         # Error Handling
@@ -192,6 +199,7 @@ setMethod("mi", signature(object = "data.frame"),
         on.exit(options(show.error.messages = TRUE),add = TRUE)
         options(show.error.messages = FALSE)
         # Error Handling
+        
         mi.object[[i]][[CurrentVar]] <- with(data = dat, 
                                           do.call(model.type,
                                             args = c(list(formula = info[[CurrentVar]]$imp.formula, 
@@ -204,8 +212,7 @@ setMethod("mi", signature(object = "data.frame"),
                                                   }),
                                           info[[CurrentVar]]$params)))
         # Error Handling
-        on.exit()
-        options(show.error.messages = TRUE)
+        on.exit(options(show.error.messages = TRUE))
         # Error Handling        
         if(add.noise.method=="reshuffling"){        
           if(q){
@@ -214,6 +221,7 @@ setMethod("mi", signature(object = "data.frame"),
         }
         mi.data[[i]][[CurrentVar]][is.na(data[[CurrentVar]])] <- mi.object[[i]][[CurrentVar]]@random
         data.tmp <<- mi.data
+        
         if(info[[CurrentVar]]$type=="unordered-categorical"){
           n.level <- length(info[[CurrentVar]]$level)
           coef.val[[CurrentVar]][[i]] <- rbind(coef.val[[CurrentVar]][[i]],
@@ -222,14 +230,15 @@ setMethod("mi", signature(object = "data.frame"),
         else{
           coef.val[[CurrentVar]][[i]] <- rbind(coef.val[[CurrentVar]][[i]],coef(mi.object[[i]][[CurrentVar]]))
         }
+        
         start.val[[i]][[jj]] <- coef(mi.object[[i]][[CurrentVar]])
       } ## variable loop 
       cat("\n" )
       avevar.mean <- NULL
       avevar.sd <- NULL
       for (mm in 1:length(VarName)){
-        avevar.mean <- c(avevar.mean, .foo1(mi.data[[i]][,VarName[mm]], type=info$type[VarName[mm]]))
-        avevar.sd <- c(avevar.sd, .foo2(mi.data[[i]][,VarName[mm]], type=info$type[VarName[mm]]))
+        avevar.mean <- c(avevar.mean, .getmean(mi.data[[i]][,VarName[mm]], type=info$type[VarName[mm]]))
+        avevar.sd <- c(avevar.sd, .getsd(mi.data[[i]][,VarName[mm]], type=info$type[VarName[mm]]))
       }
 
       AveVar[s,i,] <- c(avevar.mean, avevar.sd)
@@ -301,30 +310,27 @@ setMethod("mi", signature(object = "data.frame"),
       coef.conv.check <- as.bugs.array(tmp)
     }
   }
-  if(preprocess){
-    info2 <- info
-
-    info <- info.org
-  }
-  else{
-    info2 <- NULL
+  
+  if(!preprocess){
+    info.org <- info
+    info <- NULL
   }
   
   m <- new("mi", 
             call      = call,
             data      = org.data,
             m         = n.imp,
-            mi.info   = info,
+            mi.info   = info.org,
             imp       = mi.object,
             converged = converged.flg,
             coef.conv = coef.conv.check,
             bugs      = con.check,
             preprocess = preprocess,
-            mi.info.preprocessed = info2)
+            mi.info.preprocessed = info)
   with(globalenv(), rm(data.tmp))
   if(post.run){
     if(!is.logical(add.noise)){
-      m <- mi(m, run.past.convergence=TRUE, n.iter=20, R.hat=R.hat)
+      m <- mi(m, run.past.convergence = TRUE, n.iter = 20, R.hat = R.hat)
     }
   }
   return(m)
@@ -332,7 +338,7 @@ setMethod("mi", signature(object = "data.frame"),
 )
 
 setMethod("mi", signature(object = "mi"), 
-        function (object, info, n.iter = 30, R.hat = 1.1,
+        function (object, n.iter = 30, R.hat = 1.1,
                   max.minutes = 20, rand.imp.method = "bootstrap", 
                   run.past.convergence = FALSE,
                   seed = NA) 
@@ -356,11 +362,10 @@ setMethod("mi", signature(object = "mi"),
   coef.conv.check <- NULL
 
   # for mi object
-  org.data  <- data.mi(object)
-  data      <- data.mi(object)
-  if(missing(info)){
-    info <- info.mi(object)
-  }
+  data  <- data.mi(object)
+  info <- info.mi(object)
+
+  # this makes sure categorical data is factorized
   data <- .update.data(data, info)
   
   if(object@preprocess){
@@ -379,23 +384,12 @@ setMethod("mi", signature(object = "mi"),
   
   #  # Automatic Preprocess
   if( preprocess ) {
-    proc.tmp <- mi.preprocess(data, info)
-    data <- as.data.frame(proc.tmp$data)
-    info.org <- info
-    info <- mi.info(data)
-    for(i in 1:length(info.org)){
-      info[[i]] <- info.org[[i]]    
-    }
-    for(i in 1:ncol(data)){
-      info[[i]]$type <- proc.tmp$type[[i]]
-    }
-    info <- mi.info.formula.default(info)
-    info$imp.formula[1:length(info.org)] <- info.org$imp.formula
+    data <- mi.preprocess(data, info)$data
+    info <- object@mi.info.preprocessed
   }  
   
   
-  col.mis   <- !complete.cases(t(data))
-  ncol.mis  <- sum(col.mis)
+  ncol.mis <- sum(.nmis(info)>0)
   n.imp     <- m(object)
   prev.iter <- dim(bugs.mi(object)$sims.array)[1]
   n.col.sims.array <- dim(bugs.mi(object)$sims.array)[3] 
@@ -418,12 +412,7 @@ setMethod("mi", signature(object = "mi"),
   start.val     <- vector("list", n.imp)
   mi.object     <- vector("list", n.imp)
   for (j in 1:n.imp){ 
-    mi.data[[j]]  <- #if(preprocess){
-                        random.imp(data, method = rand.imp.method)
-                      #}
-                      #else{
-                      #  mi.data.frame(object, m=j)[,.include(info)] 
-                      #}
+    mi.data[[j]]  <- random.imp(data, method = rand.imp.method)
     start.val[[j]]<- vector("list", length.list)
     mi.object[[j]]<- vector("list", ncol.mis)
     names(mi.object[[j]]) <- names(info)[.nmis(info)>0]
@@ -442,17 +431,16 @@ setMethod("mi", signature(object = "mi"),
     # imputation loop
     for ( i in 1:n.imp ){
       cat( " Imputation", i,  ": " )
-      avevar.tmp <- NULL
       # variable loop
       for( jj in 1:length(VarName) ) {
-
         CurrentVar <- VarName[jj]
         cat(CurrentVar, "  ")      
         CurVarFlg <- ( names ( data ) == CurrentVar )
         dat <- data.frame(data[,CurVarFlg, drop=FALSE], mi.data[[i]][,!CurVarFlg])
         names(dat) <- c(CurrentVar, names(data[,!CurVarFlg, drop=FALSE] ))
+        #########which model to use#########################################
         model.type <- as.character(type.models( info[[CurrentVar]]$type))
-        
+        ####################################################################
         # Error Handling
         .Internal(seterrmessage(""))
         errormessage <- paste("\nError while imputing variable:", CurrentVar, ", model:",model.type,"\n")
@@ -472,8 +460,8 @@ setMethod("mi", signature(object = "mi"),
                                                   }),
                                           info[[CurrentVar]]$params)))
         # Error Handling
-        on.exit()
-        options(show.error.messages = TRUE)
+        on.exit(options(show.error.messages = TRUE))
+
         # Error Handling        
         mi.data[[i]][[CurrentVar]][is.na(data[[CurrentVar]])] <- mi.object[[i]][[CurrentVar]]@random
         data.tmp <<- mi.data
@@ -492,8 +480,8 @@ setMethod("mi", signature(object = "mi"),
       avevar.mean <- NULL
       avevar.sd <- NULL
       for (mm in 1:length(VarName)){
-        avevar.mean <- c(avevar.mean, .foo1(mi.data[[i]][,VarName[mm]], type=info$type[VarName[mm]]))
-        avevar.sd <- c(avevar.sd, .foo2(mi.data[[i]][,VarName[mm]], type=info$type[VarName[mm]]))
+        avevar.mean <- c(avevar.mean, .getmean(mi.data[[i]][,VarName[mm]], type=info$type[VarName[mm]]))
+        avevar.sd <- c(avevar.sd, .getsd(mi.data[[i]][,VarName[mm]], type=info$type[VarName[mm]]))
       }
 
       AveVar[s,i,] <- c(avevar.mean, avevar.sd)
@@ -565,25 +553,18 @@ setMethod("mi", signature(object = "mi"),
     }
   }
   
-  if(preprocess){
-    info2 <- info
-    info <- info.org
-  }
-  else{
-    info2 <- NULL
-  }
   
    m <- new("mi", 
             call      = call,
-            data      = org.data,
+            data      = data.mi(object),
             m         = n.imp,
-            mi.info   = info,
+            mi.info   = info.mi(object),
             imp       = mi.object,
             converged = converged.flg,
             coef.conv = coef.conv.check,
             bugs      = con.check,
             preprocess = preprocess,
-            mi.info.preprocessed = info2)
+            mi.info.preprocessed = object@mi.info.preprocessed)
   with(globalenv(), rm(data.tmp))
   return(m)
 }
@@ -611,8 +592,8 @@ strict.check <- function(coefficient,n.iter,n.imp){
 }
 
 
-setMethod( "is.mi", signature( object = "mi" ),
-  function ( object ){ 
+setMethod("is.mi", signature( object = "mi" ),
+  function (object){ 
     return(inherits ( object, "mi" )) 
   }
 )
@@ -646,9 +627,9 @@ setMethod("bugs.mi", signature( object = "mi" ),
   }
 )
 
-setMethod("info.mi", signature( object = "mi" ),
-   function ( object ){
-    return( object@mi.info ) 
+setMethod("info.mi", signature(object = "mi" ),
+   function(object){
+    return(object@mi.info ) 
   }
 )
 

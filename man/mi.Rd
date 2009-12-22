@@ -43,7 +43,7 @@
     seed = NA, check.coef.convergence = FALSE, 
     add.noise = noise.control(), post.run = TRUE)
     
-\S4method{mi}{mi}( object, info, n.iter = 30, 
+\S4method{mi}{mi}(object, n.iter = 30, 
     R.hat = 1.1, max.minutes = 20, rand.imp.method = "bootstrap", 
     run.past.convergence = FALSE,  seed = NA)
 
@@ -163,14 +163,15 @@ inf <- update(inf, "type", list(x10="count"))
 # run the imputation
 ## this is for test only
 IMP <- mi(dat, info=inf, n.iter=6, post.run=FALSE)
+
 # no noise
-# IMP <- mi(dat, info=inf, n.iter=6, add.noise=FALSE)
+# IMP <- mi(dat, info=inf, n.iter=6, add.noise=FALSE) ## NOT RUN
 
 # pick up where you left off
 # IMP <- mi(IMP)       ## NOT RUN
 
-## this is the suggested (defautl) way of running mi, NOT RUN
-# IMP <- mi(dat, info=inf)
+## this is the suggested (defautl) way of running mi
+# IMP <- mi(dat, info=inf) ## NOT RUN
 
 # convergence checking
 converged(IMP)  ## You should get FALSE here because only n.iter is small 

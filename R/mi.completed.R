@@ -1,21 +1,24 @@
 mi.completed.default <- function(object, m = 1){
-  if( m(object) < m )  { stop( message = "Index of imputation is not within the range." ) }
+  if( m(object) < m ) { 
+    stop( message = "Index of imputation is not within the range." ) 
+  }
   if(object@preprocess){
     info <- object@mi.info.preprocessed
-    mimatrix <- data.mi(object)
-    mimatrix <- mi.preprocess(mimatrix, info=object@mi.info)$data
+    miMatrix <- data.mi(object)
+    miMatrix <- mi.preprocess(miMatrix, info=object@mi.info)$data
   }
   else{
     info <- info.mi(object)
-    mimatrix <- data.mi(object)
+    miMatrix <- data.mi(object)
   }
-  mis.name <- names(.nmis(info)[.nmis(info) > 0 & !.all.missing( info ) ] )
+  
+  mis.name <- names(info)[.nmis(info) > 0 & !.all.missing(info)]
 
   for ( i in 1:length(mis.name) ){
     nm <- mis.name[i]
-    mimatrix[ ,nm] <- imputed(imp(object,m)[[nm]], mimatrix[ ,nm] )
+    miMatrix[ ,nm] <- imputed(imp(object,m)[[nm]], miMatrix[ ,nm] )
   }
-  return(as.data.frame(mimatrix))
+  return(as.data.frame(miMatrix))
 }  
   
 
@@ -39,8 +42,8 @@ setMethod("mi.completed", signature( object = "mi" ),
 
 
 
-setMethod( "mi.data.frame", signature( object = "mi" ),
-  function ( object, m = 1) {
+setMethod("mi.data.frame", signature( object = "mi" ),
+  function (object, m = 1) {
     if(object@preprocess){
       data <- mi.completed.default(object, m=m)
       data <- mi.postprocess(data, info=object@mi.info.preprocessed)
