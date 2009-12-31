@@ -43,6 +43,7 @@ mi.polr <- function ( formula, data = NULL, drop.unused.levels = TRUE,
   }
 
 
+
 #
 #  if( is.numeric(Y)){ 
 #    Y.levels <- as.double(Y.levels) 

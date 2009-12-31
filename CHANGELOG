@@ -1,4 +1,8 @@
-2009-7-21 Yu-Sung Su     <ys463@columbia.edu> 
+2009-12-31 Yu-Sung Su     <ys463@columbia.edu> 
+   * DESCRIPTION (Version, Date): 0.08-06
+   * R/mi.info: fix a bug in the include slot of update.mi.info
+
+2009-12-21 Yu-Sung Su     <ys463@columbia.edu> 
    * DESCRIPTION (Version, Date): 0.08-05
    * R/mi: clean up code.
 

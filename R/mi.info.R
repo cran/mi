@@ -681,14 +681,15 @@ update.mi.info <- function(object, target, list, ...){
     }
   }
   # imp.order
+  ord <- 1
   for(i in 1:length(object)){
-    ord <- 1
     if(object[[i]][["include"]] && object[[i]][["nmis"]]>0){
       object[[i]][["imp.order"]] <- ord
       ord <- ord + 1
     } 
     else{
       object[[i]][["imp.order"]] <- NA
+      ord <- ord
     }
   }
   object <- mi.info.formula.default(object)
