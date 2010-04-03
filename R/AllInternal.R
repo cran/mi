@@ -1,3 +1,24 @@
+# ========================================================================
+# Get missing index
+# ========================================================================
+
+.getMissingIndex <- function(x){
+  x <- is.na(x)
+  x <- x*(1:length(x))
+  return(x[x>0])
+}
+
+#.getMissingIndex <- function(dataframe){
+#  N <- dim(dataframe)[1]
+#  idx <- lapply(dataframe, .MissingIndex)
+#  return(idx)
+#}
+
+
+# ========================================================================
+# factorize the categorical data
+# ========================================================================
+
 .update.data <- function(data, info){
   K <- dim(data)[2]
   for(i in 1:K){

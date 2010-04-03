@@ -3,7 +3,8 @@
 # ==============================================================================
 
 mi.count <- function ( formula, data = NULL, start = NULL, 
-                            n.iter = 100, draw.from.beta = TRUE, ...  ) {
+                            n.iter = 100, draw.from.beta = TRUE, 
+                            missing.index = NULL, ...  ) {
   call <- match.call()
   mf   <- match.call(expand.dots = FALSE)
   m    <- match(c("formula", "data"), names(mf), 0)
@@ -22,23 +23,32 @@ mi.count <- function ( formula, data = NULL, start = NULL,
       names(Y) <- nm
   }
 #  X <- mf[,-1,drop=FALSE]
-  namesD <- if(is.null(data)){ 
-              NULL 
-            }  
-            else{ 
-              deparse(substitute(data)) 
-            }
-  mis    <- is.na(Y)
-  n.mis  <- sum(mis)
+#  namesD <- if(is.null(data)){ 
+#              NULL 
+#            }  
+#            else{ 
+#              deparse(substitute(data)) 
+#            }
+  mis <- is.na(Y)
+  n.mis <- if(is.null(missing.index)){
+             sum(mis)
+           } else{
+             length(missing.index)
+           }
+  if(is.null(missing.index)& any(mis)){
+    missing.index <- mis
+  }
+           
   if(is.null(data)){
     data <- mf
   }
 
   # main program
   if( !is.null( start ) ){ 
-    n.iter <- 30
+    n.iter <- 10
     start[is.na(start)] <- 0
   }
+  
   bglm.imp    <- bayesglm( formula = formula, data = data, family = quasipoisson, 
                             n.iter = n.iter, start = start, 
                             drop.unused.levels = FALSE, Warning=FALSE,... )
@@ -49,19 +59,17 @@ mi.count <- function ( formula, data = NULL, start = NULL,
     ####get right design matrix#
       tt <- terms(bglm.imp)
       Terms <- delete.response(tt)
-      mf <- model.frame(Terms, data=data[mis,,drop=FALSE],  xlev = bglm.imp$xlevels)
+      mf <- model.frame(Terms, data=data[missing.index,,drop=FALSE],  xlev = bglm.imp$xlevels)
       mf <- Matrix(model.matrix(Terms, mf, contrasts.arg = bglm.imp$contrasts), sparse=TRUE)
     ############################
       sim.coef  <- sim(bglm.imp,1)$coef
       lambda <- exp(as.matrix(tcrossprod(mf, sim.coef)))
       random.pred <- rpois(n.mis, lambda)
-    }
-    else{
-      random.pred <- rpois(n.mis, determ.pred[mis])
-    }
-    names(random.pred) <- names(determ.pred[mis])
-  }
-  else{
+    } else{
+      random.pred <- rpois(n.mis, determ.pred[missing.index])
+    }   
+    names(random.pred) <- names(determ.pred[missing.index])
+  } else{
     random.pred <- numeric(0)
   }
 

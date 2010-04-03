@@ -8,20 +8,24 @@ random.imp <- function ( data , imp.method = c( "bootstrap", "pca" ) , ... ) {
       mis       <- is.na ( data )
       imputed   <- data
       imputed[ mis ] <- sample( data[ !mis ], sum( mis ), replace = TRUE )
-    } else if( is.matrix( data ) || is.data.frame( data )  ){
+    } 
+    else if( is.matrix( data ) || is.data.frame( data )  ){
       imputed <- data
       for( j in 1:ncol ( data ) ) {
           mis  <- is.na ( data[,j] )
           if( sum(mis) == length(data[,j])){
             warning(message = paste( "variable", names(data)[j], "has no observation"))
-          } else {
+          } 
+          else {
             imputed[mis,j] <- sample( data[!mis, j], sum( mis ), replace = TRUE )
           }
       }
-    } else{
+    } 
+    else{
         stop ( message = "Unexpected data type: data must be vector, matrix, or data frame." )
     }
-  } else if (imp.method=="pca"){
+  } 
+  else if (imp.method=="pca"){
      stop ( message = "pca imputation is not implemente in current version." )
   }
   

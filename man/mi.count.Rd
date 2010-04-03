@@ -17,7 +17,7 @@
 }
 \usage{
 mi.count(formula, data = NULL, start = NULL, n.iter = 100, 
-  draw.from.beta = TRUE, \dots)
+  draw.from.beta = TRUE, missing.index = NULL, \dots)
 \S4method{resid}{mi.count}(object, y)
 \S4method{residuals}{mi.count}(object, y)
 %\S4method{plot}{mi.count,ANY}( x, y, main=deparse( substitute( y ) ), gray.scale = FALSE, \dots)
@@ -30,6 +30,7 @@ mi.count(formula, data = NULL, start = NULL, n.iter = 100,
   \item{start}{ Starting value for bayesglm. }
   \item{n.iter}{ Maximum number of iteration for bayesglm. The default is 100.}
   \item{draw.from.beta}{ Draws from posterior distribution of the betas to add randomness. }
+  \item{missing.index}{The index of missing units of the outcome variable}
   \item{\dots}{ Currently not used. }
   \item{object}{\code{mi.countr} object.}
 %  \item{x}{ \code{mi.countr} object.}

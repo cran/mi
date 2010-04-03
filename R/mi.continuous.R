@@ -2,8 +2,8 @@
 # imputation function for continuous variable
 # ==============================================================================
 
-mi.continuous <- function ( formula, data = NULL, start = NULL, 
-                            n.iter = 100, draw.from.beta = TRUE, ...  ) {
+mi.continuous <- function (formula, data = NULL, start = NULL, 
+                            n.iter = 100, draw.from.beta = TRUE, missing.index = NULL, ...  ) {
   call <- match.call()
   mf   <- match.call(expand.dots = FALSE)
   m    <- match(c("formula", "data"), names(mf), 0)
@@ -21,26 +21,37 @@ mi.continuous <- function ( formula, data = NULL, start = NULL,
       names(Y) <- nm
   }
 #  X <- mf[,-1,drop=FALSE]
-  namesD <- if(is.null(data)){ 
-              NULL 
-            }  
-            else{ 
-              deparse(substitute(data)) 
-            }
-  mis    <- is.na(Y)
-  n.mis  <- sum(mis)
+#  namesD <- if(is.null(data)){ 
+#              NULL 
+#            }  
+#            else{ 
+#              deparse(substitute(data)) 
+#            }
+  mis <- is.na(Y)
+  n.mis <- if(is.null(missing.index)){
+             sum(mis)
+           } else{
+             length(missing.index)
+           }
+  if(is.null(missing.index)& any(mis)){
+    missing.index <- mis
+  }
+  
+           
   if(is.null(data)){
     data <- mf
   }
 
   # main program
   if( !is.null( start ) ){ 
-    n.iter <- 30 
+    n.iter <- 10
     start[is.na(start)] <- 0
   }
+  
   bglm.imp    <- bayesglm( formula = formula, data = data, family = gaussian, 
                             n.iter = n.iter, start = start, 
-                            drop.unused.levels = FALSE, Warning=FALSE,... )
+                            drop.unused.levels = FALSE, Warning=FALSE, ...)
+  
   determ.pred <- predict(bglm.imp, newdata = data, type = "response" )
 
   if(n.mis>0){
@@ -48,20 +59,18 @@ mi.continuous <- function ( formula, data = NULL, start = NULL,
     ####get right design matrix#
       tt <- terms(bglm.imp)
       Terms <- delete.response(tt)
-      mf <- model.frame(Terms, data=data[mis,,drop=FALSE],  xlev = bglm.imp$xlevels)
+      mf <- model.frame(Terms, data=data[missing.index,,drop=FALSE],  xlev = bglm.imp$xlevels)
       mf <- Matrix(model.matrix(Terms, mf, contrasts.arg = bglm.imp$contrasts), sparse=TRUE)
     ############################
       sim.bglm.imp  <- sim(bglm.imp,1)
       sim.coef <- sim.bglm.imp$coef
       sim.sigma <- sim.bglm.imp$sigma
       random.pred <- rnorm(n.mis, as.matrix(tcrossprod(mf, sim.coef)), sim.sigma)
+    } else{
+      random.pred <- rnorm(n.mis, determ.pred[missing.index], sigma.hat(bglm.imp))
     }
-    else{
-      random.pred <- rnorm(n.mis, determ.pred[mis], sigma.hat(bglm.imp))
-    }
-    names(random.pred) <- names(determ.pred[mis])
-  }
-  else{
+    names(random.pred) <- names(determ.pred[missing.index])
+  } else{
     random.pred <- numeric(0)
   }
 

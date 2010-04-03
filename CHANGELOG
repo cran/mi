@@ -1,3 +1,26 @@
+2010-4-3 Yu-Sung Su     <ys463@columbia.edu> 
+   * DESCRIPTION (Version, Date): 0.08-08
+   * R/mi.info: add missing.index slot
+   * R/plot.im: mi.scatterplot, take out alpha paramter
+   * R/mi: new mi process, the missing of the outcome is imputed with observed value to start with
+
+
+2010-3-31 Yu-Sung Su     <ys463@columbia.edu> 
+   * R/mi.info: update.mi.info: fix the formula to get rid of excluded variables
+
+2010-3-23 Yu-Sung Su     <ys463@columbia.edu> 
+   * DESCRIPTION (Version, Date): 0.08-07
+   * R/mi.info: coerce data into numeric to pass the new rule of cor()
+   * R/mi.polr: fix a formula bug.
+
+2010-2-23 Yu-Sung Su     <ys463@columbia.edu> 
+   * R/mi: 
+      1. clean up code.
+      2. rewrite mi() to burnin iterations with noises.
+      3. move post.run control into noise.control() as post.run.iters.
+   * R/mi.misc: more internal functions for mi() are stored here.
+   * R/AllGeneric: rewrite converged and bugs.mi generic functions.
+
 2009-12-31 Yu-Sung Su     <ys463@columbia.edu> 
    * DESCRIPTION (Version, Date): 0.08-06
    * R/mi.info: fix a bug in the include slot of update.mi.info

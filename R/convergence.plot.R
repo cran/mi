@@ -2,8 +2,8 @@
 # convergence plot
 # ==============================================================================
 convergence.plot <- function( mi.object, ... ) {
-  traceplot( mi.object@bugs, ... )
-  invisible( mi.object@bugs )
+  traceplot( as.bugs.array(mi.object@mcmc), ... )
+  invisible( as.bugs.array(mi.object@mcmc) )
 }
 
 

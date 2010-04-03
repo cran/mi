@@ -16,7 +16,7 @@
 }
 \usage{
   mi.polr(formula, data = NULL, drop.unused.levels = TRUE, start = NULL, 
-    n.iter = 100, \dots)
+    n.iter = 100, missing.index = NULL, \dots)
   \S4method{residuals}{mi.polr}(object, y)
   \S4method{plot}{mi.polr,ANY}( x, y, main=deparse( substitute( y ) ), gray.scale = FALSE, \dots )
 }
@@ -33,6 +33,7 @@
   \item{drop.unused.levels}{ Drops unused levels. }
   \item{start}{ Starting value for bayespolr. }
   \item{n.iter}{ Maximum number of iteration for bayespolr. The default is 100.}
+  \item{missing.index}{The index of missing units of the outcome variable.}
   \item{\dots}{ Currently not used. }
   \item{object}{ \code{mi.polr} object.}
   \item{x}{\code{mi.polr} object.}

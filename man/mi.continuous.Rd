@@ -12,7 +12,7 @@
 }
 \usage{
 mi.continuous(formula, data = NULL, start = NULL, n.iter = 100, 
-    draw.from.beta = TRUE, \dots)
+    draw.from.beta = TRUE, missing.index = NULL, \dots)
 }
 
 \arguments{
@@ -21,6 +21,7 @@ mi.continuous(formula, data = NULL, start = NULL, n.iter = 100,
   \item{start}{ Starting value for bayesglm. }
   \item{n.iter}{ Maximum number of iteration for bayesglm. The default is 100.}
   \item{draw.from.beta}{ Draws from posterior distribution of the betas to add randomness. }
+  \item{missing.index}{The index of missing units of the outcome variable}
   \item{\dots}{ Currently not used. }
 }
 

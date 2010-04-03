@@ -40,9 +40,9 @@ exportClasses(
 )
 
 exportMethods(
+  bugs.mi,
   call.mi,
   data.mi,
-  bugs.mi,
   info.mi,
   is.mi,
   coef,

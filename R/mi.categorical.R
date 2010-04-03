@@ -2,7 +2,7 @@
 # imputation function for categorical variable
 # ==============================================================================
 mi.categorical <- function( formula, data = NULL, n.iter = 100, 
-                            MaxNWts = 1500, ...  ) 
+                            MaxNWts = 1500, missing.index = NULL, ...  ) 
 {
   call <- match.call()
   mf   <- match.call(expand.dots = FALSE)
@@ -22,14 +22,22 @@ mi.categorical <- function( formula, data = NULL, n.iter = 100,
     }
   }
   X <- mf[,-1,drop=FALSE]
-  namesD <- if( is.null(data)){ 
-              NULL 
-            } 
-            else{ 
-              deparse(substitute(data))
-            }
-  mis    <- is.na(Y)
-  n.mis  <- sum(mis)
+#  namesD <- if( is.null(data)){ 
+#              NULL 
+#            } 
+#            else{ 
+#              deparse(substitute(data))
+#            }
+  mis <- is.na(Y)
+  n.mis <- if(is.null(missing.index)){
+             sum(mis)
+           } else{
+             length(missing.index)
+           }
+  if(is.null(missing.index)& any(mis)){
+    missing.index <- mis
+  }
+  
   if(is.null(data)){ 
     data <- mf 
   }
@@ -49,12 +57,10 @@ mi.categorical <- function( formula, data = NULL, n.iter = 100,
   determ.pred <- predict(lm.cat.imp, newdata=data, type="class")
   names( determ.pred ) <- 1:length( determ.pred )
   if(n.mis>0){
-    random.pred <-  Rmultnm( n.mis, deter.prob[mis,], 1:y.ncat)
+    random.pred <-  Rmultnm( n.mis, deter.prob[missing.index,], 1:y.ncat)
     random.pred <-  recode(random.pred, paste(1:y.ncat,"='",y.cat,"'",sep="",collapse=";") )        
-    names( random.pred ) <- names( determ.pred[mis] )
-  }
-  #  random.pred <- y.cat[random.pred]
-  else{
+    names( random.pred ) <- names( determ.pred[missing.index] )
+  } else{
     random.pred <- NULL
   }
   #resids <- as.numeric(Y)[!is.na(Y)] - as.numeric(determ.pred)[!is.na(Y)] 

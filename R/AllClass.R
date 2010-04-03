@@ -15,11 +15,13 @@ setClass("mi",
                 m         = "numeric",
                 mi.info   = "mi.info",
                 imp       = "list",
+                mcmc      = "ANY",
                 converged = "logical",
-                coef.conv = "ANY",
-                bugs      = "ANY",
+                coef.mcmc      = "ANY",
+                coef.converged = "logical",
                 preprocess = "logical",
-                mi.info.preprocessed = "ANY"),
+                mi.info.preprocessed = "ANY",
+                add.noise = "logical"),
             contains  = "list"
 )
 

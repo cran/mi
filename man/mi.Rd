@@ -37,11 +37,11 @@
 }
 
 \usage{
-\S4method{mi}{data.frame}( object, info,  n.imp = 3, n.iter = 30, 
+\S4method{mi}{data.frame}(object, info,  n.imp = 3, n.iter = 30, 
     R.hat = 1.1, max.minutes = 20, rand.imp.method = "bootstrap", 
     preprocess = TRUE, run.past.convergence = FALSE,
     seed = NA, check.coef.convergence = FALSE, 
-    add.noise = noise.control(), post.run = TRUE)
+    add.noise = noise.control())
     
 \S4method{mi}{mi}(object, n.iter = 30, 
     R.hat = 1.1, max.minutes = 20, rand.imp.method = "bootstrap", 
@@ -62,7 +62,7 @@
   \item{seed}{The random number seed.}
   \item{check.coef.convergence}{Default is \code{FALSE}. If the value is set to be \code{TRUE}, \code{mi} will check the convergence of the coefficients of imputation models.}
   \item{add.noise}{A list of parameters for controlling the process of adding noise to \code{mi} via \code{\link{noise.control}}.}
-  \item{post.run}{Default is \code{TRUE}. \code{mi} will run 20 more iterations after an imputation process is finished if and only if \code{add.noise} is not \code{FALSE}. This is to mitigate the influence of the noise to the whole imputation process.}
+  %\item{post.run}{Default is \code{TRUE}. \code{mi} will run 20 more iterations after an imputation process is finished if and only if \code{add.noise} is not \code{FALSE}. This is to mitigate the influence of the noise to the whole imputation process.}
 }
 
 \value{ 
@@ -74,10 +74,12 @@ A list of object of class \code{mi}, which stands for \dQuote{multiple imputatio
   \item{m}{The number of imputations.}
   \item{mi.info}{Information matrix of the \code{mi}.}
   \item{imp}{A list of length(m) of imputations.}
+  \item{mcmc}{A mcmc list that stores lists of means and sds of the imputed data.}
   \item{converged}{Binary variable to indicate if the \code{mi} has converged.}
-  \item{coef.conv}{Binary variable to indicate if the coefs of \code{mi} model have converged, return
+  \item{coef.mcmc}{A mcmc list that stores lists of means of regression coefficients of the conditonal models.}
+  \item{coef.converged}{Binary variable to indicate if the coefs of \code{mi} model have converged, return
     \code{NULL} if \code{check.coef.convergence = FALSE}}
-  \item{bugs}{BUGS array of the mean and sd of each iteration.}
+%  \item{bugs}{BUGS array of the mean and sd of each iteration.}
   \item{preprocess}{Binary variable to indicate if \code{preprocess=TRUE} in the \code{mi} process}
   \item{mi.info.preprocessed}{Information matrix that actually used in the \code{mi} if \code{preprocess=TRUE}.}
   
@@ -162,21 +164,24 @@ inf <- update(inf, "type", list(x10="count"))
 
 # run the imputation
 ## this is for test only
-IMP <- mi(dat, info=inf, n.iter=6, post.run=FALSE)
+IMP <- mi(dat, info=inf, n.iter=6, check.coef.convergence=TRUE, 
+  add.noise=noise.control(post.run.iter=10))
 
 # no noise
 # IMP <- mi(dat, info=inf, n.iter=6, add.noise=FALSE) ## NOT RUN
 
 # pick up where you left off
-# IMP <- mi(IMP)       ## NOT RUN
+ IMP <- mi(IMP, n.iter = 6)      
 
 ## this is the suggested (defautl) way of running mi
 # IMP <- mi(dat, info=inf) ## NOT RUN
 
 # convergence checking
-converged(IMP)  ## You should get FALSE here because only n.iter is small 
-bugs.mi(IMP)    ## BUGS object to look at the R hat statistics
-plot(IMP@bugs)  ## visually check R.hat
+converged(IMP, check = "data")  ## You should get FALSE here because only n.iter is small 
+converged(IMP, check = "coefs")
+IMP.bugs1 <- bugs.mi(IMP, check = "data")    ## BUGS object to look at the R hat statistics
+IMP.bugs2 <- bugs.mi(IMP, check = "coefs")    ## BUGS object to look at the R hat statistics
+plot(IMP.bugs1)  ## visually check R.hat
 
 # visually check the imputation
 plot(IMP)

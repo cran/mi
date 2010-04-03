@@ -12,7 +12,8 @@ mi.completed.default <- function(object, m = 1){
     miMatrix <- data.mi(object)
   }
   
-  mis.name <- names(info)[.nmis(info) > 0 & !.all.missing(info)]
+  # changed to check if var was included (DS)
+  mis.name <- names(info)[.nmis(info) > 0 & !.all.missing(info)& .include(info)]
 
   for ( i in 1:length(mis.name) ){
     nm <- mis.name[i]

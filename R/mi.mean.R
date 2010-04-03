@@ -1,14 +1,28 @@
-mi.mean <- function ( Y, check = TRUE, ...  ) {
-    nameY <- deparse( substitute( Y ) )
-    mis   <- is.na( Y )
-    n.mis <- sum ( mis )
+# FIX THIS
+
+mi.mean <- function ( Y, check = TRUE, missing.index = NULL, ...  ) {
+  nameY <- deparse( substitute( Y ) )
+
+  mis <- is.na(Y)
+  n.mis <- if(is.null(missing.index)){
+             sum(mis)
+           } else{
+             length(missing.index)
+           }
+  if(is.null(missing.index)& any(mis)){
+    missing.index <- mis
+  }
+
     if ( check ){
         # input validation
         if ( is.null( Y ) ) { stop ( message = "Inconplete variable must be specified." ) }
         if ( !is.vector ( Y ) ) { stop ( message = "Incomplete variable must be a vector." ) }
         if ( n.mis == 0 ) { warning ( message = "There is no missing value to impute." ) }
     }
-    y.mean <- mean( Y, na.rm=TRUE )
+    if(!is.null(missing.index)){
+      y.mean <- mean( Y[-c(missing.index)], na.rm=TRUE )    
+    }
+    y.mean <- mean( Y[-c(missing.index)], na.rm=TRUE )
     # main program
     mean.imp    <- y.mean
     determ.pred <- rep( y.mean, length( Y ) )

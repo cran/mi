@@ -170,7 +170,7 @@ setMethod( "mi.hist", signature( object = "mi.method", Yobs="ANY" ),
               obs.lty = 1, imp.lty = 1, mis.lty = 1,
               obs.lwd = 1, imp.lwd = 1, mis.lwd = 1, mlt = 0.1, ... )
 {
-  Yimp <-imputed( object, Yobs )
+  Yimp <- imputed( object, Yobs )
   mis  <- Yimp[ is.na( Yobs ) ] ##the vector of the imputed values
   if( !is.null( is.na( Yobs ) ) ) { obs.nomis <- Yobs[ !is.na( Yobs ) ] }
   if( is.null( binwidth ) ) { 

@@ -1,106 +1,106 @@
 # ==============================================================================
 # Creates information matrix
 # ==============================================================================
-mi.info <- function( data, threshhold  = 0.99999 )
-{
+mi.info <- function(data, threshhold = 0.99999){
   if(is.matrix(data)) { 
     data <- data.frame(data) 
   }
   info <- vector("list", dim(data)[2])
   names(info) <- dimnames(data)[[2]]
-  data.original.name <- deparse(substitute(data))
+  #data.original.name <- deparse(substitute(data))
   collinear <- mi.check.correlation(data, threshhold)
 #  foo <- function(lst){
 #    lst[-1]
 #  }
-#  unlist(lapply(correlated, FUN=foo))
+#  lapply(collinear, FUN=foo)
 
   ord <- 1
   for( i in 1:dim( data )[2] ) {
-    info[[i]] <- vector( "list", 14 )
+    info[[i]] <- vector( "list", 15)
     names( info[[i]] ) <- c( "name","imp.order", "nmis", "type", "var.class",
                             "level", 
                             "include", "is.ID", "all.missing",
                             "collinear", "determ.pred", "imp.formula", 
-                            #"transform",
+                            "missing.index",
                             "params", "other" )
+                            
     info[[i]]$name <- dimnames(data)[[2]][i]
     # nmis
     info[[i]]$nmis <- sum(is.na(data[,i]))
     
     # type
     info[[i]]$type <- typecast(data[,i])
+    
+    # missing.index 
+    info[[i]]$missing.index <- as.numeric(.getMissingIndex(data[,i]))
  
     info[[i]]$var.class <- class(data[,i])
     # level
-    if( info[[i]]$var.class[1] == "character" ) {
+    if(info[[i]]$var.class[1] == "character" ) {
       lev <- sort(unique(as.character(data[,i]))[!is.na(unique(as.character(data[,i])))])
       #lev <- lev[order(lev)]
       if(length(lev) == 2 ) {
         info[[i]]$level <- c(0, 1)
-      } 
-      else{
+      } else{
         info[[i]]$level <- 1:length(lev)
       }
       names(info[[i]]$level) <- lev
-    } 
-    else if( info[[i]]$var.class[1] == "factor" ) {
+    } else if( info[[i]]$var.class[1] == "factor" ) {
       lev <- levels( data[ ,i] )[ !is.na( levels( data[ ,i] ) )]
       lev <- lev[!( lev %in% c( "NA", "RF", "DK" ) )]
       if( length( lev ) == 2 ) {
           info[[i]]$level <- c( 0, 1 )
-      } 
-      else {
+      } else {
         info[[i]]$level <- 1:length( lev )
       }
       names( info[[i]]$level ) <- lev
     }
 
+    # is.ID then exclude
     info[[i]]$is.ID <- if(length(unique(data[!is.na(data[,i]),i]))==length(data[,i]) &&
                         all(data[,i]==sort(data[,i]))){ 
                           TRUE
-                        } 
-                        else { 
+                        } else { 
                           FALSE
                         }   
     info[[i]]$include <- if( info[[i]]$is.ID ){ 
                             FALSE 
-                          } 
-                          else { 
+                          } else { 
                             TRUE 
                           }
+
     # all missing then exclude
     info[[i]]$all.missing <- if(sum(is.na(data[ ,i])) == dim(data)[1]){
                                TRUE
-                             } 
-                             else { 
+                             } else { 
                                FALSE
                              }    
     if(info[[i]]$include){
       info[[i]]$include <- if(info[[i]]$all.missing) { 
                              FALSE
-                           } 
-                           else { 
+                           } else { 
                              TRUE
                            }
     }
+    
     # order
     if(info[[i]]$include && info[[i]]$nmis>0){
       info[[i]]$imp.order <- ord
       ord <- ord + 1
-    } 
-    else{
+    } else{
       info[[i]]$imp.order <- NA
     }
+    
     # collinear 
     info[[i]]$collinear <- collinear[[i]]
+    
     # params
-    formal.args <- formals( as.character( type.models( info[[i]]$type ) ) )
+    formal.args <- formals(as.character(type.models(info[[i]]$type)))
     info[[i]]$params <- formal.args[!names( formal.args ) %in% c( "formula", "data", "start", "..." )]    
-    # transform
-    #info[[i]]$transform <- if(info[[i]]$type%in%c("unordered-categorical","binary")){}
   }
  
+
+
   # all missing
   allmis <- .all.missing(info)
   if(any(allmis)){
@@ -126,7 +126,7 @@ mi.info <- function( data, threshhold  = 0.99999 )
   for( ord.index in 1:length( ord.temp ) ) {
     info[[ord.index]]$imp.order <- ord.temp[ord.index]
   }
-  # default formula
+  # default formmula
   info <- mi.info.formula.default(info)
   if( length( mi.correlated.list( data ) ) > 0 ) {
     cat( "\afollowing variables are collinear\n" )
@@ -429,8 +429,9 @@ mi.fix.params <- function( info, name ) {
 # check correlation
 # ========================================================================
 
-mi.check.correlation <- function ( data, threshhold = 0.99999 ){
+mi.check.correlation <- function (data, threshhold = 0.99999 ){
   options(warn = -1)
+  data <- as.data.frame(apply(data, 2, as.numeric))
   cor.data <- cor(data, use = "pairwise.complete.obs")
   diag( cor.data ) <- 1
   index  <- abs( cor.data - diag( dim( cor.data )[1] ) ) >= threshhold 
@@ -459,15 +460,16 @@ mi.check.correlation <- function ( data, threshhold = 0.99999 ){
 
 mi.correlated.list <- function ( data, threshhold = 0.99999 ){
   options(warn = -1)
+  data <- as.data.frame(apply(data, 2, as.numeric))
   cor.data <- cor( data, use="pairwise.complete.obs" )
   diag(cor.data) <- 1
   index <- abs( cor.data - diag(dim(cor.data)[1])) >= threshhold 
   result <- vector("list",dim(index)[1])
   for( i in 1:dim(index)[1] ){
     if(length(names(which(index[i,]==1)))>0){
-      result[[i]]<-c(names(data)[i],names(which(index[i,]==1)))
+      result[[i] ]<- c(names(data)[i], names(which(index[i,]==1)))
       #result[[i]]<-c(names(which(index[i,]==1)))
-      result[[i]]<-result[[i]][order(result[[i]])]
+      result[[i]] <- result[[i]][order(result[[i]])]
     }
     else{
       result[[i]]<-NA
@@ -572,7 +574,7 @@ mi.info.recode <- function( data, info ){
       # treatment since recode can't handle "=" as variable name
       if(length(grep("=",names(info[[i]]$level)))>0){
         names(info[[i]]$level) <- gsub("=","@@@@@",names(info[[i]]$level))
-        data[[i]]<-gsub("=","@@@@@",data[[i]])
+        data[[i]]<- gsub("=","@@@@@",data[[i]])
       }
       data[[i]]<-recode(data[[i]],paste("'",names(info[[i]]$level),"'=",info[[i]]$level,sep="",collapse="; "))
     }
@@ -592,14 +594,14 @@ mi.info.uncode <-function( data, info ){
         recode.equal <- TRUE
       }
       if(info[[i]]$var.class=="factor"){
-        data[[i]]<-factor(data[[i]])
+        data[[i]] <- factor(data[[i]])
       }
       else if(info[[i]]$var.class=="character"){
-        data[[i]]<-as.character(data[[i]])
+        data[[i]] <- as.character(data[[i]])
       }
-      data[[i]]<-recode(data[[i]],paste(info[[i]]$level,"=","'",names(info[[i]]$level),"'",sep="",collapse="; "))
+      data[[i]] <- recode(data[[i]],paste(info[[i]]$level,"=","'",names(info[[i]]$level),"'",sep="",collapse="; "))
       if(recode.equal){
-        data[[i]]<-gsub("@@","=",data[[i]])
+        data[[i]] <- gsub("@@","=",data[[i]])
       }
     }
   }
@@ -680,30 +682,40 @@ update.mi.info <- function(object, target, list, ...){
       }
     }
   }
-  # imp.order
-  ord <- 1
-  for(i in 1:length(object)){
-    if(object[[i]][["include"]] && object[[i]][["nmis"]]>0){
-      object[[i]][["imp.order"]] <- ord
-      ord <- ord + 1
-    } 
-    else{
-      object[[i]][["imp.order"]] <- NA
-      ord <- ord
+  if(target %in% c("include", "is.ID", "all.missing")){
+    # imp.order
+    ord <- 1
+    for(i in 1:length(object)){
+      if(object[[i]][["include"]] && object[[i]][["nmis"]]>0){
+        object[[i]][["imp.order"]] <- ord
+        ord <- ord + 1
+      }
+      else{
+        object[[i]][["imp.order"]] <- NA
+        ord <- ord
+      }
     }
+    #object <- mi.info.formula.default(object)
   }
-  object <- mi.info.formula.default(object)
   if(target=="imp.formula"){
     object[[nam]][["imp.formula"]] <- list[[nam]]
+  }
+  # fix the formula to get rid of the exclude variable
+  excludeVar <- names(object)[!object$include] 
+  for(jj in 1:length(object)){
+    for(kk in 1:length(excludeVar)){
+      object[[jj]]$imp.formula <- .gsubFormula(object[[jj]]$imp.formula, excludeVar[kk])
+    }
   }
   class(object) <- "mi.info"
   return(object)
 }
 
-#  for(i in 1:length(info)){
-#    formal.args <- formals(as.character(type.models(info[[i]]$type)))
-#    info[[i]]$params <-  formal.args[!names( formal.args )%in%c("formula","data","start","...")]  
-#  }
+.gsubFormula <- function(object, pattern){
+  form <- gsub(paste ("\\+[[:blank:]]*[^[:alnum:]]", pattern, "[^[:alnum:]]", sep=""), "", object)
+  form <- gsub(paste ("~[[:blank:]]*[^[:alnum:]]", pattern, "[^[:alnum:]][[:blank:]]*\\+", sep=""), "~", form)
+  return(form)
+}
 
                           
 mi.info.update.type <- function (object, list ) {

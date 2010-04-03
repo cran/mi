@@ -33,7 +33,7 @@ if ( !isGeneric("call.mi")) {
 
 if ( !isGeneric("converged")) {
   setGeneric( "converged",
-              function( object ){
+              function( object, ... ){
                 standardGeneric( "converged" )
               } 
   )
@@ -73,7 +73,7 @@ if ( !isGeneric( "m" )) {
 
 if ( !isGeneric( "bugs.mi" )) {
   setGeneric( "bugs.mi",
-              function( object ){
+              function( object, ... ){
                 standardGeneric( "bugs.mi" )
               } 
   )
@@ -92,22 +92,22 @@ if ( !isGeneric( "info.mi" )) {
 if ( !isGeneric( "imp" )) {
   setGeneric( "imp",
               function( object,... ){
-                standardGeneric( "imp" )
+                standardGeneric("imp")
               } 
   )
 }
 
 if ( !isGeneric( "is.mi" )) {
   setGeneric( "is.mi",
-              function( object ){
-                standardGeneric( "is.mi" )
+              function(object){
+                standardGeneric("is.mi")
               } 
   )
 }
 
 if ( !isGeneric("mi")) {
     setGeneric( "mi",
-               function(object, ... ){
+               function(object, ...){
                standardGeneric("mi") 
                }
     )

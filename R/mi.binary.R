@@ -2,7 +2,7 @@
 # imputation function for binary variable
 # ==============================================================================
 mi.binary <- function( formula, data = NULL, start = NULL, n.iter = 100,
-                             draw.from.beta=TRUE,... ) {
+                             draw.from.beta=TRUE, missing.index = NULL, ... ) {
   call <- match.call()
   mf <- match.call(expand.dots = FALSE)
   m <- match(c("formula", "data"), names(mf), 0)
@@ -21,27 +21,35 @@ mi.binary <- function( formula, data = NULL, start = NULL, n.iter = 100,
       }
   }
 #  X <- as.matrix(mf[, -1, drop = FALSE])
-  namesD <- if (is.null(data)) {
-                NULL
-            }
-            else {
-                deparse(substitute(data))
-            }
+#  namesD <- if (is.null(data)) {
+#                NULL
+#            }
+#            else {
+#                deparse(substitute(data))
+#            }
   mis <- is.na(Y)
-  n.mis <- sum(mis)
+  n.mis <- if(is.null(missing.index)){
+             sum(mis)
+           } else{
+             length(missing.index)
+           }
+  if(is.null(missing.index)& any(mis)){
+    missing.index <- mis
+  }
+  
+  
   y.levels <- if (is.numeric(Y)) {
-      sort(unique(Y))
-  }
-  else if (is.logical(Y)) {
-      c(FALSE, TRUE)
-  }
-  else {
-      levels(factor(Y))
-  }
+                sort(unique(Y))
+              } else if (is.logical(Y)) {
+                  c(FALSE, TRUE)
+              } else {
+                levels(factor(Y))
+              }
+  
   Y <- recode(Y, paste("'", y.levels, "'=", c(0, 1), sep = "", collapse = "; "))
 
   if (!is.null(start)) {
-      n.iter <- 30
+      n.iter <- 10
       start[is.na(start)] <- 0
   }  
   if (is.null(data)) {
@@ -51,18 +59,17 @@ mi.binary <- function( formula, data = NULL, start = NULL, n.iter = 100,
   else{
      data[,names(mf)[1]] <- Y
   }
-  
   bglm.imp <- bayesglm(formula = formula, data = data, family = binomial(link = "logit"), 
       n.iter = n.iter, start = start, drop.unused.levels = FALSE, 
       Warning = FALSE, ...)
-   determ.pred <- predict(bglm.imp, newdata = data, type = "response")
+  determ.pred <- predict(bglm.imp, newdata = data, type = "response")
 
   if(n.mis>0){
     if (draw.from.beta) {
       ####get right design matrix#
         tt <- terms(bglm.imp)
         Terms <- delete.response(tt)
-        mf <- model.frame(Terms, data=data[mis,,drop=FALSE],  xlev = bglm.imp$xlevels)
+        mf <- model.frame(Terms, data=data[missing.index,,drop=FALSE],  xlev = bglm.imp$xlevels)
         mf <- Matrix(model.matrix(Terms, mf, contrasts.arg = bglm.imp$contrasts), sparse=TRUE)
       ############################
         sim.coef  <- sim(bglm.imp,1)$coef
@@ -70,12 +77,12 @@ mi.binary <- function( formula, data = NULL, start = NULL, n.iter = 100,
         random.temp <- rbinom(n.mis, 1, prob.pred)
     }
     else {
-        random.temp <- rbinom(n.mis, 1, determ.pred[mis])
+        random.temp <- rbinom(n.mis, 1, determ.pred[missing.index])
     }
     random.pred <- random.temp 
     random.pred <- replace(random.pred, random.temp == 0, y.levels[1])
     random.pred <- replace(random.pred, random.temp == 1, y.levels[2])
-    names(random.pred) <- names(determ.pred[mis])                      
+    names(random.pred) <- names(determ.pred[missing.index])                      
   }
   else{
     random.pred <- numeric(0)

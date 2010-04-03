@@ -11,7 +11,7 @@
     Imputes univariate missing data using bayesglm and probability mean matching.
 }
 \usage{
-mi.pmm(formula, data = NULL, start = NULL, n.iter = 100, ...)
+mi.pmm(formula, data = NULL, start = NULL, n.iter = 100, missing.index = NULL, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -19,6 +19,7 @@ mi.pmm(formula, data = NULL, start = NULL, n.iter = 100, ...)
   \item{data}{ A data frame containing the incomplete data and the matrix of the complete predictors. }
   \item{start}{ Starting value for bayesglm. }
   \item{n.iter}{ Maximum number of iteration for bayesglm. The default is 100.}
+  \item{missing.index}{The index of missing units of the outcome variable}
   \item{\dots}{ Currently not used. }
 }
 \details{

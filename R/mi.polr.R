@@ -2,7 +2,8 @@
 # imputation function for ordered categorical variable
 # ==============================================================================
 mi.polr <- function ( formula, data = NULL, drop.unused.levels = TRUE, 
-                       start = NULL, n.iter = 100, ... ) {
+                       start = NULL, n.iter = 100, 
+                       missing.index = NULL,... ) {
   call <- match.call()
   mf   <- match.call(expand.dots = FALSE)
   m    <- match(c("formula", "data"), names(mf), 0)
@@ -20,53 +21,51 @@ mi.polr <- function ( formula, data = NULL, drop.unused.levels = TRUE,
       names ( Y ) <- nm
   }
 #  X <- as.matrix( mf[ , -1, drop = FALSE ] )
-  namesD <- if( is.null( data ) ) { 
-              NULL
-            } 
-            else { 
-              deparse( substitute( data ) )
-            }
-  mis    <- is.na( Y )
-  n.mis  <- sum( mis )
+#  namesD <- if( is.null( data ) ) { 
+#              NULL
+#            } 
+#            else { 
+#              deparse( substitute( data ) )
+#            }
+
+  mis <- is.na(Y)
+  n.mis <- if(is.null(missing.index)){
+             sum(mis)
+           } else{
+             length(missing.index)
+           }
+  if(is.null(missing.index)& any(mis)){
+    missing.index <- mis
+  }
+  
+
+  Y <- ordered(Y)
+  assign(names(mf)[1], as.ordered(mf[,1]))
+
+  mf[,1] <- Y
+  
   if(is.null(data)){
     data <- mf
   }
-
-  # convert the levels
-  #Y.levels <- levels(ordered(Y))
-  #Y.nlevel <- nlevels(ordered(Y))
-  response.name <- names(mf)[1]  
-  form <- formula
-  form <- gsub(response.name, paste("ordered(", response.name, ")", sep=""), form)
-  if(!is.na(form[2])){
-    form <- as.formula(paste(form[2], form[1], form[3]))
+  else{    
+    data[,names(mf)[1]] <- get(names(mf)[1])
   }
+ 
 
-
-
-#
-#  if( is.numeric(Y)){ 
-#    Y.levels <- as.double(Y.levels) 
-#  }
-#
-#  Y.org <- Y
-#  levels( Y ) <- 1:Y.nlevel
-#  Y  <- factor( as.double( Y ) )
-
-  bplr.imp    <- bayespolr( formula = form, data = data, start = 0, 
+  bplr.imp    <- bayespolr( formula = formula, data = data, start = 0, 
                               method = c( "logistic" ), 
-                              drop.unused.levels = FALSE, n.iter = n.iter )
+                              drop.unused.levels = FALSE, n.iter = n.iter)
+
   expect.prob <- predict(bplr.imp, newdata = data, type = "probs" )
   determ.pred <- factor(max.col(expect.prob), levels = seq_along(bplr.imp$lev), labels=bplr.imp$lev)
   #determ.pred <- predict(bplr.imp, newdata=data, type="class")#as.vector( expect.prob %*% as.double( Y.levels ) )
   names( determ.pred ) <- 1:length( determ.pred )
 
-  if(n.mis>0){
-    random.pred <- Rmultnm(n.mis, expect.prob[mis,], 1:length(bplr.imp$lev))    
+  if (n.mis>0){
+    random.pred <- Rmultnm(n.mis, expect.prob[missing.index,], 1:length(bplr.imp$lev))    
     random.pred <-  recode(random.pred, paste(1:length(bplr.imp$lev),"='", bplr.imp$lev,"'",sep="",collapse=";") )        
-    names(random.pred) <- names(determ.pred[mis])
-  }
-  else{
+    names(random.pred) <- names(determ.pred[missing.index])
+  } else{
     random.pred <- NULL
   }
 #  resids <- as.numeric(Y)[!is.na(Y)] - as.numeric(determ.pred)[!is.na(Y)] 
