@@ -17,7 +17,7 @@ lm.mi <- function (formula, mi.object, ... )
       coef[[j]]<-lapply( result, summary )[[j]]$coef[,1]
       se[[j]]  <-lapply( result, summary )[[j]]$coef[,2]
     }
-    pooled <- mi.pooled(coef, se, m)
+    pooled <- mi.pooled(coef, se)
     mi.pooled.object <- new("mi.pooled",
                           call = call, 
                           mi.pooled = pooled,

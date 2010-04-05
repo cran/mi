@@ -26,7 +26,7 @@
 }
 
 \usage{
-mi.pooled(coef, se, m)
+mi.pooled(coef, se)
 lm.mi(formula, mi.object, ...)
 glm.mi(formula, mi.object, family = gaussian, ...)
 bayesglm.mi(formula, mi.object, family = gaussian, ...)
@@ -43,7 +43,7 @@ glmer.mi(formula, mi.object, family = gaussian, rescale=FALSE, ...)
 \arguments{
   \item{coef}{list of coefficients}
   \item{se}{list of standard errors}
-  \item{m}{number of chains for the imputation}
+%  \item{m}{number of chains for the imputation}
   \item{formula}{See \code{\link[stats]{lm}}, 
     \code{\link[stats]{glm}}, \code{\link[MASS]{polr}}, 
     \code{\link[lme4]{lmer}}for detail.}
@@ -95,40 +95,40 @@ glmer.mi(formula, mi.object, family = gaussian, rescale=FALSE, ...)
   dat.xy <- mi:::.create.missing(dat.xy, pct.mis=10)  
 
   # imputation 
-  dat.mi <- mi(dat.xy, n.iter=6, preprocess=FALSE, add.noise=FALSE)
+  IMP <- mi(dat.xy, n.iter=6, preprocess=FALSE, add.noise=FALSE)
 
   # fit models
-  M1 <- lm.mi(y ~ x + z, dat.mi)
+  M1 <- lm.mi(y ~ x + z, IMP)
   display(M1)
   coef(M1)
   se.coef(M1)
 
-  M2 <- glm.mi(x ~ y , dat.mi, family = binomial(link="logit"))
+  M2 <- glm.mi(x ~ y , IMP, family = binomial(link="logit"))
   display(M2)
   coef(M2)
   se.coef(M2)
 
-  M3 <- bayesglm.mi(x ~ y , dat.mi, family = binomial(link="logit"))
+  M3 <- bayesglm.mi(x ~ y , IMP, family = binomial(link="logit"))
   display(M3)
   coef(M3)
   se.coef(M3)
 
-  M4 <- polr.mi(ordered(z) ~  y, dat.mi)
+  M4 <- polr.mi(ordered(z) ~  y, IMP)
   display(M4)
   coef(M4)
   se.coef(M4)
 
-  M5 <- bayespolr.mi(ordered(z) ~  y, dat.mi)
+  M5 <- bayespolr.mi(ordered(z) ~  y, IMP)
   display(M5)
   coef(M5)
   se.coef(M5)
 
-  M6 <- lmer.mi(y ~ x  + (1|group), dat.mi)
+  M6 <- lmer.mi(y ~ x  + (1|group), IMP)
   display(M6)
   coef(M6)
   se.coef(M6)
 
-  M7 <- glmer.mi(x ~ y  + (1|group), dat.mi, family = binomial(link="logit"))
+  M7 <- glmer.mi(x ~ y  + (1|group), IMP, family = binomial(link="logit"))
   display(M7)
   coef(M7)
   se.coef(M7)  

@@ -20,7 +20,7 @@ lmer.mi <- function(formula, mi.object, rescale=FALSE, ...){
     coef[[j]] <- lapply(result, fixef)[[j]]
     se[[j]] <- lapply(result, se.coef)[[j]]$fixef
   }
-  pooled <- mi.pooled(coef, se, m)
+  pooled <- mi.pooled(coef, se)
   mi.pooled.object <- new("mi.pooled",
                           call = call, 
                           mi.pooled = pooled,
@@ -52,7 +52,7 @@ glmer.mi <- function(formula, mi.object, family=gaussian, rescale=FALSE, ...){
     coef[[j]] <- lapply(result, fixef)[[j]]
     se[[j]] <- lapply(result, se.coef)[[j]]$fixef
   }
-  pooled <- mi.pooled(coef, se, m)
+  pooled <- mi.pooled(coef, se)
   mi.pooled.object <- new("mi.pooled",
                           call = call, 
                           mi.pooled = pooled,

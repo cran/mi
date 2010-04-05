@@ -16,7 +16,7 @@ polr.mi <- function (formula, mi.object, ... )
       se[[j]]  <- lapply(result, summary)[[j]]$coefficients[ ,2]
     }
     
-    pooled <- mi.pooled(coef, se, m)
+    pooled <- mi.pooled(coef, se)
     mi.pooled.object <- new("mi.pooled",
                           call = call, 
                           mi.pooled = pooled,

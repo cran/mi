@@ -1,4 +1,5 @@
-mi.pooled <- function(coef, se, m){
+mi.pooled <- function(coef, se){
+    m <- length(coef)
     ses <- do.call(rbind, se)
     coefs <- do.call(rbind, coef)
     W         <- colMeans(ses^2)

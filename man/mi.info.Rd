@@ -15,13 +15,13 @@
   After the information is extracted user has the option of changing the default.
 }
 \usage{
-  mi.info(data, threshhold  = 0.99999)
+  mi.info(data, threshold  = 0.99999)
   \S4method{print}{mi.info}(x, \dots)
   \S4method{show}{mi.info}(object)
 }
 \arguments{
   \item{data}{ dataframe or matrix of dataset with missing data coded as NAs. }
-  \item{threshhold}{ Threshhold value for correlation to be considered a problem.}
+  \item{threshold}{Threshold value for correlation to be considered a problem.}
   \item{x}{ An object of a class \code{mi.info}.}
   \item{object}{ An object of a class \code{mi.info}.}
   \item{\dots}{ Currently not used.}

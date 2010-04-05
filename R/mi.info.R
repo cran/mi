@@ -1,14 +1,14 @@
 # ==============================================================================
 # Creates information matrix
 # ==============================================================================
-mi.info <- function(data, threshhold = 0.99999){
+mi.info <- function(data, threshold = 0.99999){
   if(is.matrix(data)) { 
     data <- data.frame(data) 
   }
   info <- vector("list", dim(data)[2])
   names(info) <- dimnames(data)[[2]]
   #data.original.name <- deparse(substitute(data))
-  collinear <- mi.check.correlation(data, threshhold)
+  collinear <- mi.check.correlation(data, threshold)
 #  foo <- function(lst){
 #    lst[-1]
 #  }
@@ -429,12 +429,12 @@ mi.fix.params <- function( info, name ) {
 # check correlation
 # ========================================================================
 
-mi.check.correlation <- function (data, threshhold = 0.99999 ){
+mi.check.correlation <- function (data, threshold = 0.99999 ){
   options(warn = -1)
   data <- as.data.frame(apply(data, 2, as.numeric))
   cor.data <- cor(data, use = "pairwise.complete.obs")
   diag( cor.data ) <- 1
-  index  <- abs( cor.data - diag( dim( cor.data )[1] ) ) >= threshhold 
+  index  <- abs( cor.data - diag( dim( cor.data )[1] ) ) >= threshold 
   result <- vector( "list", dim( index )[1] )
   for( i in 1:dim(index)[1] ){
     if( length( names( which( index[i,]==1 ) ) ) > 0 ) {
@@ -458,12 +458,12 @@ mi.check.correlation <- function (data, threshhold = 0.99999 ){
 # return correlation list
 # ========================================================================
 
-mi.correlated.list <- function ( data, threshhold = 0.99999 ){
+mi.correlated.list <- function ( data, threshold = 0.99999 ){
   options(warn = -1)
   data <- as.data.frame(apply(data, 2, as.numeric))
   cor.data <- cor( data, use="pairwise.complete.obs" )
   diag(cor.data) <- 1
-  index <- abs( cor.data - diag(dim(cor.data)[1])) >= threshhold 
+  index <- abs( cor.data - diag(dim(cor.data)[1])) >= threshold 
   result <- vector("list",dim(index)[1])
   for( i in 1:dim(index)[1] ){
     if(length(names(which(index[i,]==1)))>0){

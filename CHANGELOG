@@ -1,3 +1,7 @@
+2010-4-5 Yu-Sung Su     <ys463@columbia.edu> 
+   * R/mp.plot: add a clustered option, mp.plot now is able to cluster data 
+        according to its missing pattern
+
 2010-4-3 Yu-Sung Su     <ys463@columbia.edu> 
    * DESCRIPTION (Version, Date): 0.08-08
    * R/mi.info: add missing.index slot

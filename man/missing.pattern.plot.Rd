@@ -7,7 +7,7 @@
   Function to plot a missing pattern plot.
 }
 \usage{
-missing.pattern.plot ( data, y.order = FALSE, x.order = FALSE, 
+missing.pattern.plot ( data, y.order = FALSE, x.order = FALSE, clustered = TRUE, 
                                     xlab = "Index", ylab = "Variable", 
                                     main = NULL, gray.scale = FALSE,
                                     obs.col = "blue", mis.col = "red", ... )
@@ -16,6 +16,7 @@ missing.pattern.plot ( data, y.order = FALSE, x.order = FALSE,
   \item{data}{ data.frame or matrix of data with missing data coded as "NA". }
   \item{y.order}{ if TRUE, orders the variable by number of missing value.  Default is FALSE.}
   \item{x.order}{ if TRUE, orders the data by number of missing value.  Default is FALSE. }
+  \item{clustered}{if TRUE, data are grouped together with similiar missingness patterns.}
   \item{xlab}{ a title for the x axis: see 'title'. }
   \item{ylab}{ a title for the y axis: see 'title'. }
   \item{main}{ an overall title for the plot: see 'title'. }

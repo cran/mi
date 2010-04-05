@@ -15,7 +15,7 @@ bayespolr.mi <- function (formula, mi.object, ... )
       coef[[j]]<- lapply(result, summary)[[j]]$coefficients[ ,1]
       se[[j]]  <- lapply(result, summary)[[j]]$coefficients[ ,2]
     }
-    pooled <- mi.pooled(coef, se, m)
+    pooled <- mi.pooled(coef, se)
     mi.pooled.object <- new("mi.pooled",
                           call = call, 
                           mi.pooled = pooled,

@@ -2,6 +2,7 @@
 # missing pattern plot
 # ==============================================================================
 mp.plot <- missing.pattern.plot <- function ( data, y.order = FALSE, x.order = FALSE, 
+                                    clustered = TRUE, 
                                     xlab = "Index", ylab = "Variable", 
                                     main = NULL, gray.scale = FALSE,
                                     obs.col = "blue", mis.col = "red", ... ) 
@@ -24,6 +25,11 @@ mp.plot <- missing.pattern.plot <- function ( data, y.order = FALSE, x.order = F
     x.at = NULL
     x.lab= FALSE
   }
+  missingIndex <- as.matrix(is.na(data))*1
+  if(clustered){
+    orderIndex <-  order.dendrogram(as.dendrogram(hclust(dist(missingIndex), method="mcquitty")))
+    missingIndex <- missingIndex[orderIndex,]
+  }
   col <- if( gray.scale ){ 
            gray(c(0, 1)) 
          } 
@@ -33,7 +39,7 @@ mp.plot <- missing.pattern.plot <- function ( data, y.order = FALSE, x.order = F
 #  par( mar = c( 4.5, 11, 3, 1 ) )
 #  par( mgp = c( 1, .3, 0 ) )
 #  par( cex.lab = 0.7 )
-  image(x = 1:nrow(data), y = 1:ncol(data), z = as.matrix(is.na(data)), 
+  image(x = 1:nrow(data), y = 1:ncol(data), z = missingIndex, 
         ylab = "", xlab = xlab, main = main, col = col ,yaxt = "n",
         tck = -0.05, xaxt="n", ...)
   box( "plot" )
