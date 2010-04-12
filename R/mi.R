@@ -234,7 +234,8 @@ setMethod("mi", signature(object = "data.frame"),
     if(all(as.bugs.array(coef.mcmc)$summary[,"Rhat"] < R.hat)){
       coef.converged.flg <- TRUE
     }
-    cat(if(converged.flg && coef.converged.flg){
+    cat(if(converged.flg & coef.converged.flg){
+        converged.flg <- TRUE
         "mi converged (" 
       } 
       else if(time.out.flg){
@@ -529,7 +530,8 @@ setMethod("mi", signature(object = "mi"),
       coef.converged.flg <- TRUE
     }
    # Print out reason for termination
-    cat(if(converged.flg && coef.converged.flg){
+    cat(if(converged.flg & coef.converged.flg){
+        converged.flg <- TRUE
         "mi converged (" 
       } 
       else if(time.out.flg ){
