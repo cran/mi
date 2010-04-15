@@ -48,8 +48,8 @@ mi.pmm <- function(formula, data = NULL, start = NULL, n.iter = 100, missing.ind
     n.iter <- 10
   }
   
-  bglm.imp  <- bayesglm( formula , start = start, n.iter = n.iter )
-  yhat <- predict( bglm.imp , newdata = data.frame( Y, X ) ) 
+  bglm.imp  <- bayesglm(formula, data = data, start = start, n.iter = n.iter )
+  yhat <- predict(bglm.imp , newdata = data.frame( Y, X ) ) 
   result <- new(c("mi.pmm", "mi.method"),
               model = vector("list", 0),
               expected = numeric(0), 
@@ -59,7 +59,7 @@ mi.pmm <- function(formula, data = NULL, start = NULL, n.iter = 100, missing.ind
   result@model$sigma <- sigma.hat( bglm.imp )
   result@expected <- yhat
   result@random   <- apply( as.array( yhat[missing.index] ), 1, 
-                              mi.pmm.match, yhat=yhat[!missing.index], Y=Y[!missing.index] ) 
+                              mi.pmm.match, yhat=yhat[-missing.index], Y=Y[-missing.index] ) 
   result@residuals <- bglm.imp$residuals
   return(result)
 }

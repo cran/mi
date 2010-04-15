@@ -213,7 +213,7 @@ setMethod("mi", signature(object = "data.frame"),
       conv.check <- as.bugs.array(aveVar[1:s, , ])$summary[,"Rhat"]
       if(all(conv.check < R.hat)) { 
         converged.flg <- TRUE
-        if(!run.past.convergence){ 
+        if(!run.past.convergence & !check.coef.convergence){ 
           break
         }
       }
@@ -508,7 +508,7 @@ setMethod("mi", signature(object = "mi"),
       conv.check <- as.bugs.array(aveVar[1:s, , ])$summary[,"Rhat"]
       if(all(conv.check < R.hat)) { 
         converged.flg <- TRUE
-        if(!run.past.convergence){ 
+        if(!run.past.convergence & !check.coef.convergence){ 
           break
         }
       }
