@@ -5,10 +5,10 @@
 % Function
 \alias{mi.pmm}
 \title{
-    Elementary function: Probability Mean Matching for imputation.
+    Elementary function: Predictive Mean Matching for imputation.
 }
 \description{
-    Imputes univariate missing data using bayesglm and probability mean matching.
+    Imputes univariate missing data using bayesglm and predictive mean matching.
 }
 \usage{
 mi.pmm(formula, data = NULL, start = NULL, n.iter = 100, missing.index = NULL, ...)

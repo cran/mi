@@ -51,8 +51,11 @@ mi.scatterplot <- function ( Yobs, Yimp, X = NULL, xlab = NULL, ylab = NULL,
   }
   btx <- c( j.X.obs, j.X.imp )
   bty <- c( j.Y.obs, j.Y.imp )
+  #pt.range <- range(btx, bty)
+  
   plot( range( btx ), range( bty ), frame.plot = TRUE, type = "n", 
           xlab = xlab, ylab = ylab, main = main, ... )
+  abline(a=0, b=1, lty=2)
   #observed 
   points( jitter( X.obs ), jitter( Y.obs ), col = obs.col, pch = obs.pch, 
             cex = obs.cex ) 

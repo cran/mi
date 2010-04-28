@@ -4,7 +4,7 @@ setMethod("display", signature(object = "mi.pooled"),
   cat( "Separate Estimates for each Imputation\n" )
   cat( "=======================================\n" )
   for( i in 1:length( object@mi.fit ) ){
-    cat( "\n** Imputation", i, "**\n" )
+    cat( "\n** Chain", i, "**\n" )
     display( object@mi.fit[[i]], digits=digits )
   }
   cat( "\n=======================================\n" )

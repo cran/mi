@@ -95,7 +95,7 @@ setMethod("mi", signature(object = "data.frame"),
     cat("Iteration", s,"\n" )
     # imputation loop
     for( i in 1:n.imp ){
-      cat(" Imputation", i,  ": " )
+      cat(" Chain", i,  ": " )
       # variable loop
       for(jj in 1:length(varNames)){
         CurrentVar <- varNames[jj]
@@ -425,7 +425,7 @@ setMethod("mi", signature(object = "mi"),
     cat( "Iteration", s,"\n" )
     # imputation loop
     for ( i in 1:n.imp ){
-      cat( " Imputation", i,  ": " )
+      cat( " Chain", i,  ": " )
       # variable loop
       for( jj in 1:length(varNames) ) {
         CurrentVar <- varNames[jj]

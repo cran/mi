@@ -1,3 +1,8 @@
+2010-5-5 Yu-Sung Su     <ys463@columbia.edu> 
+   * DESCRIPTION (Version, Date): 0.09-04
+   * R/plot: binned.plot, default color set to be blue.
+   * R/mi.scatterplot: add 45 degree line
+    
 2010-4-5 Yu-Sung Su     <ys463@columbia.edu> 
    * R/mp.plot: add a clustered option, mp.plot now is able to cluster data 
         according to its missing pattern

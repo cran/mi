@@ -56,7 +56,7 @@ mi.postprocess <- function(mi.data, info){
   n.col <- length(info)
   varnames <- info$name
   type <- info$type
-  idx <- grep(".ind", varnames)
+  idx <- grep(".ind", varnames, fixed=TRUE)
   if(n.chains==1){
     for (i in 1:n.col){
       typ <- type[i]
@@ -67,7 +67,7 @@ mi.postprocess <- function(mi.data, info){
         mi.data[,i] <- invlogit(mi.data[,i])
       }
       if(sum(grep(".ind", varnames[i]))){
-        nonnegative.name <- gsub(".ind", "", varnames[i])
+        nonnegative.name <- gsub(".ind", "", varnames[i], fixed=TRUE)
         mi.data[,nonnegative.name] <- mi.data[,nonnegative.name] * mi.data[,varnames[i]]
       }
     }
