@@ -78,6 +78,7 @@ setMethod("mi", signature(object = "data.frame"),
   
   aveVar <- .initializeConvCheckArray(data, info, n.iter, n.imp, 
     missingVar.idx, includeVar.idx, includeCatVar.idx, unorderedVar.idx, ncol.mis)
+  
   #dim.mcmc <- dim(aveVar)
   data <- data[ , includeVar.idx, drop = FALSE]
   
@@ -579,8 +580,13 @@ setMethod("mi", signature(object = "mi"),
   }
 
  
- 
-  aveVar <- aveVar[1:s,,]
+  if(s > 30){
+    n.thin = max(1, floor(s/30))
+    keep <- c(rep(FALSE, n.thin-1), TRUE)
+    aveVar <- aveVar[((1:s)[keep]),,]
+  } else{
+    aveVar <- aveVar[1:s,,]
+  }
 
   
   ans <- new("mi", 

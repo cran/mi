@@ -1,3 +1,7 @@
+2010-5-17 Yu-Sung Su     <ys463@columbia.edu> 
+   * DESCRIPTION (Version, Date): 0.09-05
+   * R/mi: now thin the mcmc object if the n.iter > 30
+
 2010-5-5 Yu-Sung Su     <ys463@columbia.edu> 
    * DESCRIPTION (Version, Date): 0.09-04
    * R/plot: binned.plot, default color set to be blue.
