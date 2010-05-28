@@ -2,7 +2,7 @@ lmer.mi <- function(formula, mi.object, rescale=FALSE, ...){
   call <- match.call()
   m <- m(mi.object)
   result <- vector("list", m)
-  names(result) <- as.character(paste("Imputation", seq(m), sep = ""))
+  names(result) <- as.character(paste("Chain", seq(m), sep = ""))
   mi.data <- mi.completed(mi.object)
   if(rescale){
     tmp <- vector("list", m)
@@ -34,7 +34,7 @@ glmer.mi <- function(formula, mi.object, family=gaussian, rescale=FALSE, ...){
   call <- match.call()
   m <- m(mi.object)
   result <- vector("list", m)
-  names(result) <- as.character(paste("Imputation", seq(m), sep = ""))
+  names(result) <- as.character(paste("Chain", seq(m), sep = ""))
   mi.data <- mi.completed(mi.object)
   if(rescale){
     tmp <- vector("list", m)

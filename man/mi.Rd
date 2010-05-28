@@ -15,6 +15,7 @@
 \alias{m}
 % methods
 \alias{mi,data.frame-method}
+\alias{mi,mi.preprocessed-method}
 \alias{mi,mi-method}
 \alias{is.mi,mi-method}
 \alias{bugs.mi,mi-method}
@@ -31,7 +32,7 @@
 \title{Multiple Iterative Regression Imputation}
 
 \description{
- Produce a multiply imputed matrix applying the elementary functions iteratively 
+ Generate a multiply imputed matrix applying the elementary functions iteratively 
  to the variables with missingness in the data randomly imputing each variable
  and looping through until approximate convergence.
 }
@@ -39,9 +40,16 @@
 \usage{
 \S4method{mi}{data.frame}(object, info,  n.imp = 3, n.iter = 30, 
     R.hat = 1.1, max.minutes = 20, rand.imp.method = "bootstrap", 
-    preprocess = TRUE, run.past.convergence = FALSE,
+    run.past.convergence = FALSE,
     seed = NA, check.coef.convergence = FALSE, 
     add.noise = noise.control())
+
+\S4method{mi}{mi.preprocessed}(object, n.imp = 3, n.iter = 30, 
+    R.hat = 1.1, max.minutes = 20, rand.imp.method = "bootstrap", 
+    run.past.convergence = FALSE,
+    seed = NA, check.coef.convergence = FALSE, 
+    add.noise = noise.control())
+
     
 \S4method{mi}{mi}(object, n.iter = 30, 
     R.hat = 1.1, max.minutes = 20, rand.imp.method = "bootstrap", 
@@ -57,12 +65,11 @@
   \item{R.hat}{The value of the \code{R.hat} statistic used as a convergence criterion. Default is 1.1.}
   \item{max.minutes}{The maximum minutes to operate the whole imputation process. Default is 20 minutes.}
   \item{rand.imp.method}{The methods for random imputation. Currently, \code{mi} implements only the \code{boostrap} method.}
-  \item{preprocess}{Default is \code{TRUE}.  \code{mi} will transform the variables that are of \code{nonnegative}, \code{positive-continuous}, and \code{proportion} types.}
+%  \item{preprocess}{Default is \code{TRUE}.  \code{mi} will transform the variables that are of \code{nonnegative}, \code{positive-continuous}, and \code{proportion} types.}
   \item{run.past.convergence}{Default is \code{FALSE}. If the value is set to be \code{TRUE},  \code{mi} will run until the values of either \code{n.iter} or \code{max.minutes} are reached even if the imputation is converged.}
   \item{seed}{The random number seed.}
   \item{check.coef.convergence}{Default is \code{FALSE}. If the value is set to be \code{TRUE}, \code{mi} will check the convergence of the coefficients of imputation models.}
   \item{add.noise}{A list of parameters for controlling the process of adding noise to \code{mi} via \code{\link{noise.control}}.}
-  %\item{post.run}{Default is \code{TRUE}. \code{mi} will run 20 more iterations after an imputation process is finished if and only if \code{add.noise} is not \code{FALSE}. This is to mitigate the influence of the noise to the whole imputation process.}
 }
 
 \value{ 
@@ -79,7 +86,6 @@ A list of object of class \code{mi}, which stands for \dQuote{multiple imputatio
   \item{coef.mcmc}{A mcmc list that stores lists of means of regression coefficients of the conditonal models.}
   \item{coef.converged}{Binary variable to indicate if the coefs of \code{mi} model have converged, return
     \code{NULL} if \code{check.coef.convergence = FALSE}}
-%  \item{bugs}{BUGS array of the mean and sd of each iteration.}
   \item{preprocess}{Binary variable to indicate if \code{preprocess=TRUE} in the \code{mi} process}
   \item{mi.info.preprocessed}{Information matrix that actually used in the \code{mi} if \code{preprocess=TRUE}.}
   
@@ -162,9 +168,13 @@ inf <- mi.info(dat)
 # update the variable type of a specific variable to mi.info
 inf <- update(inf, "type", list(x10="count"))
 
-# run the imputation
-## this is for test only
-IMP <- mi(dat, info=inf, n.iter=6, check.coef.convergence=TRUE, 
+# run the imputation without data transformation
+IMP <- mi(dat, info=inf, check.coef.convergence=TRUE, 
+  add.noise=noise.control(post.run.iter=10))
+
+# run the imputation with data transformation  
+dat.transformed <- mi.preprocess(dat, inf)
+IMP <- mi(dat.transformed, n.iter=6, check.coef.convergence=TRUE, 
   add.noise=noise.control(post.run.iter=10))
 
 # no noise
@@ -180,7 +190,7 @@ IMP <- mi(dat, info=inf, n.iter=6, check.coef.convergence=TRUE,
 converged(IMP, check = "data")  ## You should get FALSE here because only n.iter is small 
 converged(IMP, check = "coefs")
 IMP.bugs1 <- bugs.mi(IMP, check = "data")    ## BUGS object to look at the R hat statistics
-IMP.bugs2 <- bugs.mi(IMP, check = "coefs")    ## BUGS object to look at the R hat statistics
+IMP.bugs2 <- bugs.mi(IMP, check = "coefs")   ## BUGS object to look at the R hat statistics
 plot(IMP.bugs1)  ## visually check R.hat
 
 # visually check the imputation

@@ -44,7 +44,7 @@ noise.control <- function(method=c("reshuffling", "fading"), pct.aug=10, K = 1, 
 
 
 .initializeConvCheckArray <- function(data, info, n.iter, n.imp, 
-  missingVar.idx, includeVar.idx, includeCatVar.idx, unorderedVar.idx, ncol.mis)
+  missingVar.idx, includeVar.idx, includeCatVar.idx, unorderedCatVar.idx, ncol.mis)
 {
 
   if(all(includeCatVar.idx==0)){
@@ -104,7 +104,7 @@ noise.control <- function(method=c("reshuffling", "fading"), pct.aug=10, K = 1, 
   for (jjj in 1:ncol.mis){
     coef.val[[jjj]] <- vector("list", n.imp)
   }
-  names(mi.object)<- paste( "Imputation", 1:n.imp, sep="" )
+  names(mi.object)<- paste( "Chain", 1:n.imp, sep="" )
   miList <- list(mi.data=mi.data, start.val=start.val, mi.object=mi.object, coef.val=coef.val)
   return(miList)
 }

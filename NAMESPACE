@@ -36,7 +36,8 @@ exportClasses(
   mi.count,
   mi.info,
   mi.pmm,
-  mi.pooled
+  mi.pooled,
+  mi.preprocessed
 )
 
 exportMethods(

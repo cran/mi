@@ -95,7 +95,7 @@ glmer.mi(formula, mi.object, family = gaussian, rescale=FALSE, ...)
   dat.xy <- mi:::.create.missing(dat.xy, pct.mis=10)  
 
   # imputation 
-  IMP <- mi(dat.xy, n.iter=6, preprocess=FALSE, add.noise=FALSE)
+  IMP <- mi(dat.xy, n.iter=6, add.noise=FALSE)
 
   # fit models
   M1 <- lm.mi(y ~ x + z, IMP)

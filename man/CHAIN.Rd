@@ -40,7 +40,7 @@
       (indicator of how much damage HIV has caused to the immune system) at round 6th.
     }
     \item{\code{haartadhere.W1}}{
-      a three level ordered variable:
+      a three-level ordered variable:
         0=Not currently taking HAART (highly Active antiretroviral therapy),
         1=taking HAART nonadherent,
         2=taking HAART adheremt at round 6th.

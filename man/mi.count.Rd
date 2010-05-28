@@ -17,7 +17,7 @@
 }
 \usage{
 mi.count(formula, data = NULL, start = NULL, n.iter = 100, 
-  draw.from.beta = TRUE, missing.index = NULL, \dots)
+  draw.from.beta = FALSE, missing.index = NULL, \dots)
 \S4method{resid}{mi.count}(object, y)
 \S4method{residuals}{mi.count}(object, y)
 %\S4method{plot}{mi.count,ANY}( x, y, main=deparse( substitute( y ) ), gray.scale = FALSE, \dots)

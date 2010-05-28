@@ -19,8 +19,8 @@ setClass("mi",
                 converged = "logical",
                 coef.mcmc      = "ANY",
                 coef.converged = "logical",
-                preprocess = "logical",
-                mi.info.preprocessed = "ANY",
+                #preprocess = "logical",
+                #mi.info.preprocessed = "ANY",
                 add.noise = "logical"),
             contains  = "list"
 )
@@ -132,4 +132,12 @@ setClass("mi.pooled",
                 mi.pooled  = "list" ,
                 mi.fit     = "list"),
                 contains   = "list"
+)
+
+
+setClass("mi.preprocessed",
+            representation(
+                data      = "data.frame" ,
+                mi.info   = "mi.info"),
+            contains  = "list"
 )

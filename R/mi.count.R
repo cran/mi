@@ -3,7 +3,7 @@
 # ==============================================================================
 
 mi.count <- function ( formula, data = NULL, start = NULL, 
-                            n.iter = 100, draw.from.beta = TRUE, 
+                            n.iter = 100, draw.from.beta = FALSE, 
                             missing.index = NULL, ...  ) {
   call <- match.call()
   mf   <- match.call(expand.dots = FALSE)
@@ -45,12 +45,13 @@ mi.count <- function ( formula, data = NULL, start = NULL,
 
   # main program
   if( !is.null( start ) ){ 
-    n.iter <- 10
-    start[is.na(start)] <- 0
+    n.iter <- 50
+    #start[is.na(start)] <- 0
+    start <- NULL
   }
   
   bglm.imp    <- bayesglm( formula = formula, data = data, family = quasipoisson, 
-                            n.iter = n.iter, start = start, 
+                            n.iter = n.iter, start = start,
                             drop.unused.levels = FALSE, Warning=FALSE,... )
   determ.pred <- predict(bglm.imp, newdata = data, type = "response" )
 

@@ -661,44 +661,57 @@ update.mi.info <- function(object, target, list, ...){
       nam <- 1:length(list)
     }
   }
-  for ( i in 1:length( list ) ) {
+  #======================================================================
+  # this fixes the include slot when "is.ID", and "all.missing" are changed
+  #======================================================================
+  for (i in 1:length(list)) {
     object[[nam[i]]][[target]] <- list[[nam[i]]]
     if(target=="type"){
       formal.args <- formals(as.character(type.models(object[[nam[i]]]$type)))
       object[[nam[i]]]$params <-  formal.args[!names( formal.args )%in%c("formula","data","start","...")]  
     }
+    
     # is.ID
     if(target=="is.ID"){
       if(object[[nam[i]]][["include"]]){
-        list[[i]] <- ifelse(list[[i]], FALSE, TRUE)
+        list[[nam[i]]] <- ifelse(list[[nam[i]]], FALSE, TRUE)
         object[[nam[i]]][["include"]] <- list[[nam[i]]]
       }
     }
+    
     # all.missing
     if(target=="all.missing"){
       if(object[[nam[i]]][["include"]]){
-        list[[i]] <- ifelse(list[[i]], FALSE, TRUE)
+        list[[nam[i]]] <- ifelse(list[[nam[i]]], FALSE, TRUE)
         object[[nam[i]]][["include"]] <- list[[nam[i]]]
       }
     }
   }
+    
+  #======================================================================
+  # this fixes imp.order when "include", "is.ID", "all.missing" are changed
+  #======================================================================
+  # imp.order
   if(target %in% c("include", "is.ID", "all.missing")){
-    # imp.order
     ord <- 1
     for(i in 1:length(object)){
       if(object[[i]][["include"]] && object[[i]][["nmis"]]>0){
         object[[i]][["imp.order"]] <- ord
         ord <- ord + 1
-      }
-      else{
+      } else{
         object[[i]][["imp.order"]] <- NA
         ord <- ord
       }
     }
-    #object <- mi.info.formula.default(object)
   }
+  #======================================================================
+  # this fixes imp.formula
+  #======================================================================  
+  #object <- mi.info.formula.default(object)
   if(target=="imp.formula"){
-    object[[nam]][["imp.formula"]] <- list[[nam]]
+    for(i in 1:length(list)){
+      object[[nam[i]]][["imp.formula"]] <- list[[nam[i]]]
+    }
   }
   # fix the formula to get rid of the exclude variable
   excludeVar <- names(object)[!object$include] 
@@ -707,6 +720,9 @@ update.mi.info <- function(object, target, list, ...){
       object[[jj]]$imp.formula <- .gsubFormula(object[[jj]]$imp.formula, excludeVar[kk])
     }
   }
+
+
+ 
   class(object) <- "mi.info"
   return(object)
 }

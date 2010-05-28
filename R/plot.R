@@ -16,9 +16,9 @@ plot.mi <- function ( x, y, m = 1, vrb = NULL, vrb.name = "Variable Score",
   } 
   else{
     mids <- imp(x, m)
-    if(x@preprocess){
-      x@data <- mi.preprocess(x@data, info=x@mi.info)$data
-    }
+#    if(x@preprocess){
+#      x@data <- mi.preprocess(x@data, info=x@mi.info)$data
+#    }
     Y    <- as.data.frame(x@data[ , names(mids)])
     names(Y) <- names(mids)
     par(mfrow = mfrow)

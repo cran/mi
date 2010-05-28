@@ -3,7 +3,7 @@ bayespolr.mi <- function (formula, mi.object, ... )
     call   <- match.call( )
     m      <- m(mi.object)
     result <- vector( "list", m )
-    names( result ) <- as.character(paste( "Imputation", seq( m ), sep = "" ))
+    names( result ) <- as.character(paste( "Chain", seq( m ), sep = "" ))
     mi.data <- mi.completed(mi.object)
   
     for ( i in 1:m ) {

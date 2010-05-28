@@ -1,14 +1,15 @@
 #==============================================================================
-# mi main function
+# mi default function
 #==============================================================================
-setMethod("mi", signature(object = "data.frame"), 
-        function (object, info, n.imp = 3, n.iter = 30, R.hat = 1.1,
+
+mi.default <- function(data, info, n.imp = 3, n.iter = 30, R.hat = 1.1,
                   max.minutes = 20, rand.imp.method = "bootstrap", 
-                  preprocess = TRUE, run.past.convergence = FALSE,
+                  run.past.convergence = FALSE,
                   seed = NA, check.coef.convergence = FALSE, 
                   add.noise = noise.control())
-{ 
+{
   call <- match.call()
+  
   # set random seed
   if(!is.na(seed)){
     set.seed(seed) 
@@ -38,26 +39,9 @@ setMethod("mi", signature(object = "data.frame"),
   conv.check     <- NULL
   coef.mcmc <- NULL
   
-  
-
-  # duplicate data for further usage
-  org.data   <- object
-  data       <- object
-
-  if(missing(info)) {     
-    info <- mi.info(data)    # create mi.info
-  }
-
   # this makes sure categorical data is factorized
   data <- .update.data(data, info)        
 
-  # preprocess data and get new mi.info
-  if( preprocess ) {
-    data <- .preprocessMiInfo(data, info)
-    info <- data$info
-    info.org <- data$info.org
-    data <- data$data
-  }  
   # store level info in mi.info for unordered cat vars
   info <- .catVarLevelCheck(data, info)
   
@@ -77,7 +61,7 @@ setMethod("mi", signature(object = "data.frame"),
   # convergence array initialization
   
   aveVar <- .initializeConvCheckArray(data, info, n.iter, n.imp, 
-    missingVar.idx, includeVar.idx, includeCatVar.idx, unorderedVar.idx, ncol.mis)
+    missingVar.idx, includeVar.idx, includeCatVar.idx, unorderedCatVar.idx, ncol.mis)
   
   #dim.mcmc <- dim(aveVar)
   data <- data[ , includeVar.idx, drop = FALSE]
@@ -89,19 +73,24 @@ setMethod("mi", signature(object = "data.frame"),
   mi.object <- mi.data$mi.object
   coef.val <- mi.data$coef.val
   mi.data <- mi.data$mi.data
+  
 
   cat("Beginning Multiple Imputation (", date(), "):\n")
-  # iteration loop
+  #===============================================================
+  # begin of iteration loop
   for(s in s_start:s_end){
     cat("Iteration", s,"\n" )
-    # imputation loop
+    #===============================================================
+    # begin of imputation loop
     for( i in 1:n.imp ){
       cat(" Chain", i,  ": " )
-      # variable loop
+      #===============================================================
+      # begin of variable loop
+      #===============================================================
       for(jj in 1:length(varNames)){
-        CurrentVar <- varNames[jj]
-        
-        ##### add noises
+        CurrentVar <- varNames[jj]        
+        #===============================================================
+        # begin of add noises
         if(add.noise.method=="reshuffling"){
           prob.add.noise <- add.noise$K/s
           prob.add.noise <- ifelse(prob.add.noise > 1, 1, prob.add.noise)
@@ -119,15 +108,12 @@ setMethod("mi", signature(object = "data.frame"),
         else{
           cat(CurrentVar, "  ")
         }
-        
+
         CurVarFlg <- (names(data) == CurrentVar)
-        #dat <- data.frame(data[,CurVarFlg, drop=FALSE], mi.data[[i]][,!CurVarFlg])
-        #names(dat) <- c(CurrentVar, names(data[,!CurVarFlg, drop=FALSE] ))
         dat <- mi.data[[i]]
         missing.index <- info[[CurrentVar]]$missing.index
-        ####Deside which model to use #################################
+        #   Deside which model to use
         model.type <- as.character(type.models( info[[CurrentVar]]$type))
-        ###############################################################
 
         if(add.noise.method=="reshuffling"){
           if(q){
@@ -138,14 +124,17 @@ setMethod("mi", signature(object = "data.frame"),
           n.aug <- trunc(nrow(dat)*(add.noise$pct.aug/100))
           dat <- rbind(dat, .randdraw(data, n=n.aug))
         }  
-              
+        #=end of add noise=====================================================
+
+        #===============================================================        
         # Error Handling
         .Internal(seterrmessage(""))
         errormessage <- paste("\nError while imputing variable:", CurrentVar, ", model:",model.type,"\n")
         on.exit(cat(errormessage,geterrmessage()))
         on.exit(options(show.error.messages = TRUE),add = TRUE)
         options(show.error.messages = FALSE)
-        # Error Handling
+        #===============================================================
+        
         mi.object[[i]][[CurrentVar]] <- with(data = dat, 
                                           do.call(model.type,
                                             args = c(list(formula = info[[CurrentVar]]$imp.formula, 
@@ -159,17 +148,17 @@ setMethod("mi", signature(object = "data.frame"),
                                             ),
                                           info[[CurrentVar]]$params$n.iter)
                                           ))
+        #===============================================================
         # Error Handling
         on.exit(options(show.error.messages = TRUE))
+        #===============================================================
 
-        # Error Handling        
         if(add.noise.method=="reshuffling"){        
           if(q){
             mi.object[[i]][[CurrentVar]]@random <- dat[missing.index,CurrentVar]
           }
         }
         mi.data[[i]][missing.index, CurrentVar] <- mi.object[[i]][[CurrentVar]]@random
-        data.tmp <<- mi.data
 
         if(info[[CurrentVar]]$type=="unordered-categorical"){
           n.level <- length(info[[CurrentVar]]$level)
@@ -195,7 +184,9 @@ setMethod("mi", signature(object = "data.frame"),
         else{
           start.val[[i]][[jj]] <- 0
         }
-      } ## variable loop 
+      } 
+      #= end of variable loop ===============================================================
+
 
       cat("\n" )
       avevar.mean <- NULL
@@ -206,7 +197,8 @@ setMethod("mi", signature(object = "data.frame"),
       }
 
       aveVar[s,i,] <- c(avevar.mean, avevar.sd)
-    } # imputation loop
+    } 
+    #= end of imputation loop ===============================================================
        
     # Check for convergence
     Time.Elapsed <- proc.time() - ProcStart
@@ -273,25 +265,17 @@ setMethod("mi", signature(object = "data.frame"),
     if( !is.na(info[[cor.idx]]$collinear) 
          && info[[cor.idx]]$nmis > 0 
           && info[[cor.idx]]$include==FALSE ) {
-      rho <- coef(lm(org.data[[names(info)[cor.idx]]] ~ org.data[[info[[cor.idx]]$determ.pred]]))[2]
+      rho <- coef(lm(data[[names(info)[cor.idx]]] ~ data[[info[[cor.idx]]$determ.pred]]))[2]
       for ( ii in 1:n.imp ){
         mi.object[[ii]][[names(info)[[cor.idx]]]] <- do.call( mi.copy, 
                                                               args=list(
-                                                                Y=org.data[[names(info)[cor.idx]]],
+                                                                Y=data[[names(info)[cor.idx]]],
                                                                 X=(mi.data[[ii]][info[[cor.idx]]$collinear])*rho))
       }
     }
   }
   
-
- 
-  aveVar <- aveVar[1:s,,]
-  
-  if(!preprocess){
-    info.org <- info
-    info <- NULL
-  }
-  
+  aveVar <- aveVar[1:s,,]  
   
   if(!is.logical(add.noise)){
     add.noise.flg <- TRUE
@@ -299,34 +283,96 @@ setMethod("mi", signature(object = "data.frame"),
   else{
     add.noise.flg <- FALSE
   }
-  ans <- new("mi", 
+  object <- new("mi", 
             call      = call,
-            data      = org.data,
+            data      = data,
             m         = n.imp,
-            mi.info   = info.org,
+            mi.info   = info,
             imp       = mi.object,
             mcmc = aveVar,
             converged = converged.flg,
             coef.mcmc = coef.mcmc,
             coef.converged = coef.converged.flg,
-            preprocess = preprocess,
-            mi.info.preprocessed = info,
             add.noise = add.noise.flg)
-            
-  with(globalenv(), rm(data.tmp))
+  return(object)
+}
+
+# ======================================================================
+# mi for the data.frame method
+# ======================================================================
+
+
+setMethod("mi", signature(object = "data.frame"), 
+        function (object, info, n.imp = 3, n.iter = 30, R.hat = 1.1,
+                  max.minutes = 20, rand.imp.method = "bootstrap", 
+                  run.past.convergence = FALSE,
+                  seed = NA, check.coef.convergence = FALSE, 
+                  add.noise = noise.control())
+{ 
+
+  if(missing(info)){
+    info <- mi.info(object)
+  }
   
+  object <- mi.default(object, info, n.imp, n.iter, R.hat,
+            max.minutes, rand.imp.method, run.past.convergence,
+            seed, check.coef.convergence, add.noise)
+
+  add.noise.flg <- object@add.noise
+
   if(add.noise.flg){
     if(add.noise$post.run.iter > 0){
       cat("Run", add.noise$post.run.iter, "more iterations to mitigate the influence of the noise...\n")
-      ans <- mi(ans, run.past.convergence = TRUE, n.iter = add.noise$post.run.iter, R.hat = R.hat)
+      object <- mi(object, run.past.convergence = TRUE, n.iter = add.noise$post.run.iter, R.hat = R.hat)
     }
     else{
       warning("Run additional iterations is suggested to mitigate the influence of the noise\n")
     }
   }
-  return(ans)
+  return(object)
 }
 )
+
+# ======================================================================
+# mi for the mi.preprocessed method
+# ======================================================================
+
+
+
+setMethod("mi", signature(object = "mi.preprocessed"), 
+        function (object, n.imp = 3, n.iter = 30, R.hat = 1.1,
+                  max.minutes = 20, rand.imp.method = "bootstrap", 
+                  run.past.convergence = FALSE,
+                  seed = NA, check.coef.convergence = FALSE, 
+                  add.noise = noise.control())
+{ 
+
+  info <- object@mi.info
+  object <- object@data
+  
+  object <- mi.default(object, info, n.imp, n.iter, R.hat,
+            max.minutes, rand.imp.method, run.past.convergence,
+            seed, check.coef.convergence, add.noise)
+
+  add.noise.flg <- object@add.noise
+  if(add.noise.flg){
+    if(add.noise$post.run.iter > 0){
+      cat("Run", add.noise$post.run.iter, "more iterations to mitigate the influence of the noise...\n")
+      object <- mi(object, run.past.convergence = TRUE, n.iter = add.noise$post.run.iter, R.hat = R.hat)
+    }
+    else{
+      warning("Run additional iterations is suggested to mitigate the influence of the noise\n")
+    }
+  }
+  return(object)
+}
+)
+
+
+# ======================================================================
+# mi for the mi method
+# ======================================================================
+
 
 setMethod("mi", signature(object = "mi"), 
         function (object, n.iter = 30, R.hat = 1.1,
@@ -360,13 +406,6 @@ setMethod("mi", signature(object = "mi"),
   # this makes sure categorical data is factorized
   data <- .update.data(data, info)
   
-  if(object@preprocess){
-    preprocess <- TRUE
-  }
-  else{
-    preprocess <- FALSE
-  }
-  
   
   if(is.null(object@coef.mcmc)){
     check.coef.convergence <- FALSE
@@ -374,13 +413,7 @@ setMethod("mi", signature(object = "mi"),
   else{
     check.coef.convergence <- TRUE
   }
-  
-  #  # Automatic Preprocess
-  if( preprocess ) {
-    data <- mi.preprocess(data, info)$data
-    info <- object@mi.info.preprocessed
-  }  
-  
+    
   #ncol.mis <- sum(.nmis(info)>0)
   n.imp     <- m(object)
   prev.iter <- dim(object@mcmc)[1]
@@ -402,7 +435,7 @@ setMethod("mi", signature(object = "mi"),
   }
 
   aveVar <- .initializeConvCheckArray(data, info, n.iter = n.iter + prev.iter, n.imp, 
-      missingVar.idx, includeVar.idx, includeCatVar.idx, unorderedVar.idx, ncol.mis)  
+      missingVar.idx, includeVar.idx, includeCatVar.idx, unorderedCatVar.idx, ncol.mis)  
   data <- data[ , includeVar.idx, drop = FALSE]
     
   if(prev.iter > 0){
@@ -432,8 +465,6 @@ setMethod("mi", signature(object = "mi"),
         CurrentVar <- varNames[jj]
         cat(CurrentVar, "  ")      
         CurVarFlg <- ( names ( data ) == CurrentVar )
-#        dat <- data.frame(data[,CurVarFlg, drop=FALSE], mi.data[[i]][,!CurVarFlg])
-#        names(dat) <- c(CurrentVar, names(data[,!CurVarFlg, drop=FALSE] ))
 
         #missing.index <- info$missing.index[[CurrentVar]]
         missing.index <- info[[CurrentVar]]$missing.index
@@ -465,7 +496,6 @@ setMethod("mi", signature(object = "mi"),
 
         # Error Handling        
         mi.data[[i]][missing.index, CurrentVar] <- mi.object[[i]][[CurrentVar]]@random
-        data.tmp <<- mi.data
         if(info[[CurrentVar]]$type=="unordered-categorical"){
           n.level <- length(info[[CurrentVar]]$level)
           if(!is.null(coef(mi.object[[i]][[CurrentVar]]))){
@@ -569,11 +599,11 @@ setMethod("mi", signature(object = "mi"),
     if( !is.na(info[[cor.idx]]$collinear) 
          && info[[cor.idx]]$nmis > 0 
           && !info[[cor.idx]]$include ) {
-      rho <- coef(lm(org.data[[names(info)[cor.idx]]] ~ org.data[[info[[cor.idx]]$determ.pred]]))[2]
+      rho <- coef(lm(data[[names(info)[cor.idx]]] ~ data[[info[[cor.idx]]$determ.pred]]))[2]
       for ( ii in 1:n.imp ){
         mi.object[[ii]][[names(info)[[cor.idx]]]] <- do.call( mi.copy, 
                                                               args=list(
-                                                                Y=org.data[[names(info)[cor.idx]]],
+                                                                Y=data[[names(info)[cor.idx]]],
                                                                 X=mi.data[[ii]][info[[cor.idx]]$determ.pred]))
       }
     }
@@ -589,7 +619,7 @@ setMethod("mi", signature(object = "mi"),
   }
 
   
-  ans <- new("mi", 
+  object <- new("mi", 
             call      = call,
             data      = data.mi(object),
             m         = n.imp,
@@ -599,24 +629,20 @@ setMethod("mi", signature(object = "mi"),
             converged = converged.flg,
             coef.mcmc = coef.mcmc,
             coef.converged = coef.converged.flg,
-            preprocess = preprocess,
-            mi.info.preprocessed = object@mi.info.preprocessed, 
             add.noise = FALSE)
-  with(globalenv(), rm(data.tmp))
-  return(ans)
+  return(object)
 }
 )
 
 
+
+
+
 ##The simple imputation function
-impute <- function ( a, a.impute ) { 
+impute <- function (a, a.impute) { 
   out <- ifelse (is.na(a), a.impute, a)
   return (out) 
 }
-
-    
-
-
 
 
 setMethod("is.mi", signature( object = "mi" ),
@@ -626,13 +652,13 @@ setMethod("is.mi", signature( object = "mi" ),
 )
 
 setMethod("call.mi", signature( object = "mi" ),
-  function ( object ) { 
-    return( object@call ) 
+  function (object) { 
+    return(object@call) 
   }
 )
 
 setMethod("data.mi", signature( object = "mi" ),
-  function ( object ) { 
+  function (object) { 
     return( object@data ) 
   }
 )
@@ -650,7 +676,7 @@ setMethod("converged", signature( object = "mi" ),
 )
 
 setMethod("m", signature( object = "mi" ),
-  function ( object ) {
+  function (object) { 
     return( object@m ) 
   }
 )

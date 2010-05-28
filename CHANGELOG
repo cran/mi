@@ -1,3 +1,17 @@
+2010-5-27 Yu-Sung Su     <ys463@columbia.edu> 
+   * DESCRIPTION (Version, Date): 0.09-06
+   * R/mi.binary: n.iter = 25 when start is supplied.
+   * R/mi.count: 
+        1. draw.from.beta = FALSE, to ensure comupational stability
+        2. start = NULL, to ensure comupational stability
+   * R/mi.preprocess: new coding.
+   * R/mi:
+        1. add mi.preprocessed method.
+        2. add mi.default
+        3. separate mi.preprocess out of mi.
+   * R/AllClass: add mi.preprocessed class.
+   
+   
 2010-5-17 Yu-Sung Su     <ys463@columbia.edu> 
    * DESCRIPTION (Version, Date): 0.09-05
    * R/mi: now thin the mcmc object if the n.iter > 30

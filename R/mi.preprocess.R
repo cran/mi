@@ -1,20 +1,42 @@
-#mi.check.correlation <- function (data, threshhold = 1){
-#  #cat("Checking for correlation")
-#  options(show.error.messages = FALSE)
-#  cor.data <- cor(data, use="pairwise.complete.obs")
-#  diag(cor.data) <- 1
-#  #index<-abs( cor.data*upper.tri(cor.data)) >= threshhold  
-#  index <- abs(cor.data - diag(dim(cor.data)[1])) >= threshhold 
-#  result <- vector("list", dim(index)[1])
-#  for(i in 1:dim(index)[1]){
-#    result[[i]] <- c(names(which(index[i,]==1)))
-#  }
-#  options(show.error.messages = TRUE)
-#  return(result)
-#}
+mi.preprocess <- function(data, info){
+
+  if(missing(info)){
+    info <- mi.info(data)
+  } else if (is.null(info)){
+    info <- mi.info(data)
+  } 
+  
+  proc.tmp <- .mi.transform(data, info)
+  data <- as.data.frame(proc.tmp$data)
+  type <- proc.tmp$type
+  #info.org <- info
+  info <- mi.info(data)
+  
+  for(i in 1:length(info)){
+    #info[[i]] <- info.org[[i]]    
+    #info[[i]]$name <- names(type)[i]
+    #info[[i]]$missing.index <- tmp[[i]]$missing.index
+    info[[i]]$type <- type[[i]]
+    #info[[i]]$imp.formula <- tmp[[i]]$imp.formula
+  }
+  info <- mi.info.formula.default(info)
+  #info$imp.formula[1:length(info.org)] <- info.org$imp.formula
+  
+  ans <- new("mi.preprocessed", 
+            data      = data,
+            mi.info   = info)
+  return(ans)
+}
+
+
+
+
+
+
+
 
 # preprocess: this is ugly..but working!..need to improve it
-mi.preprocess <- function(data, info){
+.mi.transform <- function(data, info){
   n.col <- ncol(data)
   n.row <- nrow(data)
   var.name <- info$name
@@ -24,24 +46,29 @@ mi.preprocess <- function(data, info){
     if(type[i] == "nonnegative" & incl[i]){
       tmp <- ifelse(data[,i] > 0, 1, ifelse(data[,i]==0, 0, NA))
       data <- cbind(data, tmp)
-      Ind.lab <- paste(var.name[i], "ind", sep=".")
+      Ind.lab <- paste(var.name[i], "mi.ind", sep=".")
       names(data)[ncol(data)] <- Ind.lab
       type[ncol(data)] <- "binary"
       names(type)[ncol(data)] <- Ind.lab
+      names(data)[i] <- paste(names(data)[i], "mi.log", sep=".")
       data[,i] <- log(ifelse(data[,i]>0, data[,i], NA))
       type[i] <- "log-continuous"
     }
     else if (type[i] == "positive-continuous" & incl[i]){
       data[,i] <- log(data[,i])
+      names(data)[i] <- paste(names(data)[i], "mi.log", sep=".")
       type[i] <- "log-continuous"
     }
     else if (type[i] == "proportion" & incl[i]){
       data[,i] <- logit(data[,i])
+      names(data)[i] <- paste(names(data)[i], "mi.logit", sep=".")
       type[i] <- "proportion"
     }
   }
+  names(type) <- names(data)
   return(list(data=data, type=type))
 }
+
 
 mi.postprocess <- function(mi.data, info){
   if(class(mi.data)=="list"){
@@ -56,18 +83,20 @@ mi.postprocess <- function(mi.data, info){
   n.col <- length(info)
   varnames <- info$name
   type <- info$type
-  idx <- grep(".ind", varnames, fixed=TRUE)
+  idx <- grep(".mi.ind", varnames, fixed=TRUE)
   if(n.chains==1){
     for (i in 1:n.col){
       typ <- type[i]
       if(typ == "log-continuous"){
         mi.data[,i] <- exp(mi.data[,i])
+        names(mi.data)[i] <- gsub(".mi.log.", "", names(mi.data)[i], fixed=TRUE)
       }
       if(typ == "proportion"){
         mi.data[,i] <- invlogit(mi.data[,i])
+        names(mi.data)[i] <- gsub(".mi.logit.", "", names(mi.data)[i], fixed=TRUE)
       }
       if(sum(grep(".ind", varnames[i]))){
-        nonnegative.name <- gsub(".ind", "", varnames[i], fixed=TRUE)
+        nonnegative.name <- paste(gsub(".mi.ind", "", varnames[i]), "mi.log", sep=".")
         mi.data[,nonnegative.name] <- mi.data[,nonnegative.name] * mi.data[,varnames[i]]
       }
     }
@@ -84,12 +113,14 @@ mi.postprocess <- function(mi.data, info){
         typ <- type[i]
         if(typ == "log-continuous"){
           mi.data[[s]][,i] <- exp(mi.data[[s]][,i])
+          names(mi.data[[s]])[i] <- gsub(".mi.log.", "", names(mi.data[[s]])[i], fixed=TRUE)
         }
         if(typ == "proportion"){
           mi.data[[s]][,i] <- invlogit(mi.data[[s]][,i])
+          names(mi.data[[s]])[i] <- gsub(".mi.logit.", "", names(mi.data[[s]])[i], fixed=TRUE)
         }
-        if(sum(grep(".ind", varnames[i]))){
-          nonnegative.name <- gsub(".ind", "", varnames[i])
+        if(sum(grep(".mi.ind", varnames[i]))){
+          nonnegative.name <- paste(gsub(".mi.ind", "", varnames[i]), "mi.log", sep=".")
           mi.data[[s]][,nonnegative.name] <- mi.data[[s]][,nonnegative.name] * mi.data[[s]][,varnames[i]]
         }
       }

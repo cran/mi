@@ -1,4 +1,6 @@
 \name{mi.preprocess}
+% Classes
+\alias{mi.preprocessed-class}
 \alias{mi.preprocess}
 \alias{mi.postprocess}
 
@@ -31,7 +33,8 @@ The imputed dataset is obtained from \code{\link{mi.completed}} function.
 }
 
 \value{ 
-  a data.frame or a list of dataframe.
+  \item{data}{a \code{data.frame} or a list of dataframe}
+  \item{mi.info}{a \code{mi.info} matrix}
 }
 
 \author{
