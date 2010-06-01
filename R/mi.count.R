@@ -46,15 +46,18 @@ mi.count <- function ( formula, data = NULL, start = NULL,
   # main program
   if( !is.null( start ) ){ 
     n.iter <- 50
-    #start[is.na(start)] <- 0
-    start <- NULL
+    start[is.na(start)] <- 0
+    #start <- NULL
   }
   
   bglm.imp    <- bayesglm( formula = formula, data = data, family = quasipoisson, 
                             n.iter = n.iter, start = start,
                             drop.unused.levels = FALSE, Warning=FALSE,... )
   determ.pred <- predict(bglm.imp, newdata = data, type = "response" )
-
+  
+  
+  dispersion <- summary(bglm.imp)$dispersion
+  
   if(n.mis>0){
     if(draw.from.beta){
     ####get right design matrix#
@@ -65,9 +68,9 @@ mi.count <- function ( formula, data = NULL, start = NULL,
     ############################
       sim.coef  <- sim(bglm.imp,1)$coef
       lambda <- exp(as.matrix(tcrossprod(mf, sim.coef)))
-      random.pred <- rpois(n.mis, lambda)
+      random.pred <- .rpois.od(n = n.mis, lambda = lambda, dispersion = dispersion)
     } else{
-      random.pred <- rpois(n.mis, determ.pred[missing.index])
+      random.pred <- rpois(n = n.mis, lambda = determ.pred[missing.index])#, dispersion = dispersion)
     }   
     names(random.pred) <- names(determ.pred[missing.index])
   } else{
@@ -91,4 +94,12 @@ mi.count <- function ( formula, data = NULL, start = NULL,
   return(result)
   on.exit(rm(Y))
   on.exit(rm(bglm.imp))
+}
+
+
+.rpois.od <- function(n, lambda, dispersion = 1) {
+    if (dispersion == 1)
+       rpois(n, lambda)
+    else
+       rnbinom(n, size=(lambda/(dispersion-1)), mu=lambda)
 }

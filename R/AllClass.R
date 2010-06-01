@@ -19,9 +19,8 @@ setClass("mi",
                 converged = "logical",
                 coef.mcmc      = "ANY",
                 coef.converged = "logical",
-                #preprocess = "logical",
-                #mi.info.preprocessed = "ANY",
-                add.noise = "logical"),
+                add.noise = "logical",
+                total.iters  = "numeric"),
             contains  = "list"
 )
 

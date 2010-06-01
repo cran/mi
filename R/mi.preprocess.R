@@ -89,14 +89,14 @@ mi.postprocess <- function(mi.data, info){
       typ <- type[i]
       if(typ == "log-continuous"){
         mi.data[,i] <- exp(mi.data[,i])
-        names(mi.data)[i] <- gsub(".mi.log.", "", names(mi.data)[i], fixed=TRUE)
+        names(mi.data)[i] <- gsub(".mi.log", "", names(mi.data)[i], fixed=TRUE)
       }
       if(typ == "proportion"){
         mi.data[,i] <- invlogit(mi.data[,i])
-        names(mi.data)[i] <- gsub(".mi.logit.", "", names(mi.data)[i], fixed=TRUE)
+        names(mi.data)[i] <- gsub(".mi.logit", "", names(mi.data)[i], fixed=TRUE)
       }
       if(sum(grep(".ind", varnames[i]))){
-        nonnegative.name <- paste(gsub(".mi.ind", "", varnames[i]), "mi.log", sep=".")
+        nonnegative.name <- gsub(".mi.ind", "", varnames[i])
         mi.data[,nonnegative.name] <- mi.data[,nonnegative.name] * mi.data[,varnames[i]]
       }
     }
@@ -113,14 +113,14 @@ mi.postprocess <- function(mi.data, info){
         typ <- type[i]
         if(typ == "log-continuous"){
           mi.data[[s]][,i] <- exp(mi.data[[s]][,i])
-          names(mi.data[[s]])[i] <- gsub(".mi.log.", "", names(mi.data[[s]])[i], fixed=TRUE)
+          names(mi.data[[s]])[i] <- gsub(".mi.log", "", names(mi.data[[s]])[i], fixed=TRUE)
         }
         if(typ == "proportion"){
           mi.data[[s]][,i] <- invlogit(mi.data[[s]][,i])
-          names(mi.data[[s]])[i] <- gsub(".mi.logit.", "", names(mi.data[[s]])[i], fixed=TRUE)
+          names(mi.data[[s]])[i] <- gsub(".mi.logit", "", names(mi.data[[s]])[i], fixed=TRUE)
         }
         if(sum(grep(".mi.ind", varnames[i]))){
-          nonnegative.name <- paste(gsub(".mi.ind", "", varnames[i]), "mi.log", sep=".")
+          nonnegative.name <- gsub(".mi.ind", "", varnames[i])
           mi.data[[s]][,nonnegative.name] <- mi.data[[s]][,nonnegative.name] * mi.data[[s]][,varnames[i]]
         }
       }

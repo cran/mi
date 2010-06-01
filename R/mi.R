@@ -275,14 +275,23 @@ mi.default <- function(data, info, n.imp = 3, n.iter = 30, R.hat = 1.1,
     }
   }
   
-  aveVar <- aveVar[1:s,,]  
+  aveVar <- aveVar[1:s,,]
+  total.iters <- s
   
   if(!is.logical(add.noise)){
     add.noise.flg <- TRUE
   }
   else{
     add.noise.flg <- FALSE
+    if(s > 30){
+      n.thin = max(1, floor(s/30))
+      keep <- c(rep(FALSE, n.thin-1), TRUE)
+      aveVar <- aveVar[((1:s)[keep]),,]
+    } else{
+    aveVar <- aveVar[1:s,,]
+    }
   }
+  
   object <- new("mi", 
             call      = call,
             data      = data,
@@ -293,7 +302,8 @@ mi.default <- function(data, info, n.imp = 3, n.iter = 30, R.hat = 1.1,
             converged = converged.flg,
             coef.mcmc = coef.mcmc,
             coef.converged = coef.converged.flg,
-            add.noise = add.noise.flg)
+            add.noise = add.noise.flg,
+            total.iters = total.iters)
   return(object)
 }
 
@@ -417,6 +427,7 @@ setMethod("mi", signature(object = "mi"),
   #ncol.mis <- sum(.nmis(info)>0)
   n.imp     <- m(object)
   prev.iter <- dim(object@mcmc)[1]
+  prevIterNoThin <- object@total.iters
   
   # creating misc info for further usage
   missingVar.idx <- .nmis(info) > 0
@@ -431,6 +442,7 @@ setMethod("mi", signature(object = "mi"),
   # convergence array initialization
   if(object@add.noise){
     prev.iter <- 0
+    prevIterNoThin <- 0
     object@coef.mcmc <- NULL
   }
 
@@ -456,7 +468,7 @@ setMethod("mi", signature(object = "mi"),
   cat( "Beginning Multiple Imputation (", date(), "):\n" )
   # iteration loop
   for ( s in s_start:s_end ) {
-    cat( "Iteration", s,"\n" )
+    cat( "Iteration", (s + prevIterNoThin),"\n" )
     # imputation loop
     for ( i in 1:n.imp ){
       cat( " Chain", i,  ": " )
@@ -595,8 +607,8 @@ setMethod("mi", signature(object = "mi"),
 
 
   # impute collinear variables
-  for( cor.idx in 1:length(info)) {
-    if( !is.na(info[[cor.idx]]$collinear) 
+  for(cor.idx in 1:length(info)) {
+    if(!is.na(info[[cor.idx]]$collinear) 
          && info[[cor.idx]]$nmis > 0 
           && !info[[cor.idx]]$include ) {
       rho <- coef(lm(data[[names(info)[cor.idx]]] ~ data[[info[[cor.idx]]$determ.pred]]))[2]
@@ -609,7 +621,9 @@ setMethod("mi", signature(object = "mi"),
     }
   }
 
- 
+  aveVar <- aveVar[1:s,,]
+  total.iters <- s + prevIterNoThin
+  
   if(s > 30){
     n.thin = max(1, floor(s/30))
     keep <- c(rep(FALSE, n.thin-1), TRUE)
@@ -629,7 +643,8 @@ setMethod("mi", signature(object = "mi"),
             converged = converged.flg,
             coef.mcmc = coef.mcmc,
             coef.converged = coef.converged.flg,
-            add.noise = FALSE)
+            add.noise = FALSE,
+            total.iters = total.iters)
   return(object)
 }
 )
@@ -683,6 +698,7 @@ setMethod("m", signature( object = "mi" ),
 
 setMethod("bugs.mi", signature( object = "mi" ),
   function (object, check = c("data", "coefs")){
+    check <- match.arg(check)
     if(check=="coefs"){
       out <- as.bugs.array(object@coef.mcmc)
     }
