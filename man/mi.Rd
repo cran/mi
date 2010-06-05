@@ -155,7 +155,7 @@ x6 <- trunc(runif(n, 1, 10))
 x7 <- rnorm(n)
 x8 <- factor(rep(seq(1,10),10)[sample(1:n, n)])
 x9 <- runif(n, 0.1, .99)
-x10 <- rpois(n, 10)
+x10 <- rpois(n, 4)
 y <- x1 + x2 + x7 + x9 + rnorm(n)
 fakedata <- cbind.data.frame(y, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10)
 

@@ -3,7 +3,7 @@
 # ==============================================================================
 
 mi.count <- function ( formula, data = NULL, start = NULL, 
-                            n.iter = 100, draw.from.beta = FALSE, 
+                            n.iter = 100, draw.from.beta = TRUE,
                             missing.index = NULL, ...  ) {
   call <- match.call()
   mf   <- match.call(expand.dots = FALSE)
@@ -45,7 +45,7 @@ mi.count <- function ( formula, data = NULL, start = NULL,
 
   # main program
   if( !is.null( start ) ){ 
-    n.iter <- 50
+    n.iter <- 25
     start[is.na(start)] <- 0
     #start <- NULL
   }
@@ -70,7 +70,7 @@ mi.count <- function ( formula, data = NULL, start = NULL,
       lambda <- exp(as.matrix(tcrossprod(mf, sim.coef)))
       random.pred <- .rpois.od(n = n.mis, lambda = lambda, dispersion = dispersion)
     } else{
-      random.pred <- rpois(n = n.mis, lambda = determ.pred[missing.index])#, dispersion = dispersion)
+      random.pred <- .rpois.od(n = n.mis, lambda = determ.pred[missing.index], dispersion = dispersion)
     }   
     names(random.pred) <- names(determ.pred[missing.index])
   } else{
@@ -98,8 +98,12 @@ mi.count <- function ( formula, data = NULL, start = NULL,
 
 
 .rpois.od <- function(n, lambda, dispersion = 1) {
-    if (dispersion == 1)
-       rpois(n, lambda)
-    else
-       rnbinom(n, size=(lambda/(dispersion-1)), mu=lambda)
+    if (dispersion <= 1){
+      ans <- rpois(n, lambda)
+    } else {
+      B <- 1/(dispersion-1)
+      A <- lambda * B
+      ans <- rnbinom(n, size= A , mu = lambda)
+    }
+    return(ans)
 }

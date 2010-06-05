@@ -1,29 +1,4 @@
-
-
-
-2009-4-5 Yu-Sung Su     <ys463@columbia.edu>  
-  * bayesglm for linear regression seems buggy.
-  * mi.polr seems to create NaN.
-  * fix coef convergence check # DONE
-
-2009-4-2 Yu-Sung Su     <ys463@columbia.edu>  
-  * add option qui for convergence check
-  * add color visualization for convergence check
-  * check convergence of unodered-categorical variable 
-    using binary decomposition # DONE
-
-2009-3-5 Yu-Sung Su     <ys463@columbia.edu>  
-  * add more examples that use all the type # DONE
-  * plot the orginal data, not the preprocessed one
-  * fix missing.pattern.plot, not pretty
-  
-  
-2009-3-3 Yu-Sung Su     <ys463@columbia.edu>  
-  * fix mi.polr                        ## Su: DONE
-
-2009-2-16 Yu-Sung Su     <ys463@columbia.edu>  
-  * fix display.lm.mi, display.glm.mi  ## Su: DONE
-
-2009-1-26 Yu-Sung Su     <ys463@columbia.edu>  
-  *R/mi.check: auto mi recoding, not yet functional
-  *R/plot: plot.categorical need to have right labels
+2010-6-5 Yu-Sung Su     <ys463@columbia.edu>  
+  * mi.pmm: allow more modeling choices other than lm.
+  * allow HLM modeling
+ 
