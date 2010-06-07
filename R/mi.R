@@ -10,6 +10,8 @@ mi.default <- function(data, info, n.imp = 3, n.iter = 30, R.hat = 1.1,
 {
   call <- match.call()
   
+  org.data <- data
+  
   # set random seed
   if(!is.na(seed)){
     set.seed(seed) 
@@ -29,7 +31,7 @@ mi.default <- function(data, info, n.imp = 3, n.iter = 30, R.hat = 1.1,
   else{
     add.noise.method <- add.noise$method
   }
-
+  
   # variable initialization
   time.out.flg  <- FALSE
   converged.flg <- FALSE
@@ -294,7 +296,7 @@ mi.default <- function(data, info, n.imp = 3, n.iter = 30, R.hat = 1.1,
   
   object <- new("mi", 
             call      = call,
-            data      = data,
+            data      = org.data,
             m         = n.imp,
             mi.info   = info,
             imp       = mi.object,
