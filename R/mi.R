@@ -335,7 +335,7 @@ setMethod("mi", signature(object = "data.frame"),
   if(add.noise.flg){
     if(add.noise$post.run.iter > 0){
       cat("Run", add.noise$post.run.iter, "more iterations to mitigate the influence of the noise...\n")
-      object <- mi(object, run.past.convergence = TRUE, n.iter = add.noise$post.run.iter, R.hat = R.hat)
+      object <- mi(object, run.past.convergence = TRUE, max.minutes = max.minutes, n.iter = add.noise$post.run.iter, R.hat = R.hat)
     }
     else{
       warning("Run additional iterations is suggested to mitigate the influence of the noise\n")
@@ -370,7 +370,7 @@ setMethod("mi", signature(object = "mi.preprocessed"),
   if(add.noise.flg){
     if(add.noise$post.run.iter > 0){
       cat("Run", add.noise$post.run.iter, "more iterations to mitigate the influence of the noise...\n")
-      object <- mi(object, run.past.convergence = TRUE, n.iter = add.noise$post.run.iter, R.hat = R.hat)
+      object <- mi(object, run.past.convergence = TRUE, max.minutes = max.minutes, n.iter = add.noise$post.run.iter, R.hat = R.hat)
     }
     else{
       warning("Run additional iterations is suggested to mitigate the influence of the noise\n")
