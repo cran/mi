@@ -1,5 +1,5 @@
 \name{plot.mi}
-\docType{genericFunction}
+%\docType{genericFunction}
 \alias{plot}
 \alias{plot.mi}
 \alias{plot,mi-method}

@@ -1,5 +1,5 @@
 \name{typecast}
-\docType{genericFunction}
+%\docType{genericFunction}
 \alias{typecast}
 \alias{typecast,ANY-method}
 \alias{typecast,matrix-method}

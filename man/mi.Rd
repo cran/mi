@@ -1,5 +1,5 @@
 \name{mi}
-\docType{genericFunction}
+%\docType{genericFunction}
 % Classes
 \alias{mi-class}
 % functions

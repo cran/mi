@@ -1,5 +1,5 @@
 \name{mi.hist}
-\docType{genericFunction}
+%\docType{genericFunction}
 \alias{mi.hist}
 \alias{mi.hist,ANY,ANY-method}
 \alias{mi.hist,mi.method,ANY-method}
