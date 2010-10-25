@@ -63,8 +63,8 @@ mi.continuous <- function (formula, data = NULL, start = NULL,
       mf <- Matrix(model.matrix(Terms, mf, contrasts.arg = bglm.imp$contrasts), sparse=TRUE)
     ############################
       sim.bglm.imp  <- sim(bglm.imp,1)
-      sim.coef <- sim.bglm.imp$coef
-      sim.sigma <- sim.bglm.imp$sigma
+      sim.coef <- sim.bglm.imp@coef
+      sim.sigma <- sim.bglm.imp@sigma
       random.pred <- rnorm(n.mis, as.matrix(tcrossprod(mf, sim.coef)), sim.sigma)
     } else{
       random.pred <- rnorm(n.mis, determ.pred[missing.index], sigma.hat(bglm.imp))

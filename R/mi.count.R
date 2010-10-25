@@ -66,7 +66,7 @@ mi.count <- function ( formula, data = NULL, start = NULL,
       mf <- model.frame(Terms, data=data[missing.index,,drop=FALSE],  xlev = bglm.imp$xlevels)
       mf <- Matrix(model.matrix(Terms, mf, contrasts.arg = bglm.imp$contrasts), sparse=TRUE)
     ############################
-      sim.coef  <- sim(bglm.imp,1)$coef
+      sim.coef  <- sim(bglm.imp,1)@coef
       lambda <- exp(as.matrix(tcrossprod(mf, sim.coef)))
       random.pred <- .rpois.od(n = n.mis, lambda = lambda, dispersion = dispersion)
     } else{

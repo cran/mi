@@ -72,7 +72,7 @@ mi.binary <- function( formula, data = NULL, start = NULL, n.iter = 100,
         mf <- model.frame(Terms, data=data[missing.index,,drop=FALSE],  xlev = bglm.imp$xlevels)
         mf <- Matrix(model.matrix(Terms, mf, contrasts.arg = bglm.imp$contrasts), sparse=TRUE)
       ############################
-        sim.coef  <- sim(bglm.imp,1)$coef
+        sim.coef  <- sim(bglm.imp,1)@coef
         prob.pred <- invlogit(as.matrix(tcrossprod(mf, sim.coef)))
         random.temp <- rbinom(n.mis, 1, prob.pred)
     }
