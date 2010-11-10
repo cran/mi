@@ -57,6 +57,7 @@ mi.pmm <- function(formula, data = NULL, start = NULL, n.iter = 100, missing.ind
   result@model$call <- bglm.imp$call
   result@model$coefficients <- bglm.imp$coefficients
   result@model$sigma <- sigma.hat( bglm.imp )
+  result@model$startY <- Y[missing.index]
   result@expected <- yhat
   result@random   <- apply( as.array( yhat[missing.index] ), 1, 
                               mi.pmm.match, yhat=yhat[-missing.index], Y=Y[-missing.index] ) 

@@ -1,3 +1,12 @@
+2010-11-10 Yu-Sung Su     <ys463@columbia.edu> 
+   * DESCRIPTION (Version, Date): 0.09-11.03
+   * R/plot: add points for imputed residuals.
+   * R/mi.continuous: add a slot @model$startY that saves last used Y.
+   * R/mi.binary: add a slot @model$startY that saves last used Y.
+   * R/mi.count: add a slot @model$startY that saves last used Y.
+
+
+
 2010-5-27 Yu-Sung Su     <ys463@columbia.edu> 
    * DESCRIPTION (Version, Date): 0.09-06
    * R/mi.binary: n.iter = 25 when start is supplied.

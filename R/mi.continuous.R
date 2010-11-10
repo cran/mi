@@ -86,6 +86,7 @@ mi.continuous <- function (formula, data = NULL, start = NULL,
   result@model$coefficients <- coef(bglm.imp)
   result@model$sigma       <- sigma.hat(bglm.imp)
   result@model$dispersion  <- bglm.imp$dispersion
+  result@model$startY <- Y[missing.index]
   result@expected <- determ.pred
   result@random   <- random.pred
   return(result)

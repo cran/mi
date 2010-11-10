@@ -102,6 +102,7 @@ mi.binary <- function( formula, data = NULL, start = NULL, n.iter = 100,
   result@model$call$n.iter <- n.iter
   result@model$coefficients <- coef(bglm.imp)
   result@model$sigma <- sigma.hat(bglm.imp)
+  result@model$startY <- Y[missing.index]
   result@expected <- determ.pred
   result@random <- random.pred
   return(result)

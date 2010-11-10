@@ -88,6 +88,7 @@ mi.count <- function ( formula, data = NULL, start = NULL,
   result@model$call$n.iter <- n.iter
   result@model$coefficients <- coef(bglm.imp)
   result@model$sigma       <- 1
+  result@model$startY <- Y[missing.index]
   result@model$overdispersed.parameter  <- bglm.imp$dispersion
   result@expected <- determ.pred
   result@random   <- random.pred

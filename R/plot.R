@@ -18,7 +18,7 @@ plot.mi <- function ( x, y, m = 1, vrb = NULL, vrb.name = "Variable Score",
     mids <- imp(x, m)
 #    if(x@preprocess){
 #      x@data <- mi.preprocess(x@data, info=x@mi.info)$data
-#    }
+#    }z
     Y    <- as.data.frame(x@data[ , names(mids)])
     names(Y) <- names(mids)
     par(mfrow = mfrow)
@@ -46,10 +46,18 @@ setMethod( "plot", signature( x = "mi.method", y ="ANY"),
     sigma <- sigma.hat( x )
     vrb.obs <- y
     vrb.imp <- imputed( x, y )
+    fit.imp <- x@model$startY
+    res.imp <- fit.imp - fit[is.na(y)]
     mi.hist(x, vrb.obs, xlab=main, main = main, gray.scale = gray.scale )
-    residual.plot( fit, res, sigma, main = main, gray.scale = gray.scale )
+    
+    residual.plot( fit, res, sigma, main = main, gray.scale = gray.scale)
+    points(fit.imp, res.imp, col = ifelse(gray.scale, "black", "red"), pch=19, cex=0.5)
+    
     binnedplot ( fit[ !is.na( y )], res[ !is.na( y )], col.pts = ifelse(gray.scale, "black", "blue"), 
               nclass = sqrt( length( fit[  !is.na( y )] ) ), main = main )
+    aa <- data.frame(binned.resids (fit.imp, res.imp, nclass=sqrt(length(fit[!is.na(y)])))$binned)
+    points (aa$xbar, aa$ybar, pch=19, cex=0.8, col=ifelse(gray.scale, "black", "red"))
+    
     mi.scatterplot( vrb.obs, vrb.imp, fit, xlab = "predicted", ylab = main, 
                       main = main, gray.scale = gray.scale )
     #plot( 0, 0, type = "n", xaxt = "n", yaxt = "n", xlab = "", ylab = "", frame.plot = FALSE )
@@ -71,7 +79,7 @@ function ( x, y, main=deparse( substitute( y ) ), gray.scale = FALSE, ...) {
   mi.hist(  x, y, xlab = main, main = main, gray.scale = gray.scale ) 
 #  binnedplot( fit[  !is.na( y ) ], res[  !is.na( y ) ], nclass = sqrt( length( fit[ !is.na( y ) ] ) ), main = main )
 #  mtext( "Binned Residual", 3, cex = 0.7, adj = NA ) 
-  mi.scatterplot( vrb.obs, vrb.imp, fit, xlab = "predicted", ylab = main, main = main, gray.scale = gray.scale )
+  mi.scatterplot( vrb.obs, vrb.imp, fit, xlab = "expected", ylab = main, main = main, gray.scale = gray.scale )
   plot( 0, 0, type = "n", xaxt = "n", yaxt = "n", xlab = "", ylab = "", frame.plot = FALSE )
   plot( 0, 0, type = "n", xaxt = "n", yaxt = "n", xlab = "", ylab = "", frame.plot = FALSE )
 } 
@@ -92,7 +100,7 @@ function ( x, y, main=deparse( substitute( y ) ), gray.scale = FALSE, ...) {
   mi.hist(  x, y, type = vrb.typ, xlab = main, main = main, gray.scale = gray.scale )
 #  binnedplot( fit[ !is.na(y) ], res[!is.na(y)], nclass = sqrt( length( fit[ !is.na(y)] ) ), main = main)
 #  mtext( "Binned Residual", 3, cex = 0.7, adj = NA ) 
-  mi.scatterplot( Yobs=vrb.obs, vrb.imp, fit, xlab = "predicted", ylab = main, main = main, gray.scale = gray.scale )
+  mi.scatterplot( Yobs=vrb.obs, vrb.imp, fit, xlab = "expected", ylab = main, main = main, gray.scale = gray.scale )
   plot( 0, 0, type = "n", xaxt = "n", yaxt = "n", xlab = "", ylab = "", frame.plot = FALSE )
   plot( 0, 0, type = "n", xaxt = "n", yaxt = "n", xlab = "", ylab = "", frame.plot = FALSE )
 } 
@@ -110,10 +118,17 @@ function ( x, y, main=deparse( substitute( y ) ), gray.scale = FALSE, ...) {
    res     <- residuals( x, y )
    sigma   <- sigma.hat( x )
    vrb.obs <- y
-   vrb.imp <- imputed( x, y )
+   vrb.imp <- imputed( x, y ) 
+   fit.imp <- fit[is.na(y)]
+   res.imp <- x@model$startY - fit[is.na(y)]
+
    mi.hist ( x, Yobs=vrb.obs, xlab = main, main = main, gray.scale = gray.scale )
+
    binnedplot ( fit[ !is.na( y )], res[ !is.na( y )], col.pts = ifelse(gray.scale, "black", "blue"), 
     nclass = sqrt( length( fit[  !is.na( y )] ) ), main = main )
+   aa <- data.frame(binned.resids (fit.imp, res.imp, nclass=sqrt(length(fit[!is.na(y)])))$binned)
+   points (aa$xbar, aa$ybar, pch=19, cex=0.8, col=ifelse(gray.scale, "black", "red"))
+   
    mtext( "Binned Residual", 3, cex = 0.7, adj = NA )
    mi.scatterplot( Yobs=vrb.obs, vrb.imp, fit, xlab = "Predicted", ylab = main, main = main, gray.scale = gray.scale )
    plot( 0, 0, type = "n", xaxt = "n", yaxt = "n", xlab = "", ylab = "", frame.plot = FALSE )
