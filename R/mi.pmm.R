@@ -22,7 +22,7 @@ mi.pmm <- function(formula, data = NULL, start = NULL, n.iter = 100, missing.ind
     }
   }
 
-  X <- mf[,-1,drop=FALSE]
+#  X <- mf[,-1,drop=FALSE]
 #  namesD <- if(is.null(data)) {
 #              NULL 
 #            } 
@@ -49,7 +49,7 @@ mi.pmm <- function(formula, data = NULL, start = NULL, n.iter = 100, missing.ind
   }
   
   bglm.imp  <- bayesglm(formula, data = data, start = start, n.iter = n.iter )
-  yhat <- predict(bglm.imp , newdata = data.frame( Y, X ) ) 
+  yhat <- predict(bglm.imp)#, newdata = data.frame( Y, X ) ) 
   result <- new(c("mi.pmm", "mi.method"),
               model = vector("list", 0),
               expected = numeric(0), 
