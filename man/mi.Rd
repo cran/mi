@@ -125,7 +125,7 @@ and looping through until approximate convergence.
 
 \author{
   Masanao Yajima \email{yajima@stat.columbia.edu},
-  Yu-Sung Su \email{ys463@columbia.edu},
+  Yu-Sung Su \email{suyusung@tsinghua.edu.cn},
   M. Grazia Pittau \email{grazia@stat.columbia.edu},
   Andrew Gelman \email{gelman@stat.columbia.edu}
 }
