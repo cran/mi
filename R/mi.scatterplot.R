@@ -61,11 +61,11 @@ mi.scatterplot <- function ( Yobs, Yimp, X = NULL, xlab = NULL, ylab = NULL,
             cex = obs.cex ) 
   lines( lowess( X.obs, Y.obs ), col = obs.col, lwd = obs.lwd, lty = obs.lty )
   #imputed
-  if (length(  X.imp )  >   0  ) {
-    points( jitter( X.imp ), jitter( Y.imp ), col = imp.col, pch = imp.pch, 
-              cex = imp.cex )        
-    lines( lowess( X.imp, Y.imp ), col = imp.col, lwd = imp.lwd, lty = imp.lty )
-  }
+#  if (length(  X.imp )  >   0  ) {
+#    points( jitter( X.imp ), jitter( Y.imp ), col = imp.col, pch = imp.pch, 
+#              cex = imp.cex )        
+#    lines( lowess( X.imp, Y.imp ), col = imp.col, lwd = imp.lwd, lty = imp.lty )
+#  }
 }
 #)
 

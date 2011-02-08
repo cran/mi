@@ -50,7 +50,7 @@ setMethod( "plot", signature( x = "mi.method", y ="ANY"),
     res.imp <- fit.imp - fit[is.na(y)]
     mi.hist(x, vrb.obs, xlab=main, main = main, gray.scale = gray.scale )
     
-    residual.plot( fit, res, sigma, main = main, gray.scale = gray.scale)
+    #residual.plot( fit, res, sigma, main = main, gray.scale = gray.scale)
     points(fit.imp, res.imp, col = ifelse(gray.scale, "black", "red"), pch=19, cex=0.5)
     
     binnedplot ( fit[ !is.na( y )], res[ !is.na( y )], col.pts = ifelse(gray.scale, "black", "blue"), 
