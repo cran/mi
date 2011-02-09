@@ -9,7 +9,7 @@ setMethod( "plot", signature( x = "mi", y="ANY" ),
 )
 
 plot.mi <- function ( x, y, m = 1, vrb = NULL, vrb.name = "Variable Score",
-                        gray.scale = FALSE, mfrow=c(1, 4), ... ) 
+                        gray.scale = FALSE, mfrow=c(1, 3), ... ) 
 {
   if (m(x) < m) { 
     stop(message = paste("Index of imputation 'm' must be within the range of 1 to", m(x))) 
@@ -51,7 +51,7 @@ setMethod( "plot", signature( x = "mi.method", y ="ANY"),
     mi.hist(x, vrb.obs, xlab=main, main = main, gray.scale = gray.scale )
     
     #residual.plot( fit, res, sigma, main = main, gray.scale = gray.scale)
-    points(fit.imp, res.imp, col = ifelse(gray.scale, "black", "red"), pch=19, cex=0.5)
+    #points(fit.imp, res.imp, col = ifelse(gray.scale, "black", "red"), pch=19, cex=0.5)
     
     binnedplot ( fit[ !is.na( y )], res[ !is.na( y )], col.pts = ifelse(gray.scale, "black", "blue"), 
               nclass = sqrt( length( fit[  !is.na( y )] ) ), main = main )
@@ -81,7 +81,7 @@ function ( x, y, main=deparse( substitute( y ) ), gray.scale = FALSE, ...) {
 #  mtext( "Binned Residual", 3, cex = 0.7, adj = NA ) 
   mi.scatterplot( vrb.obs, vrb.imp, fit, xlab = "expected", ylab = main, main = main, gray.scale = gray.scale )
   plot( 0, 0, type = "n", xaxt = "n", yaxt = "n", xlab = "", ylab = "", frame.plot = FALSE )
-  plot( 0, 0, type = "n", xaxt = "n", yaxt = "n", xlab = "", ylab = "", frame.plot = FALSE )
+#  plot( 0, 0, type = "n", xaxt = "n", yaxt = "n", xlab = "", ylab = "", frame.plot = FALSE )
 } 
 )
 
@@ -102,7 +102,7 @@ function ( x, y, main=deparse( substitute( y ) ), gray.scale = FALSE, ...) {
 #  mtext( "Binned Residual", 3, cex = 0.7, adj = NA ) 
   mi.scatterplot( Yobs=vrb.obs, vrb.imp, fit, xlab = "expected", ylab = main, main = main, gray.scale = gray.scale )
   plot( 0, 0, type = "n", xaxt = "n", yaxt = "n", xlab = "", ylab = "", frame.plot = FALSE )
-  plot( 0, 0, type = "n", xaxt = "n", yaxt = "n", xlab = "", ylab = "", frame.plot = FALSE )
+#  plot( 0, 0, type = "n", xaxt = "n", yaxt = "n", xlab = "", ylab = "", frame.plot = FALSE )
 } 
 )
 
@@ -131,7 +131,7 @@ function ( x, y, main=deparse( substitute( y ) ), gray.scale = FALSE, ...) {
    
    mtext( "Binned Residual", 3, cex = 0.7, adj = NA )
    mi.scatterplot( Yobs=vrb.obs, vrb.imp, fit, xlab = "Predicted", ylab = main, main = main, gray.scale = gray.scale )
-   plot( 0, 0, type = "n", xaxt = "n", yaxt = "n", xlab = "", ylab = "", frame.plot = FALSE )
+#   plot( 0, 0, type = "n", xaxt = "n", yaxt = "n", xlab = "", ylab = "", frame.plot = FALSE )
 }
 )
 
