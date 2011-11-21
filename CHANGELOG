@@ -1,3 +1,9 @@
+2011-11-22 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
+   * DESCRIPTION (Version, Date): 0.09-15
+   * inst/CITATION: add citation info
+   * man/*.Rd: update JSS paper info
+   
+
 2011-02-15 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
    * DESCRIPTION (Version, Date): 0.09-13
    * R/mi.scatterplot: reactivated imputed points 

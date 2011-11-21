@@ -55,6 +55,11 @@
     Andrew Gelman and Jennifer Hill, 
     \emph{Data Analysis Using Regression and Multilevel/Hierarchical Models}, 
     Cambridge University Press, 2007.
+
+  Yu-Sung Su, Andrew Gelman, Jennifer Hill, Masanao Yajima. (2011).
+    \dQuote{Multiple Imputation with Diagnostics (mi) in R: Opening Windows into the Black Box}.
+    \emph{Journal of Statistical Software} 45(2).
+
 }
 \author{
   Masanao Yajima \email{yajima@stat.columbia.edu},

@@ -51,10 +51,10 @@ marginal.scatterplot ( data, object, use.imputed.X = FALSE, ...  )
   A scatterplot with the observed and the imputed values plotted against a chosen variable. 
 }
 \references{
-    Yu-Sung Su, Andrew Gelman, Jennifer Hill, Masanao Yajima. \emph{Forthcoming}.
+   Yu-Sung Su, Andrew Gelman, Jennifer Hill, Masanao Yajima. (2011).
     \dQuote{Multiple Imputation with Diagnostics (mi) in R: Opening Windows into the Black Box}.
-    \emph{Journal of Statistical Software}.
- 
+    \emph{Journal of Statistical Software} 45(2).
+
     Kobi Abayomi, Andrew Gelman and Marc Levy. (2008).
     \dQuote{Diagnostics for multivariate imputations}.
     \emph{Applied Statistics} 57, Part 3: 273--291.

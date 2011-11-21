@@ -43,9 +43,9 @@ The imputed dataset is obtained from \code{\link{mi.completed}} function.
 }
 
 \references{
-    Yu-Sung Su, Andrew Gelman, Jennifer Hill, Masanao Yajima. \emph{Forthcoming}.
+  Yu-Sung Su, Andrew Gelman, Jennifer Hill, Masanao Yajima. (2011).
     \dQuote{Multiple Imputation with Diagnostics (mi) in R: Opening Windows into the Black Box}.
-    \emph{Journal of Statistical Software}.
+    \emph{Journal of Statistical Software} 45(2).
 }
 
 

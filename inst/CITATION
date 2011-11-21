@@ -1,0 +1,22 @@
+citHeader("To cite mi in publications use:")
+
+citEntry(entry = "Article",
+  title        = "Multiple Imputation with Diagnostics ({mi}) in {R}: Opening Windows into the Black Box",
+  author       = personList(as.person("Yu-Sung Su"),
+                   as.person("Andrew Gelman"),
+                   as.person("Jennifer Hill"),
+                   as.person("Masanao Yajima")),
+  journal      = "Journal of Statistical Software",
+  year         = "2011",
+  volume       = "45",
+  number       = "2",
+  pages        = "1--31",
+  url          = "http://www.jstatsoft.org/v45/i02/",
+
+  textVersion  =
+  paste("Yu-Sung Su, Andrew Gelman, Jennifer Hill, Masanao Yajima (2011).",
+        "Multiple Imputation with Diagnostics (mi) in R: Opening Windows into the Black Box.",
+        "Journal of Statistical Software, 45(2), 1-31.",
+        "URL http://www.jstatsoft.org/v45/i02/.")
+)
+
