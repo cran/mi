@@ -1,5 +1,5 @@
-5ad08466e690bd60b4d9febcc0f2c9c5 *CHANGELOG
-1a941fbb30b0af672401e52e33a9e511 *DESCRIPTION
+119c415237d7b8cc9186baefd8a6e4fa *CHANGELOG
+d39c5dfc0796ad6171259cad87c3dd8d *DESCRIPTION
 eb723b61539feef013de476e68b5c50a *LICENSE
 dd2ee0b12238c8a35f73d47f6cefc215 *NAMESPACE
 ca13cc419d0c7ab0bf0a670bec5c2013 *R/AllClass.R
@@ -37,7 +37,7 @@ c0efae7d122c5ce2fda0527c4e43526f *R/mi.scatterplot.R
 747ddc356b5c7bcde146db6bc4806778 *R/missing.pattern.plot.R
 a2c61e298dda64431383ebee25448806 *R/plot.R
 2a234343dafec1f658cadd927b8e4f70 *R/polr.mi.R
-471a9a836960611b0b875194ccaee4ca *R/print.R
+1523d8f8249d0aa30193908caba2590b *R/print.R
 7def2f0d1af565d3ffca77f00b172d8d *R/random.imp.R
 5ff04777153b05d66d3c5c07f27e4779 *R/resid.R
 94ea79322c8ec992d517d04a4339d445 *R/residual.plot.R

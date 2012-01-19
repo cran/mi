@@ -1,3 +1,8 @@
+2011-01-19 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
+   * DESCRIPTION (Version, Date): 0.09-16
+   * R/print: set this as generic to pass the check
+ 
+
 2011-11-22 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
    * DESCRIPTION (Version, Date): 0.09-15
    * inst/CITATION: add citation info
