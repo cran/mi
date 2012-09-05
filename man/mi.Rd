@@ -169,8 +169,8 @@ inf <- mi.info(dat)
 inf <- update(inf, "type", list(x10="count"))
 
 # run the imputation without data transformation
-IMP <- mi(dat, info=inf, check.coef.convergence=TRUE, 
-  add.noise=noise.control(post.run.iter=10))
+#IMP <- mi(dat, info=inf, check.coef.convergence=TRUE, 
+#  add.noise=noise.control(post.run.iter=10))
 
 # run the imputation with data transformation  
 dat.transformed <- mi.preprocess(dat, inf)
@@ -181,7 +181,7 @@ IMP <- mi(dat.transformed, n.iter=6, check.coef.convergence=TRUE,
 # IMP <- mi(dat, info=inf, n.iter=6, add.noise=FALSE) ## NOT RUN
 
 # pick up where you left off
- IMP <- mi(IMP, n.iter = 6)      
+# IMP <- mi(IMP, n.iter = 6)      
 
 ## this is the suggested (defautl) way of running mi
 # IMP <- mi(dat, info=inf) ## NOT RUN

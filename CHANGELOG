@@ -1,4 +1,8 @@
-2011-01-19 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
+2012-09-04 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
+   * DESCRIPTION (Version, Date): 0.09-17
+   * R/mi: stop using .Internal
+
+2012-01-19 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
    * DESCRIPTION (Version, Date): 0.09-16
    * R/print: set this as generic to pass the check
  

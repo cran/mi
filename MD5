@@ -1,5 +1,5 @@
-119c415237d7b8cc9186baefd8a6e4fa *CHANGELOG
-d39c5dfc0796ad6171259cad87c3dd8d *DESCRIPTION
+4d9c70fe1816ee60c34a7fff34297bb8 *CHANGELOG
+e9ca609fa62380e8cca6af0bf5a704b0 *DESCRIPTION
 eb723b61539feef013de476e68b5c50a *LICENSE
 dd2ee0b12238c8a35f73d47f6cefc215 *NAMESPACE
 ca13cc419d0c7ab0bf0a670bec5c2013 *R/AllClass.R
@@ -17,7 +17,7 @@ c7cf4eca95574cf56e906ddb01ff00c8 *R/imputed.R
 4cf9cc344deaafe94a8b4c7971b38173 *R/lm.mi.R
 309c77cc78da2ab7e38f750d2ecf0a89 *R/lmer.mi.R
 d5c7c325e12d7286ef55fd87137c018a *R/load.first.R
-01c4872a8c2af4a054580c44ebe7b5aa *R/mi.R
+7607418205e1cea521534c6b94907815 *R/mi.R
 6fb2c5a3728083120eac0b9adb785851 *R/mi.binary.R
 dcb1307dc4786ef849cfbba742d70681 *R/mi.categorical.R
 9a3497ab9ae864f3a6aa4fa1423d7470 *R/mi.completed.R
@@ -50,15 +50,15 @@ f1ce7e3e7e1218b4b352ae98c3b97a8b *TODO
 325fa25e84c3e8f29dd06e3b483ec6f3 *data/CHAIN.rda
 f8278499667512e7a5755abbaf8d76d1 *inst/CITATION
 306e1d269ae80e522abfa92fd5212dbf *man/CHAIN.Rd
-2b48ba9014ae3a530a1a1caf78f752bf *man/convergence.plot.Rd
-1f29d0127eef841b1651205c65123b9b *man/mi.Rd
+b1ca3a9bb81610ffab710be83b503a38 *man/convergence.plot.Rd
+9a97a0277707a7d0da2583361029dd88 *man/mi.Rd
 813d8c01fc0dbec86af6b8aee4591bca *man/mi.binary.Rd
 0ff6f5417776131da13417aa7891ba3f *man/mi.categorical.Rd
-9885a561994a4ed0ef7f66c04f28f0ea *man/mi.completed.Rd
+984f4433f5c8fa929c5445da75110133 *man/mi.completed.Rd
 b78d578a039718687d50192cd32e1abd *man/mi.continuous.Rd
 f0dd0137e719a4ffb123374fe95fe4d9 *man/mi.count.Rd
 358c98e5896831528c548cdfe084617b *man/mi.fixed.Rd
-93bc0e697d7e73e39c1d7c4a85fea6d4 *man/mi.hist.Rd
+91e69b8669554e6b0b29441b91bfed04 *man/mi.hist.Rd
 672d7c94dc2431672c1681828a3fca09 *man/mi.info.Rd
 49d7d41139c31c41e8e89907750567ee *man/mi.info.update.Rd
 237031675c5a7082c344aa4d2ced23de *man/mi.method.Rd
@@ -69,7 +69,7 @@ aca937e6eb0529e1fd4af6299fa60b8c *man/mi.preprocess.Rd
 90c17e1920e982e6c1277caad19df305 *man/mi.scatterplot.Rd
 aea85702a5da2d7aee8ca826b0d6a50f *man/missing.pattern.plot.Rd
 e6f553ed857c39d13421319e036d8072 *man/noise.control.Rd
-93f01e937f3387352e95efa1f425a5d8 *man/plot.mi.Rd
+6f31cdf09cadaff70f8a5a010d4410b3 *man/plot.mi.Rd
 094bdd5021845dedba7c91b675406ff6 *man/random.imp.Rd
 f49f7a164f3dcde5de188ca98132a048 *man/type.models.Rd
 fe96e154f13e41dbe89aa7b6fc47d754 *man/typecast.Rd

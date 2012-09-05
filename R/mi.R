@@ -130,8 +130,8 @@ mi.default <- function(data, info, n.imp = 3, n.iter = 30, R.hat = 1.1,
 
         #===============================================================        
         # Error Handling
-        .Internal(seterrmessage(""))
-        errormessage <- paste("\nError while imputing variable:", CurrentVar, ", model:",model.type,"\n")
+        #.Internal(seterrmessage(""))
+        errormessage <- paste("\nError while imputing variable:", CurrentVar, ", model:", model.type,"\n")
         on.exit(cat(errormessage,geterrmessage()))
         on.exit(options(show.error.messages = TRUE),add = TRUE)
         options(show.error.messages = FALSE)
@@ -486,7 +486,7 @@ setMethod("mi", signature(object = "mi"),
         model.type <- as.character(type.models( info[[CurrentVar]]$type))
         ####################################################################
         # Error Handling
-        .Internal(seterrmessage(""))
+        #.Internal(seterrmessage(""))
         errormessage <- paste("\nError while imputing variable:", CurrentVar, ", model:",model.type,"\n")
         on.exit(cat(errormessage,geterrmessage()))
         on.exit(options(show.error.messages = TRUE),add = TRUE)

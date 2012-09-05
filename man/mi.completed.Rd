@@ -42,12 +42,12 @@
     \code{\link{mi}}
 }
 \examples{
-  data(CHAIN)
-  IMP <- mi (CHAIN, n.iter=6, add.noise=FALSE)
-  # get all imputed dataset
-  imputed.matrix <- mi.completed (IMP)  
-  # get the 3rd chain of the imputed dataset
-  imputed.data.frame <- mi.data.frame(IMP, m=3) 
+  #data(CHAIN)
+  #IMP <- mi (CHAIN, n.iter=6, add.noise=FALSE)
+  ### get all imputed dataset
+  #imputed.matrix <- mi.completed (IMP)  
+  ### get the 3rd chain of the imputed dataset
+  #imputed.data.frame <- mi.data.frame(IMP, m=3) 
 }
 \keyword{models}
 \keyword{manip}

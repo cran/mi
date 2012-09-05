@@ -60,8 +60,11 @@ strongly recommended to use a variable containing more information. Fitted lowes
   \code{\link{mi.hist}}
 }
 \examples{
-  data(CHAIN)
-  imp.CHAIN <- mi(CHAIN, n.iter=6, add.noise=FALSE)
-  plot(imp.CHAIN)
+### NOT RUN
+#========================================================
+#  data(CHAIN)
+#  imp.CHAIN <- mi(CHAIN, n.iter=6, add.noise=FALSE)
+#  plot(imp.CHAIN)
+#========================================================
 }
 \keyword{ hplot }

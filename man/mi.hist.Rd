@@ -79,7 +79,7 @@
   mi.hist( dat.cont.mi, y)
 
   # imputation
-  dat.mi <- mi(dat.xy)
-  mi.hist( imp(dat.mi,1)[["y"]], y)
+  #dat.mi <- mi(dat.xy)
+  #mi.hist( imp(dat.mi,1)[["y"]], y)
 }
 \keyword{ models }
