@@ -1,22 +1,32 @@
-importFrom("lme4",
+importFrom("stats",
       coef,
+      coefficients,
       fitted,
       resid,
       residuals,
-      plot
+      update
 )
 
+importFrom(lme4, "lmer", "glmer")
 
-importFrom("stats",
-      update,
-      coefficients
-)
+importFrom(methods, "setOldClass")
 
 importFrom("Matrix",
       tcrossprod
 )
 
+import(foreign)
 
+importFrom(MASS, "polr",
+                 "mvrnorm")
+
+importFrom(R2WinBUGS, "as.bugs.array")
+
+importFrom(abind, "abind")
+
+importFrom(nnet, "multinom")
+
+importFrom(car, "recode")
 
 importFrom("arm",
       display,
@@ -129,6 +139,17 @@ export(
   write.mi
 )
 
+#
+#S3method(residuals, mi.method)
+#S3method(residuals, mi.binary)
+#S3method(residuals, mi.categorical)
+#S3method(residuals, mi.polr)
+#S3method(residuals, mi.count)
+#S3method(resid, mi.method)
+#S3method(resid, mi.binary)
+#S3method(resid, mi.categorical)
+#S3method(resid, mi.polr)
+#S3method(resid, mi.count)
 S3method(update, mi.info)
 S3method(print, mi)
 S3method(print, mi.pooled)

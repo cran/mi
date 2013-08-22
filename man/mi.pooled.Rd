@@ -91,9 +91,9 @@ glmer.mi(formula, mi.object, family = gaussian, rescale=FALSE, ...)
   group <- rep(1:10, 10)
 
   # create artificial missingness
-  dat.xy <- data.frame(x, z, y)
+  dat.xy <- data.frame(x, y, z)
   dat.xy <- mi:::.create.missing(dat.xy, pct.mis=10)  
-
+  
   # imputation 
   IMP <- mi(dat.xy, n.iter=6, add.noise=FALSE)
 

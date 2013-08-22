@@ -10,16 +10,17 @@ if ( !isGeneric("call.mi")) {
   )
 }
 
-#
-#if ( !isGeneric("coef")) {
-#  setGeneric( "coef",
-#              function( object, ... ){
-#                standardGeneric( "coef" )
-#              } 
-#  )
-#}
-#
-#
+
+if ( !isGeneric("coef")) {
+  setGeneric( "coef",
+              function( object, ... ){
+                standardGeneric( "coef" )
+              } 
+  )
+}
+
+setGeneric("coefficients")
+
 #if ( !isGeneric("coefficients")) {
 #  setGeneric( "coefficients",
 #              function( object, ... ){
@@ -49,6 +50,7 @@ if ( !isGeneric( "data.mi" )) {
   )
 }
 
+setGeneric("fitted")
 
 #if ( !isGeneric( "fitted" )) {
 #  setGeneric( "fitted",
@@ -57,7 +59,7 @@ if ( !isGeneric( "data.mi" )) {
 #              } 
 #  )
 #}
-#
+
 
 
 
@@ -168,6 +170,7 @@ if ( !isGeneric("mi.hist")) {
 #              } 
 #  )
 
+setGeneric("resid")
 
 #if ( !isGeneric( "resid" )) {
 #  setGeneric( "resid",
@@ -176,7 +179,9 @@ if ( !isGeneric("mi.hist")) {
 #              } 
 #  )
 #}
-#
+
+setGeneric("residuals")
+
 #if ( !isGeneric( "residuals" )) {
 #  setGeneric( "residuals",
 #              function( object, ...){

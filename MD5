@@ -1,9 +1,8 @@
-4d9c70fe1816ee60c34a7fff34297bb8 *CHANGELOG
-e9ca609fa62380e8cca6af0bf5a704b0 *DESCRIPTION
-eb723b61539feef013de476e68b5c50a *LICENSE
-dd2ee0b12238c8a35f73d47f6cefc215 *NAMESPACE
+6de345a0cf772450709f22d742e57dbd *CHANGELOG
+ba002b78750cbed41657b6c352c68fc5 *DESCRIPTION
+fb0577d3a716c83bbc3583d790876246 *NAMESPACE
 ca13cc419d0c7ab0bf0a670bec5c2013 *R/AllClass.R
-33d53813800cb5978e391df6e8673c98 *R/AllGeneric.R
+0e3645d8ceff88c41c2af4c7f545dfc9 *R/AllGeneric.R
 3abcb24e620bf7935a876581783c1e6c *R/AllInternal.R
 5e9e6ed3a15b5e1dd207cffe49a6c655 *R/bayesglm.mi.R
 8343abe5a9857b2b9e0e6c0456dab152 *R/bayespolr.mi.R
@@ -35,7 +34,7 @@ e4957c2c7ae7c15c21d8353f2a0f13ca *R/mi.polr.R
 fa9a612444fcf73cb2935f265ffb812f *R/mi.preprocess.R
 c0efae7d122c5ce2fda0527c4e43526f *R/mi.scatterplot.R
 747ddc356b5c7bcde146db6bc4806778 *R/missing.pattern.plot.R
-a2c61e298dda64431383ebee25448806 *R/plot.R
+657e8348368b2943f9eee219544e1c1d *R/plot.R
 2a234343dafec1f658cadd927b8e4f70 *R/polr.mi.R
 1523d8f8249d0aa30193908caba2590b *R/print.R
 7def2f0d1af565d3ffca77f00b172d8d *R/random.imp.R
@@ -51,9 +50,9 @@ f1ce7e3e7e1218b4b352ae98c3b97a8b *TODO
 f8278499667512e7a5755abbaf8d76d1 *inst/CITATION
 306e1d269ae80e522abfa92fd5212dbf *man/CHAIN.Rd
 b1ca3a9bb81610ffab710be83b503a38 *man/convergence.plot.Rd
-9a97a0277707a7d0da2583361029dd88 *man/mi.Rd
+52edebcaac45ecb56a0e952959aa829b *man/mi.Rd
 813d8c01fc0dbec86af6b8aee4591bca *man/mi.binary.Rd
-0ff6f5417776131da13417aa7891ba3f *man/mi.categorical.Rd
+0eabf7cddb4269a4b1ea0a05f543f777 *man/mi.categorical.Rd
 984f4433f5c8fa929c5445da75110133 *man/mi.completed.Rd
 b78d578a039718687d50192cd32e1abd *man/mi.continuous.Rd
 f0dd0137e719a4ffb123374fe95fe4d9 *man/mi.count.Rd
@@ -64,7 +63,7 @@ f0dd0137e719a4ffb123374fe95fe4d9 *man/mi.count.Rd
 237031675c5a7082c344aa4d2ced23de *man/mi.method.Rd
 4cc2d1896eb878810d4b25cf72781a45 *man/mi.pmm.Rd
 064d35f205b745e19453d5d81111e291 *man/mi.polr.Rd
-dc7b2dd0d15293c637f23154b4c9c2e8 *man/mi.pooled.Rd
+db84af3b3fe4f91e2b281b7a7b6f8c7d *man/mi.pooled.Rd
 aca937e6eb0529e1fd4af6299fa60b8c *man/mi.preprocess.Rd
 90c17e1920e982e6c1277caad19df305 *man/mi.scatterplot.Rd
 aea85702a5da2d7aee8ca826b0d6a50f *man/missing.pattern.plot.Rd

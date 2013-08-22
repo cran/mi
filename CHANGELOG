@@ -1,3 +1,7 @@
+2013-08-21 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
+   * DESCRIPTION (Version, Date): 0.09-18.03
+   * clean up DESCRIPTION and NAMESPACE
+
 2012-09-04 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
    * DESCRIPTION (Version, Date): 0.09-17
    * R/mi: stop using .Internal

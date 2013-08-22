@@ -16,7 +16,8 @@
     Imputes missing data in a categorical variable using multinomial Log-linear Models. 
 }
 \usage{
-  mi.categorical( formula, data = NULL, n.iter = 100, MaxNWts = 1500, missing.index = NULL, \dots)
+  mi.categorical( formula, data = NULL, n.iter = 100, 
+                  MaxNWts = 1500, missing.index = NULL, \dots)
   \S4method{residuals}{mi.categorical}(object, y)
   \S4method{plot}{mi.categorical,ANY}( x, y, main=deparse( substitute( y ) ), gray.scale = FALSE, \dots)
 }
