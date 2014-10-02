@@ -12,6 +12,7 @@ importFrom(lme4, "lmer", "glmer")
 importFrom(methods, "setOldClass")
 
 importFrom("Matrix",
+      Matrix,
       tcrossprod
 )
 
@@ -29,9 +30,16 @@ importFrom(nnet, "multinom")
 importFrom(car, "recode")
 
 importFrom("arm",
+      bayesglm,
+      bayespolr,
+      sim,
       display,
+      logit,
+      invlogit,
       se.coef,
-      sigma.hat
+      sigma.hat,
+      traceplot,
+      fixef
 )
 
 exportClasses(
@@ -102,7 +110,7 @@ export(
   mi,
   mi.categorical,
   mi.completed,
-  mi.continuous, 
+  mi.continuous,
   mi.copy,
   mi.count,
   mi.data.frame,

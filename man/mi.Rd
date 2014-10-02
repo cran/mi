@@ -13,6 +13,7 @@
 \alias{info.mi}
 \alias{imp}
 \alias{m}
+\alias{coefficients}
 % methods
 \alias{mi,data.frame-method}
 \alias{mi,mi.preprocessed-method}
@@ -32,27 +33,27 @@
 \title{Multiple Iterative Regression Imputation}
 
 \description{
- Generate a multiply imputed matrix applying the elementary functions iteratively 
+ Generate a multiply imputed matrix applying the elementary functions iteratively
  to the variables with missingness in the data randomly imputing each variable
  and looping through until approximate convergence.
 }
 
 \usage{
-\S4method{mi}{data.frame}(object, info,  n.imp = 3, n.iter = 30, 
-    R.hat = 1.1, max.minutes = 20, rand.imp.method = "bootstrap", 
+\S4method{mi}{data.frame}(object, info,  n.imp = 3, n.iter = 30,
+    R.hat = 1.1, max.minutes = 20, rand.imp.method = "bootstrap",
     run.past.convergence = FALSE,
-    seed = NA, check.coef.convergence = FALSE, 
+    seed = NA, check.coef.convergence = FALSE,
     add.noise = noise.control())
 
-\S4method{mi}{mi.preprocessed}(object, n.imp = 3, n.iter = 30, 
-    R.hat = 1.1, max.minutes = 20, rand.imp.method = "bootstrap", 
+\S4method{mi}{mi.preprocessed}(object, n.imp = 3, n.iter = 30,
+    R.hat = 1.1, max.minutes = 20, rand.imp.method = "bootstrap",
     run.past.convergence = FALSE,
-    seed = NA, check.coef.convergence = FALSE, 
+    seed = NA, check.coef.convergence = FALSE,
     add.noise = noise.control())
 
-    
-\S4method{mi}{mi}(object, n.iter = 30, 
-    R.hat = 1.1, max.minutes = 20, rand.imp.method = "bootstrap", 
+
+\S4method{mi}{mi}(object, n.iter = 30,
+    R.hat = 1.1, max.minutes = 20, rand.imp.method = "bootstrap",
     run.past.convergence = FALSE,  seed = NA)
 
 }
@@ -72,7 +73,7 @@
   \item{add.noise}{A list of parameters for controlling the process of adding noise to \code{mi} via \code{\link{noise.control}}.}
 }
 
-\value{ 
+\value{
 A list of object of class \code{mi}, which stands for \dQuote{multiple imputation}.
 
   Each object is itself a list of 10 elements.
@@ -88,25 +89,25 @@ A list of object of class \code{mi}, which stands for \dQuote{multiple imputatio
     \code{NULL} if \code{check.coef.convergence = FALSE}}
   \item{preprocess}{Binary variable to indicate if \code{preprocess=TRUE} in the \code{mi} process}
   \item{mi.info.preprocessed}{Information matrix that actually used in the \code{mi} if \code{preprocess=TRUE}.}
-  
+
   Each \code{imp[[m]]} is itself a list containg k variable lists of 3 objects:
-  
+
   \item{\code{imp[[m]][[k]]@model}}{the specified models used for imputing missing values}
   \item{\code{imp[[m]][[k]]@expected}}{a list of vectors of length n-n.mis (number of complete observed data), specifying the
     estimated values of the models}
-  \item{\code{imp[[m]][[k]]@random}}{a list of vectors of length n.mis (number of NAs), specifying the random predicted 
+  \item{\code{imp[[m]][[k]]@random}}{a list of vectors of length n.mis (number of NAs), specifying the random predicted
     values for imputing missing data}
 }
 
 \details{
-Generate multiple imputations for incomplete data using iterative regression imputation. 
+Generate multiple imputations for incomplete data using iterative regression imputation.
 If the variables with missingness are a matrix Y with columns Y(1), . . . , Y(K) and the fully observed
 predictors are X, this entails first imputing all the missing Y values using some
 crude approach (for example, choosing imputed values for each variable by randomly
 selecting from the observed outcomes of that variable); and then imputing Y(1)
 given Y(2), . . . , Y(K) and X; imputing Y(2) given Y(1), Y(3), . . . , Y(K) and X (using
 the newly imputed values for Y(1)), and so forth, randomly imputing each variable
-and looping through until approximate convergence. 
+and looping through until approximate convergence.
 }
 
 \references{
@@ -117,7 +118,7 @@ and looping through until approximate convergence.
     Kobi Abayomi, Andrew Gelman and Marc Levy. (2008).
     \dQuote{Diagnostics for multivariate imputations}.
     \emph{Applied Statistics} 57, Part 3: 273--291.
-   
+
     Andrew Gelman and Jennifer Hill. (2007).
     \emph{Data Analysis Using Regression and Multilevel/Hierarchical Models}.
     Cambridge University Press.
@@ -130,12 +131,12 @@ and looping through until approximate convergence.
   Andrew Gelman \email{gelman@stat.columbia.edu}
 }
 
-\seealso{ 
+\seealso{
     \code{\link{mi.completed}}, \code{\link{mi.data.frame}},
     \code{\link{mi.continuous}}, \code{\link{mi.binary}},
     \code{\link{mi.count}}, \code{\link{mi.categorical}},
-    \code{\link{mi.polr}},  \code{\link{typecast}}, 
-    \code{\link{mi.info}}, \code{\link{mi.preprocess}}  
+    \code{\link{mi.polr}},  \code{\link{typecast}},
+    \code{\link{mi.info}}, \code{\link{mi.preprocess}}
 }
 
 \examples{
@@ -169,12 +170,12 @@ inf <- mi.info(dat)
 inf <- update(inf, "type", list(x10="count"))
 
 # run the imputation without data transformation
-#IMP <- mi(dat, info=inf, check.coef.convergence=TRUE, 
+#IMP <- mi(dat, info=inf, check.coef.convergence=TRUE,
 #  add.noise=noise.control(post.run.iter=10))
 
-# run the imputation with data transformation  
+# run the imputation with data transformation
 dat.transformed <- mi.preprocess(dat, inf)
-#IMP <- mi(dat.transformed, n.iter=6, check.coef.convergence=TRUE, 
+#IMP <- mi(dat.transformed, n.iter=6, check.coef.convergence=TRUE,
 #  add.noise=noise.control(post.run.iter=6))
 
 IMP <- mi(dat.transformed, n.iter=6, add.noise=FALSE)
@@ -184,13 +185,13 @@ IMP <- mi(dat.transformed, n.iter=6, add.noise=FALSE)
 # IMP <- mi(dat, info=inf, n.iter=6, add.noise=FALSE) ## NOT RUN
 
 # pick up where you left off
-# IMP <- mi(IMP, n.iter = 6)      
+# IMP <- mi(IMP, n.iter = 6)
 
 ## this is the suggested (defautl) way of running mi
 # IMP <- mi(dat, info=inf) ## NOT RUN
 
 # convergence checking
-converged(IMP, check = "data")  ## You should get FALSE here because only n.iter is small 
+converged(IMP, check = "data")  ## You should get FALSE here because only n.iter is small
 #converged(IMP, check = "coefs")
 IMP.bugs1 <- bugs.mi(IMP, check = "data")    ## BUGS object to look at the R hat statistics
 #IMP.bugs2 <- bugs.mi(IMP, check = "coefs")   ## BUGS object to look at the R hat statistics

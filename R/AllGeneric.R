@@ -19,15 +19,15 @@ if ( !isGeneric("coef")) {
   )
 }
 
-setGeneric("coefficients")
+#setGeneric("coefficients")
 
-#if ( !isGeneric("coefficients")) {
-#  setGeneric( "coefficients",
-#              function( object, ... ){
-#                standardGeneric( "coefficients" )
-#              } 
-#  )
-#}
+if ( !isGeneric("coefficients")) {
+  setGeneric( "coefficients",
+              function( object, ... ){
+                standardGeneric( "coefficients" )
+              } 
+  )
+}
 
 
 

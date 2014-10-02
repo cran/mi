@@ -36,8 +36,8 @@ mi.binary <- function( formula, data = NULL, start = NULL, n.iter = 100,
   if(is.null(missing.index)& any(mis)){
     missing.index <- mis
   }
-  
-  
+
+
   y.levels <- if (is.numeric(Y)) {
                 sort(unique(Y))
               } else if (is.logical(Y)) {
@@ -45,13 +45,13 @@ mi.binary <- function( formula, data = NULL, start = NULL, n.iter = 100,
               } else {
                 levels(factor(Y))
               }
-  
+
   Y <- recode(Y, paste("'", y.levels, "'=", c(0, 1), sep = "", collapse = "; "))
 
   if (!is.null(start)) {
       n.iter <- 50
       start[is.na(start)] <- 0
-  }  
+  }
   if (is.null(data)) {
       data <- mf
       data[,names(mf)[1]] <- Y
@@ -59,8 +59,8 @@ mi.binary <- function( formula, data = NULL, start = NULL, n.iter = 100,
   else{
      data[,names(mf)[1]] <- Y
   }
-  bglm.imp <- bayesglm(formula = formula, data = data, family = binomial(link = "logit"), 
-      n.iter = n.iter, start = start, drop.unused.levels = FALSE, 
+  bglm.imp <- bayesglm(formula = formula, data = data, family = binomial(link = "logit"),
+      n.iter = n.iter, start = start, drop.unused.levels = FALSE,
       Warning = FALSE, ...)
   determ.pred <- predict(bglm.imp, newdata = data, type = "response")
 
@@ -79,22 +79,22 @@ mi.binary <- function( formula, data = NULL, start = NULL, n.iter = 100,
     else {
         random.temp <- rbinom(n.mis, 1, determ.pred[missing.index])
     }
-    random.pred <- random.temp 
+    random.pred <- random.temp
     random.pred <- replace(random.pred, random.temp == 0, y.levels[1])
     random.pred <- replace(random.pred, random.temp == 1, y.levels[2])
-    names(random.pred) <- names(determ.pred[missing.index])                      
+    names(random.pred) <- names(determ.pred[missing.index])
   }
   else{
     random.pred <- numeric(0)
   }
 
-  if (is.logical(y.levels)) {                                      
-    random.pred <- as.logical(random.pred)                         
-  }                                                                 
+  if (is.logical(y.levels)) {
+    random.pred <- as.logical(random.pred)
+  }
 
   result <- new(c("mi.binary", "mi.method"),
-              model = vector("list", 0), 
-              expected = numeric(0), 
+              model = vector("list", 0),
+              expected = numeric(0),
               random = numeric(0))
   result@model$call <- bglm.imp$call
   result@model$call$formula <- as.formula(formula)

@@ -1,46 +1,50 @@
-2013-08-21 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
+2014-10-02 Yu-Sung Su     <suyusung@tsinghua.edu.cn>
+   * DESCRIPTION (Version, Date): 0.09-19
+   * clean up DESCRIPTION and NAMESPACE
+
+2013-08-21 Yu-Sung Su     <suyusung@tsinghua.edu.cn>
    * DESCRIPTION (Version, Date): 0.09-18.03
    * clean up DESCRIPTION and NAMESPACE
 
-2012-09-04 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
+2012-09-04 Yu-Sung Su     <suyusung@tsinghua.edu.cn>
    * DESCRIPTION (Version, Date): 0.09-17
    * R/mi: stop using .Internal
 
-2012-01-19 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
+2012-01-19 Yu-Sung Su     <suyusung@tsinghua.edu.cn>
    * DESCRIPTION (Version, Date): 0.09-16
    * R/print: set this as generic to pass the check
- 
 
-2011-11-22 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
+
+2011-11-22 Yu-Sung Su     <suyusung@tsinghua.edu.cn>
    * DESCRIPTION (Version, Date): 0.09-15
    * inst/CITATION: add citation info
    * man/*.Rd: update JSS paper info
-   
 
-2011-02-15 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
+
+2011-02-15 Yu-Sung Su     <suyusung@tsinghua.edu.cn>
    * DESCRIPTION (Version, Date): 0.09-13
-   * R/mi.scatterplot: reactivated imputed points 
-   
-   
-2011-02-09 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
+   * R/mi.scatterplot: reactivated imputed points
+
+
+2011-02-09 Yu-Sung Su     <suyusung@tsinghua.edu.cn>
    * DESCRIPTION (Version, Date): 0.09-12
 
-2011-02-08 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
+2011-02-08 Yu-Sung Su     <suyusung@tsinghua.edu.cn>
    * DESCRIPTION (Version, Date): 0.09-11.06
    * R/plot: kill the residualplot
 
-2011-02-05 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
+2011-02-05 Yu-Sung Su     <suyusung@tsinghua.edu.cn>
    * DESCRIPTION (Version, Date): 0.09-11.05
    * DESCRIPTION: add arm version dependency
    * R/load.first: lib --> lib.loc in packageDescription
 
 
-2011-02-04 Yu-Sung Su     <ys463@columbia.edu> 
+2011-02-04 Yu-Sung Su     <ys463@columbia.edu>
    * DESCRIPTION (Version, Date): 0.09-11.04
    * R/mi.pmm: fix a bug in predict() line 25
 
 
-2010-11-10 Yu-Sung Su     <ys463@columbia.edu> 
+2010-11-10 Yu-Sung Su     <ys463@columbia.edu>
    * DESCRIPTION (Version, Date): 0.09-11.03
    * R/plot: add points for imputed residuals.
    * R/mi.continuous: add a slot @model$startY that saves last used Y.
@@ -49,10 +53,10 @@
 
 
 
-2010-5-27 Yu-Sung Su     <ys463@columbia.edu> 
+2010-5-27 Yu-Sung Su     <ys463@columbia.edu>
    * DESCRIPTION (Version, Date): 0.09-06
    * R/mi.binary: n.iter = 25 when start is supplied.
-   * R/mi.count: 
+   * R/mi.count:
         1. draw.from.beta = FALSE, to ensure comupational stability
         2. start = NULL, to ensure comupational stability
    * R/mi.preprocess: new coding.
@@ -61,167 +65,167 @@
         2. add mi.default
         3. separate mi.preprocess out of mi.
    * R/AllClass: add mi.preprocessed class.
-   
-   
-2010-5-17 Yu-Sung Su     <ys463@columbia.edu> 
+
+
+2010-5-17 Yu-Sung Su     <ys463@columbia.edu>
    * DESCRIPTION (Version, Date): 0.09-05
    * R/mi: now thin the mcmc object if the n.iter > 30
 
-2010-5-5 Yu-Sung Su     <ys463@columbia.edu> 
+2010-5-5 Yu-Sung Su     <ys463@columbia.edu>
    * DESCRIPTION (Version, Date): 0.09-04
    * R/plot: binned.plot, default color set to be blue.
    * R/mi.scatterplot: add 45 degree line
-    
-2010-4-5 Yu-Sung Su     <ys463@columbia.edu> 
-   * R/mp.plot: add a clustered option, mp.plot now is able to cluster data 
+
+2010-4-5 Yu-Sung Su     <ys463@columbia.edu>
+   * R/mp.plot: add a clustered option, mp.plot now is able to cluster data
         according to its missing pattern
 
-2010-4-3 Yu-Sung Su     <ys463@columbia.edu> 
+2010-4-3 Yu-Sung Su     <ys463@columbia.edu>
    * DESCRIPTION (Version, Date): 0.08-08
    * R/mi.info: add missing.index slot
    * R/plot.im: mi.scatterplot, take out alpha paramter
    * R/mi: new mi process, the missing of the outcome is imputed with observed value to start with
 
 
-2010-3-31 Yu-Sung Su     <ys463@columbia.edu> 
+2010-3-31 Yu-Sung Su     <ys463@columbia.edu>
    * R/mi.info: update.mi.info: fix the formula to get rid of excluded variables
 
-2010-3-23 Yu-Sung Su     <ys463@columbia.edu> 
+2010-3-23 Yu-Sung Su     <ys463@columbia.edu>
    * DESCRIPTION (Version, Date): 0.08-07
    * R/mi.info: coerce data into numeric to pass the new rule of cor()
    * R/mi.polr: fix a formula bug.
 
-2010-2-23 Yu-Sung Su     <ys463@columbia.edu> 
-   * R/mi: 
+2010-2-23 Yu-Sung Su     <ys463@columbia.edu>
+   * R/mi:
       1. clean up code.
       2. rewrite mi() to burnin iterations with noises.
       3. move post.run control into noise.control() as post.run.iters.
    * R/mi.misc: more internal functions for mi() are stored here.
    * R/AllGeneric: rewrite converged and bugs.mi generic functions.
 
-2009-12-31 Yu-Sung Su     <ys463@columbia.edu> 
+2009-12-31 Yu-Sung Su     <ys463@columbia.edu>
    * DESCRIPTION (Version, Date): 0.08-06
    * R/mi.info: fix a bug in the include slot of update.mi.info
 
-2009-12-21 Yu-Sung Su     <ys463@columbia.edu> 
+2009-12-21 Yu-Sung Su     <ys463@columbia.edu>
    * DESCRIPTION (Version, Date): 0.08-05
    * R/mi: clean up code.
 
-2009-12-1 Yu-Sung Su  <ys463@columbia.edu> 
-   * R/mi.continuous, mi.binary, mi.count: overwrite and use of mf objects to save 
+2009-12-1 Yu-Sung Su  <ys463@columbia.edu>
+   * R/mi.continuous, mi.binary, mi.count: overwrite and use of mf objects to save
       memory
 
-2009-12-1 Yu-Sung Su  <ys463@columbia.edu> 
-   * R/mi.continuous, mi.binary, mi.count: overwrite and use of mf objects to save 
+2009-12-1 Yu-Sung Su  <ys463@columbia.edu>
+   * R/mi.continuous, mi.binary, mi.count: overwrite and use of mf objects to save
       memory
 
-2009-11-30 Yu-Sung Su     <ys463@columbia.edu> 
-   * R/mi.continuous, mi.binary, mi.count: hide new X's into the draw.from.beta loop 
+2009-11-30 Yu-Sung Su     <ys463@columbia.edu>
+   * R/mi.continuous, mi.binary, mi.count: hide new X's into the draw.from.beta loop
     to save memory.
 
-2009-7-21 Yu-Sung Su     <ys463@columbia.edu> 
+2009-7-21 Yu-Sung Su     <ys463@columbia.edu>
    * DESCRIPTION (Version, Date): 0.08-04
    * R/mi.info: fix a slot changing logic in update.mi.info
 
 
-2009-6-23 Yu-Sung Su     <ys463@columbia.edu> 
+2009-6-23 Yu-Sung Su     <ys463@columbia.edu>
    * DESCRIPTION (Version, Date): 0.08-03
    * R/mi: fix a bug in mi.mi, (sampling from wrong data)
 
-2009-6-19 Yu-Sung Su     <ys463@columbia.edu> 
+2009-6-19 Yu-Sung Su     <ys463@columbia.edu>
    * R/mi.continuous, m.binary, mi.count: n.iter=5 if !is.null(start)
 
-2009-6-18 Yu-Sung Su     <ys463@columbia.edu>  
+2009-6-18 Yu-Sung Su     <ys463@columbia.edu>
    * DESCRIPTION (Version, Date): 0.08-02
-   * AllInternal: coerce numerical unordered-categorical variable into  
+   * AllInternal: coerce numerical unordered-categorical variable into
       factor variable (as.factor(as.characer(x)))
 
-2009-6-17 Yu-Sung Su     <ys463@columbia.edu>  
+2009-6-17 Yu-Sung Su     <ys463@columbia.edu>
    * R/mi.continuous, mi.binary, mi.count: better way to get xb.
 
-2009-6-16 Yu-Sung Su     <ys463@columbia.edu>  
+2009-6-16 Yu-Sung Su     <ys463@columbia.edu>
    * DESCRIPTION (Version, Date): 0.08-01
    * R/mi.continuous, mi.binary, mi.count: draw.from.beta=TRUE, fix a bug
       in getting design matrix X.
    * R/mi.count: fix a bug in computing lambda.
    * R/mi: take out redundant code in mi method.
    * R/update.mi.info: formula no longer needs factor()
-   
-   
-2009-6-10 Yu-Sung Su     <ys463@columbia.edu>  
+
+
+2009-6-10 Yu-Sung Su     <ys463@columbia.edu>
    * DESCRIPTION (Version, Date): 0.07-4
    * R/mi.pooled: fix a bug in mi.pooled (B term)
 
-2009-6-10 Yu-Sung Su     <ys463@columbia.edu>  
+2009-6-10 Yu-Sung Su     <ys463@columbia.edu>
    * DESCRIPTION (Version, Date): 0.07-3
 
-2009-6-8 Yu-Sung Su     <ys463@columbia.edu>  
+2009-6-8 Yu-Sung Su     <ys463@columbia.edu>
    * R/display: display the pooled estimates in the last order.
    * R/mi.continuous: fix a bug in draws.from.beta ($beta -> $coef)
    * R/mi.count: fix a bug in draws.from.beta ($beta -> $coef)
    * R/mi.binary: fix a bug in draws.from.beta ($beta -> $coef)
 
 
-2009-5-4 Yu-Sung Su     <ys463@columbia.edu>  
+2009-5-4 Yu-Sung Su     <ys463@columbia.edu>
    * DESCRIPTION (Version, Date): 0.07-2
    * new function: write.mi
 
 
-2009-4-28 Yu-Sung Su     <ys463@columbia.edu>  
+2009-4-28 Yu-Sung Su     <ys463@columbia.edu>
    * DESCRIPTION (Version, Date): 0.07-1
    * rename mi.dichotomous to mi.binary
    * rename correlated slot to collinear
    * rename continue.on.convergence to run.past.convergence
 
 
-2009-4-22 Yu-Sung Su     <ys463@columbia.edu>  
+2009-4-22 Yu-Sung Su     <ys463@columbia.edu>
    * DESCRIPTION (Version, Date): 0.06-5
    * redesign formulas
    * R/mi.info: fix a bug in mi.correlated.list
 
-2009-4-18 Yu-Sung Su     <ys463@columbia.edu>  
+2009-4-18 Yu-Sung Su     <ys463@columbia.edu>
    * DESCRIPTION (Version, Date): 0.06-2
    * R/mi: fix a bug in the print out of the process
-   * R/mi.info: update.mi.info: revise formula when type is updates as 
+   * R/mi.info: update.mi.info: revise formula when type is updates as
       ordered or unorderd categorical type.
 
-2009-4-16 Yu-Sung Su     <ys463@columbia.edu>  
-   * DESCRIPTION (Version, Date): 0.06-1   
+2009-4-16 Yu-Sung Su     <ys463@columbia.edu>
+   * DESCRIPTION (Version, Date): 0.06-1
    * R/mi.preprocess: fix bugs in mi.postprocess()
    * R/mi: fix bugs in mi.data.frame (was not using rho for mi.copy)
-   * R/mi.correlated.list: if missing pattern are different in both 
+   * R/mi.correlated.list: if missing pattern are different in both
       correlated variables, treat this as structured correlation
 
-2009-4-12 Yu-Sung Su     <ys463@columbia.edu>  
-   * DESCRIPTION (Version, Date): 0.05-1   
+2009-4-12 Yu-Sung Su     <ys463@columbia.edu>
+   * DESCRIPTION (Version, Date): 0.05-1
    * R/mi.preprocess: new mi.preprocess and mi.postprocess
    * add "log-contiunous" variable type
 
-2009-4-7 Yu-Sung Su     <ys463@columbia.edu>  
+2009-4-7 Yu-Sung Su     <ys463@columbia.edu>
    * man/mi.pooled: new doc for mi.pooled
    * R/AllClass: mi.lm, mi.glm, mi.mer are obsoleted
    * R/mi.pooled: new function to pool estimates
 
 
-2009-4-5 Yu-Sung Su     <ys463@columbia.edu>  
-   * R/mi: fix dimensional probelm when model is of mulitnom; 
+2009-4-5 Yu-Sung Su     <ys463@columbia.edu>
+   * R/mi: fix dimensional probelm when model is of mulitnom;
       now coef.convergence is working!
    * R/mi.preprocess: fix labels lost for unordered-categorical type
 
-2009-4-3 Yu-Sung Su     <ys463@columbia.edu>  
-   * R/mi: monitor the convergence of unordered-categorical type with 
+2009-4-3 Yu-Sung Su     <ys463@columbia.edu>
+   * R/mi: monitor the convergence of unordered-categorical type with
       binary transformation
    * R/AllInternal: add .cat2binary .catvarnames, .fool, .foo2
 
 
-2009-4-2 Yu-Sung Su     <ys463@columbia.edu>  
+2009-4-2 Yu-Sung Su     <ys463@columbia.edu>
    * R/mi: allow add.priors to be logical, set FALSE to speicify no prior
 
 
-2009-4-2 Yu-Sung Su     <ys463@columbia.edu>  
+2009-4-2 Yu-Sung Su     <ys463@columbia.edu>
    * R/mi: allow add.priors to be logical, set FALSE to speicify no prior
 
-2009-3-31 Yu-Sung Su     <ys463@columbia.edu>  
+2009-3-31 Yu-Sung Su     <ys463@columbia.edu>
    * DESCRIPTION (Version, Date): 0.04-6
    * R/coef: add mi.mer method
    * R/se.coef: add mi.mer method
@@ -231,36 +235,36 @@
    * R/mi: add rho into mi.copy procedure to deal with y = 2x
 
 
-2009-3-20 Yu-Sung Su     <ys463@columbia.edu>  
+2009-3-20 Yu-Sung Su     <ys463@columbia.edu>
    * R/mi.categorical: fix idx name of the random imputed values
    * R/mi.polr: fix idx name of the random imputed values
 
 
-2009-3-20 Yu-Sung Su     <ys463@columbia.edu>  
+2009-3-20 Yu-Sung Su     <ys463@columbia.edu>
    * DESCRIPTION (Version, Date): 0.04-5
    * R/mi: fix all(con.check) error
 
-2009-3-11 Yu-Sung Su     <ys463@columbia.edu>  
+2009-3-11 Yu-Sung Su     <ys463@columbia.edu>
    * DESCRIPTION (Version, Date): 0.04-4
    * pass Rhat option to mi()
 
 
-2009-3-10 Yu-Sung Su     <ys463@columbia.edu>  
+2009-3-10 Yu-Sung Su     <ys463@columbia.edu>
    * DESCRIPTION (Version, Date): 0.04-3
    * fix random jump, get coef and start from model fit
 
-2009-3-5 Yu-Sung Su     <ys463@columbia.edu>  
+2009-3-5 Yu-Sung Su     <ys463@columbia.edu>
    * DESCRIPTION (Version, Date): 0.04-2
    * add mi.count
    * add tpye "proportion"
 
 
-2009-2-23 Yu-Sung Su     <ys463@columbia.edu>  
+2009-2-23 Yu-Sung Su     <ys463@columbia.edu>
    * R/coef: add coef for mi.lm and mi.glm
    * R/se.coef: add se.coef for mi.lm and mi.glm
 
 
-2009-2-4 Yu-Sung Su     <ys463@columbia.edu>  
+2009-2-4 Yu-Sung Su     <ys463@columbia.edu>
    * man/prepocess: new doc
    * R/mi.continuous: when start is null, no longer set n.iter=1
    * R/mi.binary: when start is null, no longer set n.iter=1
@@ -269,68 +273,68 @@
    * R/imputed: add mi.categorical for imputed
 
 
-2009-1-31 Yu-Sung Su     <ys463@columbia.edu>  
+2009-1-31 Yu-Sung Su     <ys463@columbia.edu>
    * R/glm.mi: auto.postprocess
    * R/lm.mi: auto.postprocess
 
 
-2009-1-31 Yu-Sung Su     <ys463@columbia.edu>  
+2009-1-31 Yu-Sung Su     <ys463@columbia.edu>
    * DESCRIPTION (Version, Date): 0.03-0.1
 
 
-2009-1-26 Yu-Sung Su     <ys463@columbia.edu>  
+2009-1-26 Yu-Sung Su     <ys463@columbia.edu>
    * clean up redundant code
    * no more squareroot-continuous, logscale-continuous, mi.nonnegative, mi.start, mi.matrix
    * R/AllInternal: add internal function from mi.info
-   * R/mi.info: 
+   * R/mi.info:
       1. remove some internal functions to AllInternal
       2. correct imp.formula and move to AllInternal
-  
 
-2009-1-21 Yu-Sung Su     <ys463@columbia.edu>  
+
+2009-1-21 Yu-Sung Su     <ys463@columbia.edu>
    * man/mi: description about add.priors.
    * R/mi: merge augment.data and K into add.priors.
 
-2009-1-17 Yu-Sung Su     <ys463@columbia.edu>  
+2009-1-17 Yu-Sung Su     <ys463@columbia.edu>
    * man/mi.compeleted: add an example of mi.data.list
    * R/AllInternal: add .preprocess.data, .postprocess.data, .create.missing
    * R/AllGeneric: add mi.data.list
    * R/mi.completed: add mi.data.list.mi
 
-2009-1-8 Yu-Sung Su     <ys463@columbia.edu>  
+2009-1-8 Yu-Sung Su     <ys463@columbia.edu>
    * R/mi.info.update: make mi.info.update into S3 method.
 
-2009-1-7 Yu-Sung Su     <ys463@columbia.edu>  
+2009-1-7 Yu-Sung Su     <ys463@columbia.edu>
    * DESCRIPTION (Version, Date): depend abind package
    * array.append and array.append3 are obsolete.  Use abind instead.
 
-2009-1-5 Yu-Sung Su     <ys463@columbia.edu>  
+2009-1-5 Yu-Sung Su     <ys463@columbia.edu>
    * DESCRIPTION (Version, Date): 0.02-03
 
-2008-12-30 Yu-Sung Su     <ys463@columbia.edu>  
+2008-12-30 Yu-Sung Su     <ys463@columbia.edu>
    * add K parameter to mi procedures.  If K>0, will cool the mi with probabilty q such
     that q = K/iteration.  This will create noise to the mi process by drawing
     from marginals.
 
-2008-12-28 Yu-Sung Su     <ys463@columbia.edu>  
-   * add augment.data option to mi procedures.  If TRUE, will augment the data 
-    with 10% of the observaed data.  
-   * return data.tmp into the global if mi abrupted with errors. 
+2008-12-28 Yu-Sung Su     <ys463@columbia.edu>
+   * add augment.data option to mi procedures.  If TRUE, will augment the data
+    with 10% of the observaed data.
+   * return data.tmp into the global if mi abrupted with errors.
 
 
-2008-10-7 Yu-Sung Su     <ys463@columbia.edu>  
+2008-10-7 Yu-Sung Su     <ys463@columbia.edu>
    * DESCRIPTION (Version, Date): 0.02-02
    * create display methods for glm.mi & lm.mi
-   * move some internal functions to AllInternal 
+   * move some internal functions to AllInternal
    * create glm.mi & lm.mi classes
 
-2008-10-6  Yu-Sung Su     <ys463@columbia.edu>  
+2008-10-6  Yu-Sung Su     <ys463@columbia.edu>
     * reverse S4 coef methods back to S3 to pass R check
     * reverse S4 fitted methods back to S3 to pass R check
     * reverse S4 residuals methods back to S3 to pass R check
     * reverse S4 plot methods back to S3 to pass R check
     * currently, no resid S3 methods
 
-2008-9-9  Yu-Sung Su     <ys463@columbia.edu>  
+2008-9-9  Yu-Sung Su     <ys463@columbia.edu>
     * DESCRIPTION (Version, Date): 0.02-01
     * First release!

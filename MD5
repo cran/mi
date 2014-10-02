@@ -1,8 +1,8 @@
-6de345a0cf772450709f22d742e57dbd *CHANGELOG
-ba002b78750cbed41657b6c352c68fc5 *DESCRIPTION
-fb0577d3a716c83bbc3583d790876246 *NAMESPACE
+5cb134804f554b010533449a8ba4f64c *CHANGELOG
+e9bee65e289b5dfa4d9a2d87e5901b12 *DESCRIPTION
+22b6a0b5a544c576897dfc1a2e4e6134 *NAMESPACE
 ca13cc419d0c7ab0bf0a670bec5c2013 *R/AllClass.R
-0e3645d8ceff88c41c2af4c7f545dfc9 *R/AllGeneric.R
+36f14d4ced03b1da9c734538956f2e59 *R/AllGeneric.R
 3abcb24e620bf7935a876581783c1e6c *R/AllInternal.R
 5e9e6ed3a15b5e1dd207cffe49a6c655 *R/bayesglm.mi.R
 8343abe5a9857b2b9e0e6c0456dab152 *R/bayespolr.mi.R
@@ -17,7 +17,7 @@ c7cf4eca95574cf56e906ddb01ff00c8 *R/imputed.R
 309c77cc78da2ab7e38f750d2ecf0a89 *R/lmer.mi.R
 d5c7c325e12d7286ef55fd87137c018a *R/load.first.R
 7607418205e1cea521534c6b94907815 *R/mi.R
-6fb2c5a3728083120eac0b9adb785851 *R/mi.binary.R
+647a7c822247a8dbc4a3d7fbc3aac9f1 *R/mi.binary.R
 dcb1307dc4786ef849cfbba742d70681 *R/mi.categorical.R
 9a3497ab9ae864f3a6aa4fa1423d7470 *R/mi.completed.R
 803d84f9c316d8f56d077d4780c013a1 *R/mi.continuous.R
@@ -50,7 +50,7 @@ f1ce7e3e7e1218b4b352ae98c3b97a8b *TODO
 f8278499667512e7a5755abbaf8d76d1 *inst/CITATION
 306e1d269ae80e522abfa92fd5212dbf *man/CHAIN.Rd
 b1ca3a9bb81610ffab710be83b503a38 *man/convergence.plot.Rd
-52edebcaac45ecb56a0e952959aa829b *man/mi.Rd
+e91b8c921580d76a68d5f2111516ecaf *man/mi.Rd
 813d8c01fc0dbec86af6b8aee4591bca *man/mi.binary.Rd
 0eabf7cddb4269a4b1ea0a05f543f777 *man/mi.categorical.Rd
 984f4433f5c8fa929c5445da75110133 *man/mi.completed.Rd
