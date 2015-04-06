@@ -9,14 +9,14 @@
 \alias{plot,mi.categorical-method}
 \alias{plot,mi.categorical,ANY-method}
 
-\title{ 
+\title{
     Elementary function: multinomial log-linear models to impute a categorical variable.
 }
 \description{
-    Imputes missing data in a categorical variable using multinomial Log-linear Models. 
+    Imputes missing data in a categorical variable using multinomial Log-linear Models.
 }
 \usage{
-  mi.categorical( formula, data = NULL, n.iter = 100, 
+  mi.categorical( formula, data = NULL, maxit = 100,
                   MaxNWts = 1500, missing.index = NULL, \dots)
   \S4method{residuals}{mi.categorical}(object, y)
   \S4method{plot}{mi.categorical,ANY}( x, y, main=deparse( substitute( y ) ), gray.scale = FALSE, \dots)
@@ -33,7 +33,7 @@
           levels. See the documentation of \code{formula()} for other
           details.  }
   \item{data}{ A data frame containing the incomplete data and the matrix of the complete predictors. }
-  \item{n.iter}{ Maximum number of iteration. }
+  \item{maxit}{ Maximum number of iteration. }
   \item{MaxNWts}{ The maximum allowable number of weights. See nnet for detail. }
   \item{missing.index}{The index of missing units of the outcome variable}
   \item{object}{ \code{mi.categorical} object.}
@@ -45,7 +45,7 @@
 
 }
 \details{
-    \code{multinom} calls the library \pkg{nnet}. See \code{multinom} for other details.   
+    \code{multinom} calls the library \pkg{nnet}. See \code{multinom} for other details.
 }
 \value{
     \item{model   }{A summary of the multinomial fitted model.}
@@ -53,8 +53,8 @@
     \item{random  }{Vector of length n.mis of random predicted values predicted by using the multinomial distribution.}
 }
 \references{
-    Andrew Gelman and Jennifer Hill, 
-    \emph{Data Analysis Using Regression and Multilevel/Hierarchical Models}, 
+    Andrew Gelman and Jennifer Hill,
+    \emph{Data Analysis Using Regression and Multilevel/Hierarchical Models},
     Cambridge University Press, 2007.
 
   Yu-Sung Su, Andrew Gelman, Jennifer Hill, Masanao Yajima. (2011).
@@ -69,7 +69,7 @@
   Andrew Gelman \email{gelman@stat.columbia.edu}
 }
 \seealso{
-    \code{\link{mi.info}}, 
+    \code{\link{mi.info}},
     \code{\link{mi.method}},
     \code{\link{mi}}
 }

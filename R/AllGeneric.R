@@ -190,7 +190,13 @@ setGeneric("residuals")
 #  )
 #}
 
-
+if ( !isGeneric( "sigma.hat" ) ) {
+    setGeneric( "sigma.hat",
+               function( object,... ){
+               standardGeneric( "sigma.hat" )
+               } 
+    )
+}
 
 
 

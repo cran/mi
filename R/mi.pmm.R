@@ -1,7 +1,7 @@
 # ==============================================================================
 # imputation function using predictive mean matching
 # ==============================================================================
-mi.pmm <- function(formula, data = NULL, start = NULL, n.iter = 100, missing.index = NULL, ... )
+mi.pmm <- function(formula, data = NULL, start = NULL, maxit = 100, missing.index = NULL, ... )
 {
   call <- match.call()
   mf   <- match.call(expand.dots = FALSE)
@@ -24,10 +24,10 @@ mi.pmm <- function(formula, data = NULL, start = NULL, n.iter = 100, missing.ind
 
 #  X <- mf[,-1,drop=FALSE]
 #  namesD <- if(is.null(data)) {
-#              NULL 
-#            } 
-#            else{ 
-#              deparse(substitute(data)) 
+#              NULL
+#            }
+#            else{
+#              deparse(substitute(data))
 #            }
 
   mis <- is.na(Y)
@@ -41,26 +41,26 @@ mi.pmm <- function(formula, data = NULL, start = NULL, n.iter = 100, missing.ind
   }
 
 
-  if(is.null(data)){ 
-    data <- mf 
+  if(is.null(data)){
+    data <- mf
   }
   if(!is.null(start)){
-    n.iter <- 10
+    maxit <- 10
   }
-  
-  bglm.imp  <- bayesglm(formula, data = data, start = start, n.iter = n.iter )
-  yhat <- predict(bglm.imp)#, newdata = data.frame( Y, X ) ) 
+
+  bglm.imp  <- bayesglm(formula, data = data, start = start, maxit = maxit )
+  yhat <- predict(bglm.imp)#, newdata = data.frame( Y, X ) )
   result <- new(c("mi.pmm", "mi.method"),
               model = vector("list", 0),
-              expected = numeric(0), 
+              expected = numeric(0),
               random = numeric(0))
   result@model$call <- bglm.imp$call
   result@model$coefficients <- bglm.imp$coefficients
   result@model$sigma <- sigma.hat( bglm.imp )
   result@model$startY <- Y[missing.index]
   result@expected <- yhat
-  result@random   <- apply( as.array( yhat[missing.index] ), 1, 
-                              mi.pmm.match, yhat=yhat[-missing.index], Y=Y[-missing.index] ) 
+  result@random   <- apply( as.array( yhat[missing.index] ), 1,
+                              mi.pmm.match, yhat=yhat[-missing.index], Y=Y[-missing.index] )
   result@residuals <- bglm.imp$residuals
   return(result)
 }

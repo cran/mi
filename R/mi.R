@@ -3,27 +3,27 @@
 #==============================================================================
 
 mi.default <- function(data, info, n.imp = 3, n.iter = 30, R.hat = 1.1,
-                  max.minutes = 20, rand.imp.method = "bootstrap", 
+                  max.minutes = 20, rand.imp.method = "bootstrap",
                   run.past.convergence = FALSE,
-                  seed = NA, check.coef.convergence = FALSE, 
+                  seed = NA, check.coef.convergence = FALSE,
                   add.noise = noise.control())
 {
   call <- match.call()
-  
+
   org.data <- data
-  
+
   # set random seed
   if(!is.na(seed)){
-    set.seed(seed) 
-  }    
-  
-  if(n.iter <= 5){ 
+    set.seed(seed)
+  }
+
+  if(n.iter <= 5){
     stop(message="number of iterations must be more than 5")
   }
-  
+
   # starting time
-  ProcStart     <- proc.time()                  
-  
+  ProcStart     <- proc.time()
+
   # pick a add.noise method
   if(is.logical(add.noise)){
     add.noise.method <- "other"
@@ -31,7 +31,7 @@ mi.default <- function(data, info, n.imp = 3, n.iter = 30, R.hat = 1.1,
   else{
     add.noise.method <- add.noise$method
   }
-  
+
   # variable initialization
   time.out.flg  <- FALSE
   converged.flg <- FALSE
@@ -40,17 +40,17 @@ mi.default <- function(data, info, n.imp = 3, n.iter = 30, R.hat = 1.1,
   Time.Elapsed  <- 0
   conv.check     <- NULL
   coef.mcmc <- NULL
-  
+
   # this makes sure categorical data is factorized
-  data <- .update.data(data, info)        
+  data <- .update.data(data, info)
 
   # store level info in mi.info for unordered cat vars
   info <- .catVarLevelCheck(data, info)
-  
+
   # initialize starting and end point of mcmc list
   s_start <- 1
   s_end <- n.iter
-  
+
   # creating misc info for further usage
   missingVar.idx <- .nmis(info) > 0
   includeVar.idx <- .include(info)#& missingVar.idx
@@ -61,21 +61,21 @@ mi.default <- function(data, info, n.imp = 3, n.iter = 30, R.hat = 1.1,
   varNames <- names(info)[includeVar.idx & missingVar.idx]
   varNames <- varNames[order(.imp.order(info)[includeVar.idx & missingVar.idx])]
   # convergence array initialization
-  
-  aveVar <- .initializeConvCheckArray(data, info, n.iter, n.imp, 
+
+  aveVar <- .initializeConvCheckArray(data, info, n.iter, n.imp,
     missingVar.idx, includeVar.idx, includeCatVar.idx, unorderedCatVar.idx, ncol.mis)
-  
+
   #dim.mcmc <- dim(aveVar)
   data <- data[ , includeVar.idx, drop = FALSE]
-  
-  
+
+
   # mi list initialization
   mi.data <- .initializeMiList(data, info, start.val.length, varNames, n.imp, ncol.mis, missingVar.idx, rand.imp.method)
   start.val <- mi.data$start.val
   mi.object <- mi.data$mi.object
   coef.val <- mi.data$coef.val
   mi.data <- mi.data$mi.data
-  
+
 
   cat("Beginning Multiple Imputation (", date(), "):\n")
   #===============================================================
@@ -90,13 +90,13 @@ mi.default <- function(data, info, n.imp = 3, n.iter = 30, R.hat = 1.1,
       # begin of variable loop
       #===============================================================
       for(jj in 1:length(varNames)){
-        CurrentVar <- varNames[jj]        
+        CurrentVar <- varNames[jj]
         #===============================================================
         # begin of add noises
         if(add.noise.method=="reshuffling"){
           prob.add.noise <- add.noise$K/s
           prob.add.noise <- ifelse(prob.add.noise > 1, 1, prob.add.noise)
-          q <- rbinom(1, 1, prob=prob.add.noise)           
+          q <- rbinom(1, 1, prob=prob.add.noise)
           if(q){
             cat(paste(CurrentVar, "*", sep=""), " ")
           }
@@ -125,10 +125,10 @@ mi.default <- function(data, info, n.imp = 3, n.iter = 30, R.hat = 1.1,
         if(add.noise.method=="fading"){
           n.aug <- trunc(nrow(dat)*(add.noise$pct.aug/100))
           dat <- rbind(dat, .randdraw(data, n=n.aug))
-        }  
+        }
         #=end of add noise=====================================================
 
-        #===============================================================        
+        #===============================================================
         # Error Handling
         #.Internal(seterrmessage(""))
         errormessage <- paste("\nError while imputing variable:", CurrentVar, ", model:", model.type,"\n")
@@ -136,10 +136,10 @@ mi.default <- function(data, info, n.imp = 3, n.iter = 30, R.hat = 1.1,
         on.exit(options(show.error.messages = TRUE),add = TRUE)
         options(show.error.messages = FALSE)
         #===============================================================
-        
-        mi.object[[i]][[CurrentVar]] <- with(data = dat, 
+
+        mi.object[[i]][[CurrentVar]] <- with(data = dat,
                                           do.call(model.type,
-                                            args = c(list(formula = info[[CurrentVar]]$imp.formula, 
+                                            args = c(list(formula = info[[CurrentVar]]$imp.formula,
                                             data = dat,
                                             start = if(!is.null(start.val[[i]][[jj]])){
                                                       start.val[[i]][[jj]]
@@ -148,14 +148,14 @@ mi.default <- function(data, info, n.imp = 3, n.iter = 30, R.hat = 1.1,
                                                     },
                                             missing.index = missing.index
                                             ),
-                                          info[[CurrentVar]]$params$n.iter)
+                                          info[[CurrentVar]]$params$maxit)
                                           ))
         #===============================================================
         # Error Handling
         on.exit(options(show.error.messages = TRUE))
         #===============================================================
 
-        if(add.noise.method=="reshuffling"){        
+        if(add.noise.method=="reshuffling"){
           if(q){
             mi.object[[i]][[CurrentVar]]@random <- dat[missing.index,CurrentVar]
           }
@@ -186,7 +186,7 @@ mi.default <- function(data, info, n.imp = 3, n.iter = 30, R.hat = 1.1,
         else{
           start.val[[i]][[jj]] <- 0
         }
-      } 
+      }
       #= end of variable loop ===============================================================
 
 
@@ -199,29 +199,29 @@ mi.default <- function(data, info, n.imp = 3, n.iter = 30, R.hat = 1.1,
       }
 
       aveVar[s,i,] <- c(avevar.mean, avevar.sd)
-    } 
+    }
     #= end of imputation loop ===============================================================
-       
+
     # Check for convergence
     Time.Elapsed <- proc.time() - ProcStart
     if (s > 5 || ((((Time.Elapsed)/60)[3] > 0.5) && s > 2)){
       conv.check <- as.bugs.array(aveVar[1:s, , ])$summary[,"Rhat"]
-      if(all(conv.check < R.hat)) { 
+      if(all(conv.check < R.hat)) {
         converged.flg <- TRUE
-        if(!run.past.convergence & !check.coef.convergence){ 
+        if(!run.past.convergence & !check.coef.convergence){
           break
         }
       }
-      if(((Time.Elapsed)/60)[3] > max.minutes){ 
+      if(((Time.Elapsed)/60)[3] > max.minutes){
         time.out.flg <- TRUE
         break
       }
     }
-    if(s==s_end){ 
-      max.iter.flg <- TRUE 
+    if(s==s_end){
+      max.iter.flg <- TRUE
     }
   } # iteration loop
-  
+
   options(show.error.messages = TRUE)
 
   if(check.coef.convergence){
@@ -231,55 +231,55 @@ mi.default <- function(data, info, n.imp = 3, n.iter = 30, R.hat = 1.1,
     }
     cat(if(converged.flg & coef.converged.flg){
         converged.flg <- TRUE
-        "mi converged (" 
-      } 
+        "mi converged ("
+      }
       else if(time.out.flg){
         "Time out, mi did not converge ("
-      } 
+      }
       else if(max.iter.flg){
         "Reached the maximum iteration, mi did not converge ("
-      } 
-      else{ 
+      }
+      else{
         "Unknown termination ("
       }
       , date(), ")\n"
-      ) 
+      )
   }
   else{
   # Print out reason for termination
   cat(if(converged.flg){
-        "mi converged (" 
-      } 
+        "mi converged ("
+      }
       else if(time.out.flg){
         "Time out, mi did not converge ("
-      } 
+      }
       else if(max.iter.flg){
         "Reached the maximum iteration, mi did not converge ("
-      } 
-      else{ 
+      }
+      else{
         "Unknown termination ("
       }
       , date(), ")\n"
-      ) 
+      )
   }
   # impute correlated variables
   for( cor.idx in 1:length(info)) {
-    if( !is.na(info[[cor.idx]]$collinear) 
-         && info[[cor.idx]]$nmis > 0 
+    if( !is.na(info[[cor.idx]]$collinear)
+         && info[[cor.idx]]$nmis > 0
           && info[[cor.idx]]$include==FALSE ) {
       rho <- coef(lm(data[[names(info)[cor.idx]]] ~ data[[info[[cor.idx]]$determ.pred]]))[2]
       for ( ii in 1:n.imp ){
-        mi.object[[ii]][[names(info)[[cor.idx]]]] <- do.call( mi.copy, 
+        mi.object[[ii]][[names(info)[[cor.idx]]]] <- do.call( mi.copy,
                                                               args=list(
                                                                 Y=data[[names(info)[cor.idx]]],
                                                                 X=(mi.data[[ii]][info[[cor.idx]]$collinear])*rho))
       }
     }
   }
-  
+
   aveVar <- aveVar[1:s,,]
   total.iters <- s
-  
+
   if(!is.logical(add.noise)){
     add.noise.flg <- TRUE
   }
@@ -293,8 +293,8 @@ mi.default <- function(data, info, n.imp = 3, n.iter = 30, R.hat = 1.1,
     aveVar <- aveVar[1:s,,]
     }
   }
-  
-  object <- new("mi", 
+
+  object <- new("mi",
             call      = call,
             data      = org.data,
             m         = n.imp,
@@ -314,18 +314,18 @@ mi.default <- function(data, info, n.imp = 3, n.iter = 30, R.hat = 1.1,
 # ======================================================================
 
 
-setMethod("mi", signature(object = "data.frame"), 
+setMethod("mi", signature(object = "data.frame"),
         function (object, info, n.imp = 3, n.iter = 30, R.hat = 1.1,
-                  max.minutes = 20, rand.imp.method = "bootstrap", 
+                  max.minutes = 20, rand.imp.method = "bootstrap",
                   run.past.convergence = FALSE,
-                  seed = NA, check.coef.convergence = FALSE, 
+                  seed = NA, check.coef.convergence = FALSE,
                   add.noise = noise.control())
-{ 
+{
 
   if(missing(info)){
     info <- mi.info(object)
   }
-  
+
   object <- mi.default(object, info, n.imp, n.iter, R.hat,
             max.minutes, rand.imp.method, run.past.convergence,
             seed, check.coef.convergence, add.noise)
@@ -351,17 +351,17 @@ setMethod("mi", signature(object = "data.frame"),
 
 
 
-setMethod("mi", signature(object = "mi.preprocessed"), 
+setMethod("mi", signature(object = "mi.preprocessed"),
         function (object, n.imp = 3, n.iter = 30, R.hat = 1.1,
-                  max.minutes = 20, rand.imp.method = "bootstrap", 
+                  max.minutes = 20, rand.imp.method = "bootstrap",
                   run.past.convergence = FALSE,
-                  seed = NA, check.coef.convergence = FALSE, 
+                  seed = NA, check.coef.convergence = FALSE,
                   add.noise = noise.control())
-{ 
+{
 
   info <- object@mi.info
   object <- object@data
-  
+
   object <- mi.default(object, info, n.imp, n.iter, R.hat,
             max.minutes, rand.imp.method, run.past.convergence,
             seed, check.coef.convergence, add.noise)
@@ -386,18 +386,18 @@ setMethod("mi", signature(object = "mi.preprocessed"),
 # ======================================================================
 
 
-setMethod("mi", signature(object = "mi"), 
+setMethod("mi", signature(object = "mi"),
         function (object, n.iter = 30, R.hat = 1.1,
-                  max.minutes = 20, rand.imp.method = "bootstrap", 
+                  max.minutes = 20, rand.imp.method = "bootstrap",
                   run.past.convergence = FALSE,
-                  seed = NA) 
-{ 
+                  seed = NA)
+{
   call <- match.call()                         # call
   if(!is.na(seed)){
-    set.seed(seed) 
+    set.seed(seed)
   }    # set random seed
-  
-  if(n.iter <= 5){ 
+
+  if(n.iter <= 5){
     stop(message="number of iterations must be more than 5")
   }
   ProcStart     <- proc.time()                  # starting time
@@ -417,20 +417,20 @@ setMethod("mi", signature(object = "mi"),
 
   # this makes sure categorical data is factorized
   data <- .update.data(data, info)
-  
-  
+
+
   if(is.null(object@coef.mcmc)){
     check.coef.convergence <- FALSE
   }
   else{
     check.coef.convergence <- TRUE
   }
-    
+
   #ncol.mis <- sum(.nmis(info)>0)
   n.imp     <- m(object)
   prev.iter <- dim(object@mcmc)[1]
   prevIterNoThin <- object@total.iters
-  
+
   # creating misc info for further usage
   missingVar.idx <- .nmis(info) > 0
   includeVar.idx <- .include(info) #& missingVar.idx
@@ -448,17 +448,17 @@ setMethod("mi", signature(object = "mi"),
     object@coef.mcmc <- NULL
   }
 
-  aveVar <- .initializeConvCheckArray(data, info, n.iter = n.iter + prev.iter, n.imp, 
-      missingVar.idx, includeVar.idx, includeCatVar.idx, unorderedCatVar.idx, ncol.mis)  
+  aveVar <- .initializeConvCheckArray(data, info, n.iter = n.iter + prev.iter, n.imp,
+      missingVar.idx, includeVar.idx, includeCatVar.idx, unorderedCatVar.idx, ncol.mis)
   data <- data[ , includeVar.idx, drop = FALSE]
-    
+
   if(prev.iter > 0){
     aveVar[1:prev.iter,,] <- object@mcmc
   }
   s_start <- 1 + prev.iter
   s_end <- n.iter + prev.iter
-  
-  
+
+
   # mi list initialization
   mi.data <- .initializeMiList(data, info, start.val.length, varNames, n.imp, ncol.mis, missingVar.idx, rand.imp.method)
   start.val <- mi.data$start.val
@@ -466,7 +466,7 @@ setMethod("mi", signature(object = "mi"),
   coef.val <- mi.data$coef.val
   mi.data <- mi.data$mi.data
 
-  
+
   cat( "Beginning Multiple Imputation (", date(), "):\n" )
   # iteration loop
   for ( s in s_start:s_end ) {
@@ -477,7 +477,7 @@ setMethod("mi", signature(object = "mi"),
       # variable loop
       for( jj in 1:length(varNames) ) {
         CurrentVar <- varNames[jj]
-        cat(CurrentVar, "  ")      
+        cat(CurrentVar, "  ")
         CurVarFlg <- ( names ( data ) == CurrentVar )
 
         #missing.index <- info$missing.index[[CurrentVar]]
@@ -492,9 +492,9 @@ setMethod("mi", signature(object = "mi"),
         on.exit(options(show.error.messages = TRUE),add = TRUE)
         options(show.error.messages = FALSE)
         # Error Handling
-        mi.object[[i]][[CurrentVar]] <- with(data = mi.data[[i]], 
+        mi.object[[i]][[CurrentVar]] <- with(data = mi.data[[i]],
                                           do.call(model.type,
-                                            args = c(list(formula = info[[CurrentVar]]$imp.formula, 
+                                            args = c(list(formula = info[[CurrentVar]]$imp.formula,
                                             data = mi.data[[i]],
                                             start = if(!is.null(start.val[[i]][[jj]])){
                                                       start.val[[i]][[jj]]
@@ -508,14 +508,14 @@ setMethod("mi", signature(object = "mi"),
         # Error Handling
         on.exit(options(show.error.messages = TRUE))
 
-        # Error Handling        
+        # Error Handling
         mi.data[[i]][missing.index, CurrentVar] <- mi.object[[i]][[CurrentVar]]@random
         if(info[[CurrentVar]]$type=="unordered-categorical"){
           n.level <- length(info[[CurrentVar]]$level)
           if(!is.null(coef(mi.object[[i]][[CurrentVar]]))){
             coef.val[[CurrentVar]][[i]] <- rbind(coef.val[[CurrentVar]][[i]],
               unlist(as.list(coef(mi.object[[i]][[CurrentVar]]))))
-          }        
+          }
           else{
             coef.val[[CurrentVar]][[i]] <- rbind(coef.val[[CurrentVar]][[i]],0)
           }
@@ -525,7 +525,7 @@ setMethod("mi", signature(object = "mi"),
             coef.val[[CurrentVar]][[i]] <- rbind(coef.val[[CurrentVar]][[i]],coef(mi.object[[i]][[CurrentVar]]))
           }
           else{
-            coef.val[[CurrentVar]][[i]] <- rbind(coef.val[[CurrentVar]][[i]],0)          
+            coef.val[[CurrentVar]][[i]] <- rbind(coef.val[[CurrentVar]][[i]],0)
           }
         }
         if(!is.null(coef(mi.object[[i]][[CurrentVar]]))){
@@ -534,8 +534,8 @@ setMethod("mi", signature(object = "mi"),
         else{
           start.val[[i]][[jj]] <- 0
         }
-      } ## variable loop 
-      cat("\n" )      
+      } ## variable loop
+      cat("\n" )
       avevar.mean <- NULL
       avevar.sd <- NULL
       for (mm in 1:length(varNames)){
@@ -544,30 +544,30 @@ setMethod("mi", signature(object = "mi"),
       }
 
       aveVar[s,i,] <- c(avevar.mean, avevar.sd)
-     
-    
+
+
     } # imputation loop
     # Check for convergence
     Time.Elapsed <- proc.time() - ProcStart
     if (s > 5 || ((((Time.Elapsed)/60)[3] > 0.5) && s > 2)){
       conv.check <- as.bugs.array(aveVar[1:s, , ])$summary[,"Rhat"]
-      if(all(conv.check < R.hat)) { 
+      if(all(conv.check < R.hat)) {
         converged.flg <- TRUE
-        if(!run.past.convergence & !check.coef.convergence){ 
+        if(!run.past.convergence & !check.coef.convergence){
           break
         }
       }
-      if(((Time.Elapsed)/60)[3] > max.minutes){ 
+      if(((Time.Elapsed)/60)[3] > max.minutes){
         time.out.flg <- TRUE
         break
       }
     }
-    if(s==s_end){ 
-      max.iter.flg <- TRUE 
+    if(s==s_end){
+      max.iter.flg <- TRUE
     }
   } # iteration loop
- 
- 
+
+
   if(check.coef.convergence){
     coef.mcmc <- object@coef.mcmc
     coef.mcmc <- .checkCoefConvergence(coef.mcmc, coef.val, n.imp)
@@ -577,15 +577,15 @@ setMethod("mi", signature(object = "mi"),
    # Print out reason for termination
     cat(if(converged.flg & coef.converged.flg){
         converged.flg <- TRUE
-        "mi converged (" 
-      } 
+        "mi converged ("
+      }
       else if(time.out.flg ){
         "Time out, mi did not converge ("
-      } 
+      }
       else if( max.iter.flg ){
         "Reached the maximum iteration, mi did not converge ("
-      } 
-      else{ 
+      }
+      else{
         "Unknown termination ("
       }
       , date(), ")\n")
@@ -593,15 +593,15 @@ setMethod("mi", signature(object = "mi"),
   else{
   # Print out reason for termination
   cat(if(converged.flg){
-        "mi converged (" 
-      } 
+        "mi converged ("
+      }
       else if(time.out.flg ){
         "Time out, mi did not converge ("
-      } 
+      }
       else if( max.iter.flg ){
         "Reached the maximum iteration, mi did not converge ("
-      } 
-      else{ 
+      }
+      else{
         "Unknown termination ("
       }
       , date(), ")\n")
@@ -610,12 +610,12 @@ setMethod("mi", signature(object = "mi"),
 
   # impute collinear variables
   for(cor.idx in 1:length(info)) {
-    if(!is.na(info[[cor.idx]]$collinear) 
-         && info[[cor.idx]]$nmis > 0 
+    if(!is.na(info[[cor.idx]]$collinear)
+         && info[[cor.idx]]$nmis > 0
           && !info[[cor.idx]]$include ) {
       rho <- coef(lm(data[[names(info)[cor.idx]]] ~ data[[info[[cor.idx]]$determ.pred]]))[2]
       for ( ii in 1:n.imp ){
-        mi.object[[ii]][[names(info)[[cor.idx]]]] <- do.call( mi.copy, 
+        mi.object[[ii]][[names(info)[[cor.idx]]]] <- do.call( mi.copy,
                                                               args=list(
                                                                 Y=data[[names(info)[cor.idx]]],
                                                                 X=mi.data[[ii]][info[[cor.idx]]$determ.pred]))
@@ -625,7 +625,7 @@ setMethod("mi", signature(object = "mi"),
 
   aveVar <- aveVar[1:s,,]
   total.iters <- s + prevIterNoThin
-  
+
   if(s > 30){
     n.thin = max(1, floor(s/30))
     keep <- c(rep(FALSE, n.thin-1), TRUE)
@@ -634,8 +634,8 @@ setMethod("mi", signature(object = "mi"),
     aveVar <- aveVar[1:s,,]
   }
 
-  
-  object <- new("mi", 
+
+  object <- new("mi",
             call      = call,
             data      = data.mi(object),
             m         = n.imp,
@@ -656,45 +656,45 @@ setMethod("mi", signature(object = "mi"),
 
 
 ##The simple imputation function
-impute <- function (a, a.impute) { 
+impute <- function (a, a.impute) {
   out <- ifelse (is.na(a), a.impute, a)
-  return (out) 
+  return (out)
 }
 
 
 setMethod("is.mi", signature( object = "mi" ),
-  function (object){ 
-    return(inherits ( object, "mi" )) 
+  function (object){
+    return(inherits ( object, "mi" ))
   }
 )
 
 setMethod("call.mi", signature( object = "mi" ),
-  function (object) { 
-    return(object@call) 
+  function (object) {
+    return(object@call)
   }
 )
 
 setMethod("data.mi", signature( object = "mi" ),
-  function (object) { 
-    return( object@data ) 
+  function (object) {
+    return( object@data )
   }
 )
 
 setMethod("converged", signature( object = "mi" ),
-  function (object, check = c("data", "coefs") ) { 
+  function (object, check = c("data", "coefs") ) {
     if(check=="coefs"){
       out <- object@coef.converged
     }
     if(check=="data"){
       out <- object@converged
     }
-    return(out)     
+    return(out)
   }
 )
 
 setMethod("m", signature( object = "mi" ),
-  function (object) { 
-    return( object@m ) 
+  function (object) {
+    return( object@m )
   }
 )
 
@@ -707,13 +707,13 @@ setMethod("bugs.mi", signature( object = "mi" ),
     if(check=="data"){
       out <- as.bugs.array(object@mcmc)
     }
-    return(out) 
+    return(out)
   }
 )
 
 setMethod("info.mi", signature(object = "mi" ),
    function(object){
-    return(object@mi.info ) 
+    return(object@mi.info )
   }
 )
 

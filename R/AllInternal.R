@@ -105,7 +105,7 @@ vrb.typ <- NULL # to pass R CMD check
     as.double( levels( a ) )[ as.double( a ) ]
   } 
   else {
-    a
+    as.numeric(a)
   }
 }
 

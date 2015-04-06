@@ -1,8 +1,8 @@
 # ==============================================================================
 # imputation function for categorical variable
 # ==============================================================================
-mi.categorical <- function( formula, data = NULL, n.iter = 100, 
-                            MaxNWts = 1500, missing.index = NULL, ...  ) 
+mi.categorical <- function( formula, data = NULL, maxit = 100,
+                            MaxNWts = 1500, missing.index = NULL, ...  )
 {
   call <- match.call()
   mf   <- match.call(expand.dots = FALSE)
@@ -22,10 +22,10 @@ mi.categorical <- function( formula, data = NULL, n.iter = 100,
     }
   }
   X <- mf[,-1,drop=FALSE]
-#  namesD <- if( is.null(data)){ 
-#              NULL 
-#            } 
-#            else{ 
+#  namesD <- if( is.null(data)){
+#              NULL
+#            }
+#            else{
 #              deparse(substitute(data))
 #            }
   mis <- is.na(Y)
@@ -37,15 +37,15 @@ mi.categorical <- function( formula, data = NULL, n.iter = 100,
   if(is.null(missing.index)& any(mis)){
     missing.index <- mis
   }
-  
-  if(is.null(data)){ 
-    data <- mf 
+
+  if(is.null(data)){
+    data <- mf
   }
-  
+
   # main program
-  lm.cat.imp  <- multinom( formula = formula, data = data, maxit = n.iter, 
+  lm.cat.imp  <- multinom( formula = formula, data = data, maxit = maxit,
                             trace = FALSE , MaxNWts = MaxNWts, ...)
-  
+
   deter.prob  <- predict( lm.cat.imp, newdata = data, type = "p" )
   y.cat       <- levels(factor(Y))
   y.ncat <- length(y.cat)
@@ -58,23 +58,23 @@ mi.categorical <- function( formula, data = NULL, n.iter = 100,
   names( determ.pred ) <- 1:length( determ.pred )
   if(n.mis>0){
     random.pred <-  Rmultnm( n.mis, deter.prob[missing.index,], 1:y.ncat)
-    random.pred <-  recode(random.pred, paste(1:y.ncat,"='",y.cat,"'",sep="",collapse=";") )        
+    random.pred <-  recode(random.pred, paste(1:y.ncat,"='",y.cat,"'",sep="",collapse=";") )
     names( random.pred ) <- names( determ.pred[missing.index] )
   } else{
     random.pred <- NULL
   }
-  #resids <- as.numeric(Y)[!is.na(Y)] - as.numeric(determ.pred)[!is.na(Y)] 
+  #resids <- as.numeric(Y)[!is.na(Y)] - as.numeric(determ.pred)[!is.na(Y)]
   # return the result
   result <- new(c("mi.categorical", "mi.method"),
             model = vector("list", 0),
-              expected = NULL, 
+              expected = NULL,
               random = NULL)
   result@model$call         <- lm.cat.imp$call
   result@model$call$formula <- formula
-  result@model$call$maxit   <- n.iter
+  result@model$call$maxit   <- maxit
   result@model$call$MaxNWts <- MaxNWts
   result@model$coefficients <- coef( lm.cat.imp )
-  result@model$sigma        <- NULL 
+  result@model$sigma        <- NULL
   result@expected <- determ.pred
   result@random   <- random.pred
   #result@residuals <- resids
@@ -91,7 +91,7 @@ Rmultnm <- function( n, prob.mat, category  ) {
   prob  <- prob.mat * NA
   if( is.null( dim( prob.mat ) ) ) {
     prob <- t( rmultinom( 1, 1, prob.mat ) )
-  } 
+  }
   else {
     for( i in 1:n ){
       prob[i,] <- rmultinom( 1, 1, prob.mat[i, ] )

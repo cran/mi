@@ -1,7 +1,7 @@
 # ==============================================================================
 # imputation function for binary variable
 # ==============================================================================
-mi.binary <- function( formula, data = NULL, start = NULL, n.iter = 100,
+mi.binary <- function( formula, data = NULL, start = NULL, maxit = 100,
                              draw.from.beta=TRUE, missing.index = NULL, ... ) {
   call <- match.call()
   mf <- match.call(expand.dots = FALSE)
@@ -49,7 +49,7 @@ mi.binary <- function( formula, data = NULL, start = NULL, n.iter = 100,
   Y <- recode(Y, paste("'", y.levels, "'=", c(0, 1), sep = "", collapse = "; "))
 
   if (!is.null(start)) {
-      n.iter <- 50
+      maxit <- 50
       start[is.na(start)] <- 0
   }
   if (is.null(data)) {
@@ -60,7 +60,7 @@ mi.binary <- function( formula, data = NULL, start = NULL, n.iter = 100,
      data[,names(mf)[1]] <- Y
   }
   bglm.imp <- bayesglm(formula = formula, data = data, family = binomial(link = "logit"),
-      n.iter = n.iter, start = start, drop.unused.levels = FALSE,
+      maxit = maxit, start = start, drop.unused.levels = FALSE,
       Warning = FALSE, ...)
   determ.pred <- predict(bglm.imp, newdata = data, type = "response")
 
@@ -99,7 +99,7 @@ mi.binary <- function( formula, data = NULL, start = NULL, n.iter = 100,
   result@model$call <- bglm.imp$call
   result@model$call$formula <- as.formula(formula)
   result@model$call$start <- round(as.double(start), 2)
-  result@model$call$n.iter <- n.iter
+  result@model$call$maxit <- maxit
   result@model$coefficients <- coef(bglm.imp)
   result@model$sigma <- sigma.hat(bglm.imp)
   result@model$startY <- Y[missing.index]

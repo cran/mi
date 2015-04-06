@@ -12,11 +12,11 @@
     Elementary function: multinomial log-linear models to impute a ordered categorical variable.
 }
 \description{
-    Imputes missing data in a categorical variable using multinomial Log-linear Models. 
+    Imputes missing data in a categorical variable using multinomial Log-linear Models.
 }
 \usage{
-  mi.polr(formula, data = NULL, drop.unused.levels = TRUE, start = NULL, 
-    n.iter = 100, missing.index = NULL, \dots)
+  mi.polr(formula, data = NULL, drop.unused.levels = TRUE, start = NULL,
+    maxit = 100, missing.index = NULL, \dots)
   \S4method{residuals}{mi.polr}(object, y)
   \S4method{plot}{mi.polr,ANY}( x, y, main=deparse( substitute( y ) ), gray.scale = FALSE, \dots )
 }
@@ -25,14 +25,14 @@
   \item{formula}{ a formula expression as for regression models, of the form
           \code{response ~ predictors}. The response should be a factor
           (preferably an ordered factor), which will be interpreted as
-          an ordinal response, with levels ordered as in the factor.  
+          an ordinal response, with levels ordered as in the factor.
           The model must have an intercept: attempts to remove one will
-          lead to a warning and be ignored.  An offset may be used. 
+          lead to a warning and be ignored.  An offset may be used.
           See the documentation of 'formula' for other details. }
   \item{data}{ A data frame containing the incomplete data and the matrix of the complete predictors. }
   \item{drop.unused.levels}{ Drops unused levels. }
   \item{start}{ Starting value for bayespolr. }
-  \item{n.iter}{ Maximum number of iteration for bayespolr. The default is 100.}
+  \item{maxit}{ Maximum number of iteration for bayespolr. The default is 100.}
   \item{missing.index}{The index of missing units of the outcome variable.}
   \item{\dots}{ Currently not used. }
   \item{object}{ \code{mi.polr} object.}
@@ -43,7 +43,7 @@
 
 }
 \details{
-    \code{multinom} calls the library \pkg{nnet}. See multinom for other details.   
+    \code{multinom} calls the library \pkg{nnet}. See multinom for other details.
 }
 \value{
     \item{model    }{A summary of the multinomial fitted model}
@@ -56,8 +56,8 @@
     \dQuote{Multiple Imputation with Diagnostics (mi) in R: Opening Windows into the Black Box}.
     \emph{Journal of Statistical Software} 45(2).
 
-    Andrew Gelman and Jennifer Hill, 
-    \emph{Data Analysis Using Regression and Multilevel/Hierarchical Models}, 
+    Andrew Gelman and Jennifer Hill,
+    \emph{Data Analysis Using Regression and Multilevel/Hierarchical Models},
     Cambridge University Press, 2007.
 }
 \author{
@@ -70,7 +70,7 @@
     \code{\link{mi.info}},
     \code{\link{mi.method}},
     \code{\link{mi}}
-    
+
 }
 \examples{
   # true data

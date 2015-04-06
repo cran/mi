@@ -11,7 +11,7 @@
     Imputes univariate missing data using linear regression.
 }
 \usage{
-mi.continuous(formula, data = NULL, start = NULL, n.iter = 100, 
+mi.continuous(formula, data = NULL, start = NULL, maxit = 100,
     draw.from.beta = TRUE, missing.index = NULL, \dots)
 }
 
@@ -19,7 +19,7 @@ mi.continuous(formula, data = NULL, start = NULL, n.iter = 100,
   \item{formula}{an object of class '"formula"' (or one that can be coerced to that class): a symbolic description of the model to be fitted.  See bayesglm 'formula' for details.}
   \item{data}{ A data frame containing the incomplete data and the matrix of the complete predictors. }
   \item{start}{ Starting value for bayesglm. }
-  \item{n.iter}{ Maximum number of iteration for bayesglm. The default is 100.}
+  \item{maxit}{ Maximum number of iteration for bayesglm. The default is 100.}
   \item{draw.from.beta}{ Draws from posterior distribution of the betas to add randomness. }
   \item{missing.index}{The index of missing units of the outcome variable}
   \item{\dots}{ Currently not used. }
@@ -32,7 +32,7 @@ mi.continuous(formula, data = NULL, start = NULL, n.iter = 100,
 \value{
     \item{model   }{A summary of the fitted model.}
     \item{expected}{The expected values estimated by the model.}
-    \item{random  }{Vector of length n.mis of random predicted values predicted by using the normal distribution.} 
+    \item{random  }{Vector of length n.mis of random predicted values predicted by using the normal distribution.}
 }
 
 \references{
@@ -41,8 +41,8 @@ mi.continuous(formula, data = NULL, start = NULL, n.iter = 100,
     \emph{Journal of Statistical Software} 45(2).
 
 
-    Andrew Gelman and Jennifer Hill, 
-    \emph{Data Analysis Using Regression and Multilevel/Hierarchical Models}, 
+    Andrew Gelman and Jennifer Hill,
+    \emph{Data Analysis Using Regression and Multilevel/Hierarchical Models},
     Cambridge University Press, 2006.
 }
 
@@ -65,7 +65,7 @@ mi.continuous(formula, data = NULL, start = NULL, n.iter = 100,
 }
 
 \seealso{
-    \code{\link{mi.info}}, 
+    \code{\link{mi.info}},
     \code{\link{mi.method}},
     \code{\link{mi}}
 }

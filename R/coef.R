@@ -9,6 +9,7 @@ setMethod("coef", signature(object = "mi.method"),
 )
 
 
+
 setMethod("coefficients", signature(object = "mi.method"), 
   function(object){
   object@model$coefficients
