@@ -8,15 +8,15 @@
 \alias{print,mi.method-method}
 \alias{plot,mi.method-method}
 \alias{plot,mi.method,ANY-method}
-\alias{fitted,mi.method-method}
-\alias{coef,mi.method-method}
-\alias{coefficients,mi.method-method}
+\alias{fitted.mi.method}
+\alias{coef.mi.method}
+\alias{coef.mi.pooled}
 \alias{imputed,mi.method-method}
 \alias{imputed,mi.categorical-method}
 \alias{imputed,mi.polr-method}
 \alias{residuals,mi.method-method}
 \alias{resid,mi.method-method}
-\alias{sigma.hat,mi.method-method}
+\alias{sigma.hat.mi.method}
 
 \title{
     Virtual class for all mi classes.
@@ -28,10 +28,10 @@
   \S4method{imputed}{mi.method}(object,y)
   \S4method{imputed}{mi.categorical}(object,y)
   \S4method{imputed}{mi.polr}(object,y)
-  \S4method{coef}{mi.method}(object)
-  \S4method{coefficients}{mi.method}(object)
-  \S4method{sigma.hat}{mi.method}(object)
-  \S4method{fitted}{mi.method}(object)
+  \method{coef}{mi.method}(object,\dots)
+  \method{coef}{mi.pooled}(object,\dots)
+  \method{sigma.hat}{mi.method}(object,\dots)
+  \method{fitted}{mi.method}(object,\dots)
   \S4method{resid}{mi.method}(object, y)
   \S4method{residuals}{mi.method}(object, y)
   \S4method{print}{mi.method}(x, \dots)
@@ -48,7 +48,7 @@
 
 }
 \details{
-  mi.method is a virtual class for all the \code{mi} classes.  
+  mi.method is a virtual class for all the \code{mi} classes.
   Basically all the necessary functions are defined under \code{mi.method} class, thus
   most of the \code{mi} classes that do not have specific method defined for them inherits their methods from this class.
   For some special class as \code{mi.nonnegative} these methods are extended to tailor to the needs.

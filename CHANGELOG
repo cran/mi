@@ -1,5 +1,5 @@
 2015-04-06 Yu-Sung Su     <suyusung@tsinghua.edu.cn>
-   * DESCRIPTION (Version, Date): 1.00-01 cannot use leading 0 version, eg. 0.10-01.
+   * DESCRIPTION (Version, Date): 0.10-1
    * clean up DESCRIPTION and NAMESPACE
    * R/mi: change n.iter to maxit to fit the new bayesglm in arm
 

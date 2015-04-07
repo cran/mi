@@ -7,6 +7,7 @@ importFrom("stats",
       update
 )
 
+
 importFrom(lme4, "lmer", "glmer")
 
 importFrom(methods, "setOldClass")
@@ -29,6 +30,9 @@ importFrom(nnet, "multinom")
 
 importFrom(car, "recode")
 
+importFrom(nlme, "fixef")
+
+
 importFrom("arm",
       bayesglm,
       bayespolr,
@@ -38,8 +42,7 @@ importFrom("arm",
       invlogit,
       se.coef,
       sigma.hat,
-      traceplot,
-      fixef
+      traceplot
 )
 
 exportClasses(
@@ -64,11 +67,8 @@ exportMethods(
   data.mi,
   info.mi,
   is.mi,
-  coef,
-  coefficients,
   converged,
   display,
-  fitted,
   imputed,
   imp,
   m,
@@ -80,7 +80,6 @@ exportMethods(
   resid,
   residuals,
   se.coef,
-  sigma.hat,
   typecast,
   print,
   show
@@ -128,7 +127,6 @@ export(
   mi.info.update.level,
   mi.info.update.other,
   mi.info.update.params,
-#  mi.info.update.transform,
   mi.info.update.type,
   mi.interactive,
   mi.preprocess,
@@ -167,3 +165,7 @@ S3method("[<-", mi.info)
 S3method("$<-", mi.info)
 S3method("[", mi.info)
 S3method("$", mi.info)
+S3method(fitted, mi.method)
+S3method(sigma.hat, mi.method)
+S3method(coef, mi.method)
+S3method(coef, mi.pooled) 
