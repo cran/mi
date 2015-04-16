@@ -1,210 +1,34 @@
-# ==============================================================================
-# generic method definition
-# ==============================================================================
-
-if ( !isGeneric("call.mi")) {
-  setGeneric( "call.mi",
-              function(object ){
-                standardGeneric( "call.mi" )
-              }
-  )
-}
-
-
-if ( !isGeneric("coef")) {
-  setGeneric( "coef",
-              function( object, ... ){
-                standardGeneric( "coef" )
-              }
-  )
-}
-
-#setGeneric("coefficients")
-
-if ( !isGeneric("coefficients")) {
-  setGeneric( "coefficients",
-              function( object, ... ){
-                standardGeneric( "coefficients" )
-              }
-  )
-}
+# Part of the mi package for multiple imputation of missing data
+# Copyright (C) 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015 Trustees of Columbia University
+# 
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
-
-
-if ( !isGeneric("converged")) {
-  setGeneric( "converged",
-              function( object, ... ){
-                standardGeneric( "converged" )
-              }
-  )
-}
-
-
-
-if ( !isGeneric( "data.mi" )) {
-  setGeneric( "data.mi",
-              function( object ){
-                standardGeneric( "data.mi" )
-              }
-  )
-}
-
-#setGeneric("fitted")
-
-#if ( !isGeneric( "fitted" )) {
-#  setGeneric( "fitted",
-#              function( object, ...){
-#                standardGeneric( "fitted" )
-#              }
-#  )
-#}
-
-
-
-
-
-if ( !isGeneric( "m" )) {
-  setGeneric( "m",
-              function( object ){
-                standardGeneric( "m" )
-              }
-  )
-}
-
-
-if ( !isGeneric( "bugs.mi" )) {
-  setGeneric( "bugs.mi",
-              function( object, ... ){
-                standardGeneric( "bugs.mi" )
-              }
-  )
-}
-
-
-if ( !isGeneric( "info.mi" )) {
-  setGeneric( "info.mi",
-              function( object ){
-                standardGeneric( "info.mi" )
-              }
-  )
-}
-
-
-if ( !isGeneric( "imp" )) {
-  setGeneric( "imp",
-              function( object,... ){
-                standardGeneric("imp")
-              }
-  )
-}
-
-if ( !isGeneric( "is.mi" )) {
-  setGeneric( "is.mi",
-              function(object){
-                standardGeneric("is.mi")
-              }
-  )
-}
-
-if ( !isGeneric("mi")) {
-    setGeneric( "mi",
-               function(object, ...){
-               standardGeneric("mi")
-               }
-    )
-}
-
-
-
-if ( !isGeneric( "mi.completed" )) {
-  setGeneric( "mi.completed",
-              function( object, ... ){
-                standardGeneric( "mi.completed" )
-              }
-  )
-}
-
-
-if ( !isGeneric( "mi.data.frame" )) {
-  setGeneric( "mi.data.frame",
-              function( object,... ){
-                standardGeneric( "mi.data.frame" )
-              }
-  )
-}
-
-
-
-if ( !isGeneric("imputed")) {
-    setGeneric("imputed",
-               function( object, ... ){
-                  standardGeneric( "imputed" )
-               }
-    )
-}
-
-if ( !isGeneric("mi")) {
-    setGeneric( "mi",
-               function( object, ... ){
-               standardGeneric( "mi" )
-               }
-    )
-}
-
-
-
-if ( !isGeneric("mi.hist")) {
-    setGeneric( "mi.hist",
-               function( object, Yobs,... ){
-               standardGeneric( "mi.hist" )
-               }
-    )
-}
-
-
-#if ( !isGeneric("mi.initialize")) {
-#  setGeneric( "mi.initialize",
-#              function(object, ...){
-#              standardGeneric( "mi.initialize" )
-#              }
-#  )
-
-setGeneric("resid")
-
-#if ( !isGeneric( "resid" )) {
-#  setGeneric( "resid",
-#              function( object, ...){
-#                standardGeneric( "resid" )
-#              }
-#  )
-#}
-
-setGeneric("residuals")
-
-#if ( !isGeneric( "residuals" )) {
-#  setGeneric( "residuals",
-#              function( object, ...){
-#                standardGeneric( "residuals" )
-#              }
-#  )
-#}
-
-
-if ( !isGeneric( "typecast" ) ) {
-    setGeneric( "typecast",
-               function( object ){
-               standardGeneric( "typecast" )
-               }
-    )
-}
-
-
-
-if ( !isGeneric( "update" )) {
-  setGeneric( "update",
-              function( object, ...){
-                standardGeneric( "update" )
-              }
-  )
-}
+setGeneric("change", def = function(data, y, to, what, ...) standardGeneric("change"))
+setGeneric("change_family", def = function(data, y, to, ...) standardGeneric("change_family"))
+setGeneric("change_imputation_method", def = function(data, y, to, ...) standardGeneric("change_imputation_method"))
+setGeneric("change_link", def = function(data, y, to, ...) standardGeneric("change_link"))
+setGeneric("change_model", def = function(data, y, to, ...) standardGeneric("change_model"))
+setGeneric("change_size", def = function(data, y, to, ...) standardGeneric("change_size"))
+setGeneric("change_transformation", def = function(data, y, to, ...) standardGeneric("change_transformation"))
+setGeneric("change_type", def = function(data, y, to, ...) standardGeneric("change_type"))
+setGeneric("complete", def = function(y, m, ...) standardGeneric("complete"))
+setGeneric("fit_model", def = function(y, data, ...) standardGeneric("fit_model"))
+setGeneric("get_parameters", def = function(object, ...) standardGeneric("get_parameters"))
+setGeneric("hist", def = function(x, ...) standardGeneric("hist"))
+setGeneric("mi", def = function(y, model, ...) standardGeneric("mi"))
+setGeneric("missing_variable", def = function(y, type, ...) standardGeneric("missing_variable"))
+setGeneric("missing_data.frame", def = function(y, ...) standardGeneric("missing_data.frame"))
+## FIXME: acount for the other stuff in the original AllGeneric.R

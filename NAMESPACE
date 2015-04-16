@@ -1,171 +1,42 @@
-importFrom("stats",
-      coef,
-      coefficients,
-      fitted,
-      resid,
-      residuals,
-      update
-)
+#exportPattern("^[[:alpha:]]+")
 
+importFrom(arm, display, fround, pfround, traceplot, bayesglm.fit, bayespolr)
+importFrom(graphics, hist)
+importFrom(Matrix, image)
+importFrom(stats4, coef, plot, summary, vcov)
+import(methods)
+exportClassPattern("^[[:alpha:]]+")
+exportMethods(change, change_family, change_link, change_model, change_imputation_method, 
+              change_size, change_transformation, change_type,
+              complete, fit_model, get_parameters, hist, image, 
+              mi, missing_data.frame, missing_variable, plot)
+export(display, mi2BUGS, mi2stata, mipply, multinomial, pool, 
+       .prune, .possible_missing_variable, Rhats, rdata.frame)
 
-importFrom(lme4, "lmer", "glmer")
-
-importFrom(methods, "setOldClass")
-
-importFrom("Matrix",
-      Matrix,
-      tcrossprod
-)
-
-import(foreign)
-
-importFrom(MASS, "polr",
-                 "mvrnorm")
-
-importFrom(R2WinBUGS, "as.bugs.array")
-
-importFrom(abind, "abind")
-
-importFrom(nnet, "multinom")
-
-importFrom(car, "recode")
-
-importFrom(nlme, "fixef")
-
-
-importFrom("arm",
-      bayesglm,
-      bayespolr,
-      sim,
-      display,
-      logit,
-      invlogit,
-      se.coef,
-      sigma.hat,
-      traceplot
-)
-
-exportClasses(
-  mi,
-  mi.copy,
-  mi.method,
-  mi.fixed,
-  mi.binary,
-  mi.polr,
-  mi.categorical,
-  mi.continuous,
-  mi.count,
-  mi.info,
-  mi.pmm,
-  mi.pooled,
-  mi.preprocessed
-)
-
-exportMethods(
-  bugs.mi,
-  call.mi,
-  data.mi,
-  info.mi,
-  is.mi,
-  converged,
-  display,
-  imputed,
-  imp,
-  m,
-  mi,
-  mi.hist,
-  mi.completed,
-  mi.data.frame,
-  plot,
-  resid,
-  residuals,
-  se.coef,
-  typecast,
-  print,
-  show
-)
-
-export(
-  bayesglm.mi,
-  bayespolr.mi,
-  bugs.mi,
-  call.mi,
-  conv.plot,
-  converged,
-  convergence.plot,
-  data.mi,
-  glm.mi,
-  glmer.mi,
-  imp,
-  imputed,
-  info.mi,
-  is.mi,
-  is.mi.info,
-  lm.mi,
-  lmer.mi,
-  m,
-  mi,
-  marginal.scatterplot,
-  mi,
-  mi.categorical,
-  mi.completed,
-  mi.continuous,
-  mi.copy,
-  mi.count,
-  mi.data.frame,
-  mi.binary,
-  mi.fixed,
-  mi.hist,
-  mi.info,
-  mi.info.fix,
-  mi.info.update.collinear,
-  mi.info.update.determ.pred,
-  mi.info.update.imp.formula,
-  mi.info.update.imp.order,
-  mi.info.update.include,
-  mi.info.update.is.ID,
-  mi.info.update.level,
-  mi.info.update.other,
-  mi.info.update.params,
-  mi.info.update.type,
-  mi.interactive,
-  mi.preprocess,
-  mi.postprocess,
-  mi.polr,
-  mi.pooled,
-  mi.scatterplot,
-  mi.types,
-  missing.pattern.plot,
-  mp.plot,
-  polr.mi,
-  noise.control,
-  random.imp,
-  typecast,
-  type.models,
-  write.mi
-)
-
-#
-#S3method(residuals, mi.method)
-#S3method(residuals, mi.binary)
-#S3method(residuals, mi.categorical)
-#S3method(residuals, mi.polr)
-#S3method(residuals, mi.count)
-#S3method(resid, mi.method)
-#S3method(resid, mi.binary)
-#S3method(resid, mi.categorical)
-#S3method(resid, mi.polr)
-#S3method(resid, mi.count)
-S3method(update, mi.info)
-S3method(print, mi)
-S3method(print, mi.pooled)
-S3method(print, mi.info)
-S3method(print, mi.method)
-S3method("[<-", mi.info)
-S3method("$<-", mi.info)
-S3method("[", mi.info)
-S3method("$", mi.info)
-S3method(fitted, mi.method)
-S3method(sigma.hat, mi.method)
-S3method(coef, mi.method)
-S3method(coef, mi.pooled) 
+S3method(as.double, missing_variable)
+S3method(as.double, categorical)
+S3method(as.double, continuous)
+S3method(as.double, count)
+S3method(as.double, irrelevant)
+S3method(as.double, missing_data.frame)
+S3method(as.data.frame, missing_data.frame)
+S3method(dim, missing_data.frame)
+S3method(dimnames, missing_data.frame)
+S3method(names, missing_data.frame)
+S3method(dim, mi)
+S3method(dimnames, mi)
+S3method(names, mi)
+S3method(is.na, missing_variable)
+S3method(is.na, missing_data.frame)
+S3method(is.na, mi)
+S3method(length, missing_variable)
+S3method(length, missing_data.frame)
+S3method(length, mi)
+S3method(print, mdf_list)
+S3method(print, mi_list)
+S3method("[", missing_data.frame)
+S3method("[<-", missing_data.frame)
+S3method("[[", missing_data.frame)
+S3method("[[<-", missing_data.frame)
+S3method("$", missing_data.frame)
+S3method("$<-", missing_data.frame)

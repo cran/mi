@@ -1,9 +1,0 @@
-2010-6-24 Yu-Sung Su     <ys463@columbia.edu>  
-  * mi.count: better ways to do post draw of overdispersed poisson?
-  * how to parse variables that contains "<", ">".
-
-
-2010-6-5 Yu-Sung Su     <ys463@columbia.edu>  
-  * mi.pmm: allow more modeling choices other than lm.
-  * allow HLM modeling
- 
