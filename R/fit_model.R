@@ -728,7 +728,7 @@ setMethod("fit_model", signature(y = "missing", data = "multilevel_missing_data.
         params <- arm::sim(model, 1)
         beta <- params@coef
         sigma <- params@sigma
-        yhats <- rnorm(nrow(X), data@X %*% beta, sd = sigma)
+        yhats <- rnorm(nrow(data@X), data@X %*% beta, sd = sigma)
         # change the priors for each element of the mdf_list accordingly
         for(k in seq_along(data@mdf_list)) {
           data@mdf_list[[k]]$mean[colnames(data)[j]] <- yhats[k]

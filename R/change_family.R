@@ -38,8 +38,8 @@ setMethod("change_family", signature(data = "missing", y = "proportion", to = "f
       y@inverse_transformation <- pnorm
     }
     else if(y@family$family == "binomial") {
-      y@transformation <- .identity_transformation
-      y@transformation <- .identity_transformation
+      y@transformation <- .identity_transform
+      y@transformation <- .identity_transform
     }
     y@data <- y@transformation(y@data)
     validObject(y, complete = TRUE)

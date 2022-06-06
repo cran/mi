@@ -2,9 +2,25 @@
 
 importFrom(arm, display, fround, pfround, traceplot, bayesglm.fit, bayespolr)
 importFrom(graphics, hist)
-importFrom(Matrix, image)
+importFrom(Matrix, image, Matrix)
 importFrom(stats4, coef, plot, summary, vcov)
 import(methods)
+
+importFrom("grDevices", "colorRampPalette", "grey", "heat.colors", "n2mfrow")
+importFrom("graphics", "abline", "axis", "barplot", "lines", "par", "points", "segments", "title")
+importFrom("stats", "as.dendrogram", "as.formula", "binomial", "cor",
+           "cov", "cov2cor", "dbinom", "dist", "dlogis", "dnorm",
+           "gaussian", "hclust", "is.ts", "lm", "lowess",
+           "mahalanobis", "make.link", "median", "model.frame",
+           "model.matrix", "model.response", "na.omit", "optim",
+           "order.dendrogram", "pcauchy", "plogis", "pnorm", "poisson",
+           "predict", "pt", "qlogis", "qnorm", "qpois", "quantile",
+           "quasibinomial", "quasipoisson", "rbeta", "rbinom",
+           "rchisq", "rgamma", "rmultinom", "rnbinom", "rnorm",
+           "rpois", "rt", "runif", "sd", "uniroot", "var")
+importFrom("utils", "head", "tail", "write.table")
+
+
 exportClassPattern("^[[:alpha:]]+")
 exportMethods(change, change_family, change_link, change_model, change_imputation_method, 
               change_size, change_transformation, change_type,

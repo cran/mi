@@ -753,7 +753,7 @@ function(y, model, s, ...) {
   if(y@n_drawn == 0) stop("'impute' should not have been called because there are no missing data")
   # reconstruc the strata
   Terms <- model$terms
-  temp <- untangle.specials(Terms, "strata")
+  temp <- survival::untangle.specials(Terms, "strata")
   mf <- model.frame(model)
   strata <- strata(mf[, temp$vars], shortlabel = TRUE)
   if(y@imputation_method == "pmm") {

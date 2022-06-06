@@ -1,8 +1,8 @@
 Package: mi
 Type: Package
 Title: Missing Data Imputation and Model Checking
-Version: 1.0
-Date: 2015-04-16
+Version: 1.1
+Date: 2022-06-05
 Authors@R: c(person("Andrew", "Gelman", email = "gelman@stat.columbia.edu", role = "ctb"), 
              person("Jennifer", "Hill", email = "jennifer.hill@nyu.edu", role = "ctb"),
              person("Yu-Sung", "Su", email = "suyusung@tsinghua.edu.cn", role = c("aut")), 
@@ -20,7 +20,6 @@ Suggests: betareg, lattice, knitr, MASS, nnet, parallel, sn, survival,
 URL: http://www.stat.columbia.edu/~gelman/
 License: GPL (>= 2)
 LazyLoad: yes
-Packaged: 2015-04-16 14:03:10 UTC; goodrich
 Author: Andrew Gelman [ctb],
   Jennifer Hill [ctb],
   Yu-Sung Su [aut],
@@ -31,5 +30,6 @@ Author: Andrew Gelman [ctb],
   Jon Kropko [aut]
 Maintainer: Ben Goodrich <benjamin.goodrich@columbia.edu>
 NeedsCompilation: no
+Packaged: 2022-06-05 05:31:15 UTC; ben
 Repository: CRAN
-Date/Publication: 2015-04-16 19:53:48
+Date/Publication: 2022-06-06 20:10:04 UTC
