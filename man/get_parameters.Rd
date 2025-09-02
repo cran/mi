@@ -23,7 +23,7 @@ get_parameters(object, ...)
 }
 }
 \details{
-There is method for the object produced by \code{\link{polr}}, which
+There is method for the object produced by \code{\link[MASS]{polr}}, which
 also returns the estimated cutpoints in a proportional odds model. However,
 the default method simply calls \code{\link{coef}} and returns the result.
 If users implement their own models, it may be necessary to write a short

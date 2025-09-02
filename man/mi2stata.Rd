@@ -16,7 +16,7 @@ mi2stata(imputations, m, file, missing.ind=FALSE, ...)
     as a Stata data file, and files with names ending in '.csv' will be saved as a comma-separated file.}
   \item{missing.ind}{If \code{TRUE}, includes a binary variable for each variable with \code{\link{NA}} values,
 	indicating the observations which were originally missing. Defaults to \code{FALSE}.}
-  \item{\dots}{Further arguments passed to \code{\link{write.dta}} for Stata files, or to \code{\link{write.table}}
+  \item{\dots}{Further arguments passed to \code{\link[foreign]{write.dta}} for Stata files, or to \code{\link{write.table}}
 	for .csv files.}
 }
 
@@ -47,7 +47,7 @@ Ben Goodrich and Jonathan Kropko, for this version, based on earlier versions wr
 Yajima, Maria Grazia Pittau, Jennifer Hill, and Andrew Gelman.
 }
 \seealso{
-\code{\link{complete}}, \code{\link{mi}}, \code{\link{write.dta}}, \code{\link{write.table}}
+\code{\link{complete}}, \code{\link{mi}}, \code{\link[foreign]{write.dta}}, \code{\link{write.table}}
 }
 \examples{
 fn <- paste(tempfile(), "dta", sep = ".")

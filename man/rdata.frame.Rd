@@ -128,27 +128,24 @@ of \code{n_cat}.
 }
 \value{
 A list with the following elements:
-\enumerate{
-  \item{true}{ a \code{\link{data.frame}} containing no \code{\link{NA}} values}
-  \item{obs}{ a \code{\link{data.frame}} derived from the previous with some
+\item{true}{ a \code{\link{data.frame}} containing no \code{\link{NA}} values}
+\item{obs}{ a \code{\link{data.frame}} derived from the previous with some
     \code{\link{NA}} values that represents a dataset that could be observed}
-  \item{empirical_CPCs}{ a numeric vector of empirical Canonical Partial
+\item{empirical_CPCs}{ a numeric vector of empirical Canonical Partial
      Correlations, which should differ only randomly from zero iff
      \code{MAR = TRUE} and the data-generating process is multivariate normal}
-  \item{L}{ a Cholesky factor of the correlation matrix used to generate the
+\item{L}{ a Cholesky factor of the correlation matrix used to generate the
       true data}
-}
+
 In addition, if \code{alpha} is not \code{\link{NULL}}, then the following
 elements are also included:
-\enumerate{
-  \item{alpha}{ the \code{alpha} vector utilized}
-  \item{sn_skewness}{ the skewness of the multivariate skewed normal distribution
+\item{alpha}{ the \code{alpha} vector utilized}
+\item{sn_skewness}{ the skewness of the multivariate skewed normal distribution
     in the population; note that this value is only an approximation of the
     skewness when \code{df < Inf}}
-  \item{sn_kurtosis}{ the kurtosis of the multivariate skewed normal distribution
+\item{sn_kurtosis}{ the kurtosis of the multivariate skewed normal distribution
     in the population; note that this value is only an approximation of the
     kurtosis when \code{df < Inf}}
-}
 }
 \author{
 Ben Goodrich and Jonathan Kropko, for this version, based on earlier versions written by Yu-Sung

@@ -29,7 +29,7 @@ data are longitudinal, this extract is not.
   type of a \code{\link{missing_variable}}
 }
 \source{
-National Longitudinal Survey of Youth, 1997, \url{https://www.bls.gov/nls/nlsy97.htm}
+National Longitudinal Survey of Youth, 1997, \url{https://www.nlsinfo.org/content/cohorts/nlsy97}
 }
 \examples{
 data(nlsyV)

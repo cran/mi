@@ -78,7 +78,7 @@ missing_data.frame(y, ...)
       \code{\link{missing_variable}}s plus (by default) the unique missingness patterns }
     \item{\code{weights}:}{Object of class \code{"list"} whose length is equal to one
        or the number of \code{\link{missing_variable}}s with some missing values. Each 
-       list element is passed to the corresponding argument of \code{\link{bayesglm}} 
+       list element is passed to the corresponding argument of \code{\link[arm]{bayesglm}} 
        and similar functions. In particular, some observations can be given a weight
        of zero, which should drop them when modeling some \code{\link{missing_variable}}s}
     \item{\code{priors}:}{Object of class \code{"list"} whose length is equal to the number
