@@ -16,7 +16,7 @@ get their data into R. There are several ways to do so, including the
 `read.table`, `read.csv`, `read.fwf` functions plus several functions in the 
 __foreign__ package. All of these functions will generate a `data.frame`, which
 is a bit like a spreadsheet of data.
-http://cran.r-project.org/doc/manuals/R-data.html for more information.
+https://cran.r-project.org/doc/manuals/R-data.html for more information.
 
 ```{r step0}
 options(width = 65)

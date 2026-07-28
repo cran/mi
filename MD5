@@ -1,4 +1,4 @@
-1bddc4f904809dc4fa802256e478a697 *DESCRIPTION
+3a1ec5d8beb0a541545aac3524f1266e *DESCRIPTION
 3cff9345a28fcf308d27cd4fb1024fc2 *NAMESPACE
 d40a3d06f38c44bdd479a06006eeca4d *R/AllClass.R
 3ce3aa32589799fc9cc255946ced225b *R/AllGeneric.R
@@ -26,14 +26,14 @@ e460dbaa09804ae44f75c202d33302ff *R/plot_methods.R
 a0a5aef6f895a573d55af58cf42f5d3a *R/sysdata.rda
 ff146a33b7e5b018a84868092721901d *R/tobin5.R
 ae4d04291a56901290e61570fe88d109 *R/zzz.R
-03a6049ae53674cdb496abc0b4001da7 *build/partial.rdb
-790c28f7f6349818b757aa3c38acc2cf *build/vignette.rds
+6c19f2c521c2c0404f3daadd60b48126 *build/partial.rdb
+a05490fa4964f8d4fa34918861afdaa8 *build/vignette.rds
 379ddfae591ad8ea6fabfd77c1d617ec *data/CHAIN.RData
 f0d0be59b38944ccb05c7db05f83919e *data/nlsyV.RData
 49c2291ac7f09d1637fcab7878765298 *inst/CITATION
 6a8216b055a61e0b2d938e2af41f6abb *inst/doc/mi_vignette.R
-3bb603698bbb07d97015c41d35f18d4d *inst/doc/mi_vignette.Rmd
-6f07a39277e7b823e55061469132fd06 *inst/doc/mi_vignette.pdf
+5744aab172037ee80c19e0d9b15e3143 *inst/doc/mi_vignette.Rmd
+70d13d149ef656c2e4e7b3b8525a9062 *inst/doc/mi_vignette.pdf
 9681419f7f3ea8cbf1e49216d6afd458 *man/00mi-package.Rd
 466b9739a71d35f52fb377d69ce5bfe8 *man/01missing_variable.Rd
 b406b6e3b54fd23330f1f67eda72aa80 *man/02missing_data.frame.Rd
@@ -63,6 +63,6 @@ ec518486b5e8d55d014eaae022845e02 *man/nlsyV.Rd
 55fb1ae5649deec7a3b7268968966d8d *man/positive.Rd
 fa71e7cf4f93a993407164ec993fadde *man/rdata.frame.Rd
 d29dd537c8ef0895f39db27059264737 *man/semi-continuous.Rd
-2b34d0c66bd45e044b5fe119737f7540 *tests/missing_data.frame.R
-276644cf2dc960b51d26396d74b87c15 *tests/missing_variable.R
-3bb603698bbb07d97015c41d35f18d4d *vignettes/mi_vignette.Rmd
+d193c81c8f6bb1f92ee9cad2494ee2e8 *tests/missing_data.frame.R
+fd072c5bb716510078529b06ae7112b2 *tests/missing_variable.R
+5744aab172037ee80c19e0d9b15e3143 *vignettes/mi_vignette.Rmd

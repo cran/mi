@@ -1,5 +1,5 @@
 stopifnot(require(mi))
-
+set.seed(1)
 rdf <- rdata.frame(N = 100, n_partial = 2, n_full = 2)
 mdf <- missing_data.frame(rdf$obs)
 

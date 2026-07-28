@@ -1,5 +1,5 @@
 stopifnot(require(mi))
-
+set.seed(1)
 x <- rnorm(10)
 x[1] <- NA
 y <- missing_variable(x, type = "continuous")
@@ -17,6 +17,7 @@ y <- missing_variable(x, type = "interval")
 
 x <- rbinom(10, size = 1, prob = 0.5)
 x[1] <- NA
+if (all(x == 1, na.rm = TRUE) || all(x == 0, na.rm = TRUE)) x[10] <- 1 - x[10]
 y <- missing_variable(x, type = "binary")
 y <- missing_variable(x, type = "grouped-binary", strata = rep(c("A", "B"), each = 5))
 
