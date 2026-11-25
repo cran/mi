@@ -111,9 +111,11 @@ setClass("missing_variable",
              }
            }
            for(i in slotNames(object)) {
-             if(i %in% c("raw_data", "data", "which_obs", "which_miss", "which_extra", 
+             if(i %in% c("raw_data", "data", "which_obs", "which_miss", "which_extra", "indicator", "strata",
                          "which_unpossible", "which_drawn", "imputation_method", "known_transformations",
-                         "family", "known_families", "known_links", "levels", "cutpoints")) next
+                         "family", "known_families", "known_links", "levels", "cutpoints", "upper", "lower")) {
+                 next
+             }
              if((l <- length(slot(object, i))) > 1) {
                out <- paste(object@variable_name, ": length of", i, "must be 0 or 1 but is", l)
                break

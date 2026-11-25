@@ -266,7 +266,7 @@ setMethod("image", signature(x = "mi_list"), def =
     }
     aa <- data.frame(arm::binned.resids(x, y, nclass)$binned)
     #     aa <- aa[!is.na(aa$X2se),] ## FIXME: remove once Yu-Sung fixes arm::binned.resids
-    plot(range(aa$xbar), range(aa$ybar, aa$X2se, -aa$X2se), xlab = xlab, 
+    plot(range(aa$xbar, na.rm = TRUE), range(aa$ybar, aa$X2se, -aa$X2se, na.rm = TRUE), xlab = xlab, 
          ylab = ylab, type = "n", main = main, mgp = c(2, 1, 0), tcl = .05)
     abline(0, 0, lty = 2)
     lines(aa$xbar, aa$X2se, col = col.int)

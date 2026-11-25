@@ -1,8 +1,6 @@
 ---
 title: "An Example of mi Usage"
-author: "Ben Goodrich and Jonathan Kropko, for this version, based on earlier 
-versions written by Yu-Sung Su, Masanao Yajima, Maria Grazia Pittau, Jennifer Hill, 
-and Andrew Gelman"
+author: "Ben Goodrich and Jonathan Kropko, for this version,\nbased on earlier versions written by Yu-Sung Su, Masanao Yajima, Maria Grazia Pittau, Jennifer Hill, and Andrew Gelman"
 date: "06/16/2014"
 output: pdf_document
 ---
